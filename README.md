@@ -15,7 +15,7 @@ With this little plugin which works directly in the editor, managing all your re
 As soon as you download end activate the plugin, a new tab in the Bottom Left Doc will open, the "GitHub" tab.  
 1. Sign in with your credentials: the field *"password"* can also be filled with a *"token"*. To know about GitHub tokens and how to create them, click on the *"Create Token"* button.  
 ![sign](https://i.imgur.com/mt2Qdwx.png)
-2. Once you have signed in, your *"User Panel"* will load. Here you can see your avatar, profile name, number and list of repositories, number and list of gists. You will always see all you repositories and gists in your GitHub account, but the privet ones will be tagged with a "lock" icon.  
+2. Once you have signed in, your *"User Panel"* will load. Here you can see your avatar, profile name, number and list of repositories, number and list of gists. You will always see all you repositories and gists in your GitHub account, but the private ones will be tagged with a "lock" icon.  
 ![profile](https://i.imgur.com/eEntueY.png)
 3. With *"New Repository*" and *"New Gist*" buttons you can create a new Repository or Gist.  
 ![new](https://i.imgur.com/ly71FH0.png)
