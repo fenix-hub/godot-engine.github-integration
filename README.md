@@ -32,16 +32,20 @@ Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.
 - Create a new repository
 - Create a new gist
 - Delete a repository
-- Delete a gist
 - Commit and push to a selected repository
-- Edit a gist
 
-### to-come features (v-0.0.2)
+### to-come features (v-0.0.x)
 + Pull requests
-+ Show branches in Repository List
++ Cloning
++ Merging
++ Repository panel: show branches and content of selected branches
++ Edit repository
 + Create repository: chose branch, edit readme, .gitignor template, license templete
 + Commit and Push to repository: choose a branch , automatic/non-automatic sign
-+ Commit and Push multiple files: 
++ Commit and Push multiple files
++ Show gists in internal file editor
++ Delete gists
++ Create gist of multiple files
 
 ### What do I want for a v-1.0.0 ?
 The first complete and released version will be set once the main operations you can do on GitHub browser and app will be available in this plugin (ex. Committing and Pushing, Branching, Pulling) placed side by side with a full error handling.
