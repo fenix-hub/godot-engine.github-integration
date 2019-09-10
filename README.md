@@ -27,7 +27,7 @@ As soon as you download end activate the plugin, a new tab in the Bottom Left Do
 Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/v0.0.1) and put it in your `res://addons` folder inside the project you want to work on.  
 Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.  
 
-### current features (v 0.0.1)
+### current features (v-0.0.1)
 - Log in with Password or Token
 - Create a new repository
 - Create a new gist
@@ -36,9 +36,12 @@ Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.
 - Commit and push to a selected repository
 - Edit a gist
 
-### to-come features (v. 0.0.2)
+### to-come features (v-0.0.2)
 + Pull requests
 + Show branches in Repository List
 + Create repository: chose branch, edit readme, .gitignor template, license templete
 + Commit and Push to repository: choose a branch , automatic/non-automatic sign
 + Commit and Push multiple files: 
+
+### What do I want for a v-1.0.0 ?
+The first complete and released version will be set once the main operations you can do on GitHub browser and app will be available in this plugin (ex. Committing and Pushing, Branching, Pulling) placed side by side with a full error handling.
