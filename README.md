@@ -35,6 +35,7 @@ Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.
 - Commit and push to a selected repository
 
 ### to-come features (v-0.0.x)
++ Automatic Sign-in
 + Pull requests
 + Cloning
 + Merging
