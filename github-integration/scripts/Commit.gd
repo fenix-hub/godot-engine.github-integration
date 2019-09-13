@@ -120,7 +120,6 @@ func list_files_in_directory(path):
 	var file = dir.get_next()
 	while (file != ""):
 		if ! file in EXCEPTIONS:
-			print(ONLY.size())
 			if ONLY[0]!=null:
 				if dir.current_is_dir():
 					if !file.begins_with("."):
