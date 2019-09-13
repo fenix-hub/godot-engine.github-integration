@@ -1,5 +1,3 @@
-VERSIONING <major update>.<new feature>.<bug fix/patch>
-
 **version 0.1.5**  
 *added*  
 + Light code clean  
