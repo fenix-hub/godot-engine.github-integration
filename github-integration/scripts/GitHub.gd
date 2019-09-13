@@ -12,7 +12,7 @@ onready var Commit = $Commit
 
 
 func _ready():
-	$version.text = "v 0.1.5"
+	$version.text = "v 0.2.5"
 	Repo.hide()
 	NewRepo.hide()
 	SignIn.show()
