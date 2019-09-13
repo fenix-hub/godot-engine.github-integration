@@ -2,7 +2,7 @@
 #            ~{ GitHub Integration }~
 # [Author] Nicolò "fenix" Santilio 
 # [github] fenix-hub/godot-engine.github-integration
-# [version] 0.2.7
+# [version] 0.2.9
 # [date] 09.13.2019
 
 
@@ -20,6 +20,7 @@ onready var Mail : LineEdit = $signin_panel/HBoxContainer/Mail
 onready var Token : LineEdit = $signin_panel/HBoxContainer2/Password
 onready var Error = $signin_panel/error
 onready var Loading = $signin_panel/loading
+onready var logfile_lbl = $signin_panel/HBoxContainer3/logfile
 
 var mail : String 
 var password : String
@@ -43,17 +44,18 @@ func _ready():
 	call_deferred("add_child",download_image)
 	signin_request.connect("request_completed",self,"signin_completed")
 	download_image.connect("request_completed",self,"signin_completed")
+	
+	if UserData.load_user():
+		logfile = true
+		logfile_lbl.show()
+	else:
+		logfile_lbl.hide()
 
 
 func create_token():
 	OS.shell_open("https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line")
 
 func sign_in():
-	set_process(true)
-	if UserData.load_user():
-		logfile = true
-		Mail.text = UserData.MAIL
-		Token.text = UserData.PWD
 	
 	
 	if !logfile:
@@ -66,6 +68,8 @@ func sign_in():
 			requesting = REQUESTS.LOGIN
 			signin_request.request("https://api.github.com/user",["Authorization: Basic "+auth],false,HTTPClient.METHOD_GET,"")
 	else:
+		Mail.text = UserData.MAIL
+		Token.text = UserData.PWD
 		print(get_parent().plugin_name,"found logfile, signing in.")
 		Loading.show()
 		emit_signal("signed")
@@ -73,7 +77,6 @@ func sign_in():
 		requesting = REQUESTS.END
 		Loading.hide()
 		hide()
-		set_process(false)
 
 func signin_completed(result, response_code, headers, body ):
 	if result == 0:
@@ -97,7 +100,6 @@ func signin_completed(result, response_code, headers, body ):
 				requesting = REQUESTS.END
 				Loading.hide()
 				hide()
-				set_process(false)
 
 
 func _on_loading_visibility_changed():
