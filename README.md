@@ -39,7 +39,6 @@ Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.
 + Pull requests
 + Cloning
 + Merging
-+ Repository panel: show branches and content of selected branches
 + Edit repository
 + Create repository: chose branch, edit readme, .gitignor template, license templete
 + Commit and Push to repository: choose a branch , automatic/non-automatic sign
@@ -47,6 +46,10 @@ Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.
 + Show gists in internal file editor
 + Delete gists
 + Create gist of multiple files
++ enable/disable output
+
+minor:
++ show files in list during commit after loaded
 
 ### What do I want for a v-1.0.0 ?
 The first complete and released version will be set once the main operations you can do on GitHub browser and app will be available in this addon (ex. Committing and Pushing, Branching, Pulling) placed side by side with a full error handling.
