@@ -1,18 +1,18 @@
-tool
-extends Control
-
 # ----------------------------------------------
 #            ~{ GitHub Integration }~
 # [Author] Nicolò "fenix" Santilio 
-# [github] fenix-hub/godot.git-integration
-# [version] 0.0.1
-# [date] 2019 - 
+# [github] fenix-hub/godot-engine.github-integration
+# [version] 0.2.7
+# [date] 09.13.2019
 
 
-# https://api.github.com/user --> request authorization
+
 
 
 # -----------------------------------------------
+
+tool
+extends Control
 
 signal signed()
 
@@ -47,9 +47,6 @@ func _ready():
 
 func create_token():
 	OS.shell_open("https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line")
-
-func _process(delta):
-	loading_anim(delta)
 
 func sign_in():
 	set_process(true)
@@ -103,7 +100,9 @@ func signin_completed(result, response_code, headers, body ):
 				set_process(false)
 
 
-func loading_anim(delta):
-	Loading.set_rotation_degrees((Vector2(Loading.get_rotation_degrees(),0).linear_interpolate(Vector2(360,0), 4 * delta)).x)
-	if Loading.get_rotation_degrees() > 330:
-		Loading.set_rotation_degrees(0)
+func _on_loading_visibility_changed():
+	var Mat = Loading.get_material()
+	if Loading.visible:
+		Mat.set_shader_param("speed",5)
+	else:
+		Mat.set_shader_param("speed",0)

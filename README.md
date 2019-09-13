@@ -24,20 +24,8 @@ As soon as you download end activate the addon, a new tab in the Bottom Left Doc
 ![edit](https://i.imgur.com/Ijabmr9.png)
 
 ## How do I install it?
-Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/v0.0.1) and put it in your `res://addons` folder inside the project you want to work on.  
+Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/v0.2.5) and put it in your `res://addons` folder inside the project you want to work on.  
 Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.  
-
-### to-come features (v-0.x.x)
-+ Pull requests
-+ Cloning
-+ Merging
-+ Edit repository
-+ Create repository: chose branch, edit readme, .gitignor template, license templete
-+ Create new branch
-+ Show gists in internal file editor
-+ Delete gists
-+ Create gist of multiple files
-+ enable/disable output
 
 ### What do I want for a v-1.0.0 ?
 The first complete and released version will be set once the main operations you can do on GitHub browser and app will be available in this addon (ex. Committing and Pushing, Branching, Pulling) placed side by side with a full error handling.
