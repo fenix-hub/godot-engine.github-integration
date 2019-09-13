@@ -22,6 +22,10 @@ func request_completed(result, response_code, headers, body ):
 					hide()
 					print(get_parent().plugin_name,"created new repository...")
 					get_parent().UserPanel.request_repositories(get_parent().UserPanel.REQUESTS.UP_REPOS)
+					set_default_cursor_shape(CURSOR_ARROW)
+					for ch in get_children():
+						if !ch is HTTPRequest:
+							ch.set_default_cursor_shape(CURSOR_ARROW)
 				elif response_code == 422:
 					error.text = "Error: "+JSON.parse(body.get_string_from_utf8()).result.errors[0].message
 					error.show()
@@ -60,7 +64,11 @@ func load_body() -> Dictionary:
 	return repo_body
 
 func _on_NewRepo_confirmed():
+	set_default_cursor_shape(CURSOR_WAIT)
+	for ch in get_children():
+		if !ch is HTTPRequest:
+			ch.set_default_cursor_shape(CURSOR_WAIT)
 	error.hide()
 	requesting = REQUESTS.REPOS
-	new_repo.request("https://api.github.com/user/repos",["Authorization: Basic "+get_parent().user_logged],false,HTTPClient.METHOD_POST,JSON.print(load_body()))
+	new_repo.request("https://api.github.com/user/repos",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(load_body()))
 
