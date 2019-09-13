@@ -2,7 +2,7 @@
 #            ~{ GitHub Integration }~
 # [Author] Nicolò "fenix" Santilio 
 # [github] fenix-hub/godot-engine.github-integration
-# [version] 0.2.7
+# [version] 0.2.9
 # [date] 09.13.2019
 
 
@@ -28,8 +28,6 @@ onready var _start_from = $VBoxContainer2/HBoxContainer9/start_from
 enum REQUESTS { UPLOAD = 0, UPDATE = 1, BLOB = 2 , LATEST_COMMIT = 4, BASE_TREE = 5, NEW_TREE = 8, NEW_COMMIT = 6, PUSH = 7, COMMIT = 9, END = -1 }
 var requesting
 var new_repo = HTTPRequest.new()
-var repo_body
-var file_path
 
 var repo_selected
 var branches = []
@@ -48,6 +46,13 @@ var sha_new_commit
 
 var list_file_sha = []
 
+
+const DIRECTORY : String = "res://"
+var EXCEPTIONS : PoolStringArray = []
+var ONLY : PoolStringArray = []
+var START_FROM : String = ""
+
+
 signal blob_created()
 
 signal latest_commit()
@@ -56,11 +61,7 @@ signal new_commit()
 signal new_tree()
 signal file_blobbed()
 signal file_committed()
-
-const DIRECTORY : String = "res://"
-var EXCEPTIONS : PoolStringArray = []
-var ONLY : PoolStringArray = []
-var START_FROM : String = ""
+signal pushed()
 
 func _ready():
 	Loading.hide()
@@ -131,6 +132,7 @@ func request_completed(result, response_code, headers, body ):
 						if !ch is HTTPRequest:
 							ch.set_default_cursor_shape(CURSOR_ARROW)
 					Loading.hide()
+					emit_signal("pushed")
 
 func load_branches(br : Array, s_r : Dictionary, ct : Array) :
 	_branch.clear()
@@ -301,13 +303,14 @@ func request_push_commit():
 		"sha": sha_new_commit
 		}
 	new_repo.request("https://api.github.com/repos/"+UserData.USER.login+"/"+repo_selected.name+"/git/refs/heads/"+_branch.get_item_text(branch_idx),UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
+	yield(self,"pushed")
+	
+	empty_fileds()
 
 # --------------------------------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
-func _on_close2_pressed():
-	hide()
-	get_parent().Repo.show()
+
 
 
 func _on_filters_pressed():
@@ -326,3 +329,33 @@ func _on_loading2_visibility_changed():
 		Mat.set_shader_param("speed",5)
 	else:
 		Mat.set_shader_param("speed",0)
+
+func _on_close2_pressed():
+	repo_selected = ""
+	branches.clear()
+	branches_contents.clear()
+	
+	empty_fileds()
+	
+	_branch.clear()
+	
+	hide()
+	get_parent().Repo.show()
+
+func empty_fileds():
+	files.clear()
+	directories.clear()
+	sha_latest_commit = ""
+	sha_base_tree = ""
+	sha_new_tree = ""
+	sha_new_commit = ""
+	list_file_sha.clear()
+	EXCEPTIONS.resize(0)
+	ONLY.resize(0)
+	START_FROM = ""
+	
+	_filters.text = ""
+	_only.text = ""
+	_start_from.text = ""
+	
+	_message.text = ""

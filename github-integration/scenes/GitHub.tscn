@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://addons/github-integration/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://addons/github-integration/scripts/GitHub.gd" type="Script" id=2]
@@ -30,7 +30,18 @@ font_data = ExtResource( 3 )
 
 [sub_resource type="StyleBoxEmpty" id=5]
 
-[sub_resource type="Shader" id=10]
+[sub_resource type="StyleBoxFlat" id=6]
+content_margin_left = 5.0
+content_margin_right = 5.0
+draw_center = false
+
+[sub_resource type="DynamicFont" id=7]
+size = 20
+outline_size = 2
+outline_color = Color( 0.0901961, 0.0823529, 0.0862745, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="Shader" id=8]
 code = "shader_type canvas_item;
 render_mode unshaded, blend_disabled;
 
@@ -52,20 +63,20 @@ void vertex() {
 
 "
 
-[sub_resource type="ShaderMaterial" id=11]
-shader = SubResource( 10 )
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
 shader_param/speed = 0
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0, 0, 0, 0.392157 )
 
-[sub_resource type="StyleBoxEmpty" id=7]
+[sub_resource type="StyleBoxEmpty" id=11]
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=12]
 size = 20
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=13]
 size = 20
 font_data = ExtResource( 3 )
 
@@ -79,7 +90,7 @@ script = ExtResource( 2 )
 margin_right = 40.0
 margin_bottom = 19.0
 custom_fonts/font = SubResource( 3 )
-text = "v 0.2.5"
+text = "v 0.2.9"
 
 [node name="SingIn" type="Control" parent="."]
 anchor_right = 1.0
@@ -171,27 +182,37 @@ rect_min_size = Vector2( 0, 3 )
 custom_styles/separator = SubResource( 5 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="SingIn/signin_panel"]
-editor/display_folded = true
 margin_top = 173.0
 margin_right = 1024.0
 margin_bottom = 198.0
 alignment = 1
 
 [node name="btnCreateToken" type="Button" parent="SingIn/signin_panel/HBoxContainer3"]
-margin_left = 386.0
-margin_right = 514.0
+margin_left = 376.0
+margin_right = 504.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 4
 text = "Create Token (?)"
 
 [node name="btnSignIn" type="Button" parent="SingIn/signin_panel/HBoxContainer3"]
-margin_left = 518.0
-margin_right = 638.0
+margin_left = 508.0
+margin_right = 628.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 4
 text = "Sign-in"
+
+[node name="logfile" type="Label" parent="SingIn/signin_panel/HBoxContainer3"]
+margin_left = 632.0
+margin_right = 648.0
+margin_bottom = 24.0
+hint_tooltip = "A lofgile has been found! Just press \"Sign-in\" without filling the fields."
+mouse_filter = 1
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 0.92549, 0.133333, 0.392157, 1 )
+text = "!"
 
 [node name="error" type="Label" parent="SingIn/signin_panel"]
 visible = false
@@ -211,7 +232,8 @@ rect_min_size = Vector2( 0, 3 )
 custom_styles/separator = SubResource( 5 )
 
 [node name="loading" type="TextureRect" parent="SingIn/signin_panel"]
-material = SubResource( 11 )
+visible = false
+material = SubResource( 9 )
 margin_left = 487.0
 margin_top = 210.0
 margin_right = 537.0
@@ -406,10 +428,10 @@ margin_left = 1004.0
 margin_right = 1024.0
 margin_bottom = 24.0
 size_flags_horizontal = 8
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/normal = SubResource( 7 )
-custom_fonts/font = SubResource( 8 )
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/normal = SubResource( 11 )
+custom_fonts/font = SubResource( 12 )
 custom_colors/font_color = Color( 0.101961, 0.101961, 0.101961, 1 )
 custom_colors/font_color_hover = Color( 0.937255, 0.937255, 0.937255, 1 )
 shortcut_in_tooltip = false
@@ -420,7 +442,7 @@ margin_top = 24.0
 margin_right = 1024.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 13 )
 custom_colors/font_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 text = "REPOSITORY"
 align = 1
@@ -626,6 +648,7 @@ rect_clip_content = true
 text = "Commit to Repo"
 
 [node name="Commit" type="Control" parent="."]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -653,10 +676,10 @@ margin_left = 1004.0
 margin_right = 1024.0
 margin_bottom = 24.0
 size_flags_horizontal = 8
-custom_styles/hover = SubResource( 6 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/normal = SubResource( 7 )
-custom_fonts/font = SubResource( 8 )
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/normal = SubResource( 11 )
+custom_fonts/font = SubResource( 12 )
 custom_colors/font_color = Color( 0.101961, 0.101961, 0.101961, 1 )
 custom_colors/font_color_hover = Color( 0.937255, 0.937255, 0.937255, 1 )
 shortcut_in_tooltip = false
@@ -667,7 +690,7 @@ margin_top = 28.0
 margin_right = 1024.0
 margin_bottom = 52.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 13 )
 custom_colors/font_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 text = "COMMIT AND PUSH"
 align = 1
@@ -859,11 +882,12 @@ text = "Error: "
 align = 1
 
 [node name="loading2" type="TextureRect" parent="Commit/VBoxContainer2"]
-material = SubResource( 11 )
+visible = false
+material = SubResource( 9 )
 margin_left = 487.0
-margin_top = 273.0
+margin_top = 391.0
 margin_right = 537.0
-margin_bottom = 323.0
+margin_bottom = 441.0
 rect_min_size = Vector2( 50, 50 )
 rect_pivot_offset = Vector2( 25, 25 )
 size_flags_horizontal = 4

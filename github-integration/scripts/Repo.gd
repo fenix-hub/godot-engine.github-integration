@@ -2,7 +2,7 @@
 #            ~{ GitHub Integration }~
 # [Author] Nicolò "fenix" Santilio 
 # [github] fenix-hub/godot-engine.github-integration
-# [version] 0.2.7
+# [version] 0.2.9
 # [date] 09.13.2019
 
 
@@ -99,6 +99,7 @@ func request_branches(rep : String):
 	for branch in branches_contents:
 		branches_.add_item(branch.name)
 		branches_.set_item_metadata(i,branch)
+		i+=1
 	
 	current_branch = branches_.get_item_metadata(0)
 	
@@ -110,6 +111,8 @@ func request_branches(rep : String):
 
 func request_contents(rep : String, branch):
 	contents.clear()
+	contents_.clear()
+	
 	requesting = REQUESTS.CONTENTS
 	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/git/trees/"+branch.commit.commit.tree.sha+"?recursive=1",UserData.header,false,HTTPClient.METHOD_GET,"")
 
@@ -120,8 +123,22 @@ func open_html():
 	Input.set_default_cursor_shape(CURSOR_ARROW)
 
 func close_tab():
+	contents.clear()
+	contents_.clear()
+	branches_.clear()
+	branches.clear()
+	current_repo = ""
+	current_branch = ""
+	branches.clear()
+	branches_contents.clear()
+	contents.clear()
+	dirs.clear()
+	commit_sha = ""
+	tree_sha = ""
 	hide()
 	get_parent().UserPanel.show()
+
+
 
 func delete_repo():
 	var confirm = ConfirmationDialog.new()
@@ -206,7 +223,7 @@ func build_list():
 
 func _on_branch2_item_selected(ID):
 	current_branch = branches_.get_item_metadata(ID)
-	request_contents(current_repo.name,branches_.get_item_metadata(ID))
+	request_contents(current_repo.name,current_branch)
 	yield(self,"get_contents")
 	build_list()
 

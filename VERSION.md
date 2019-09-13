@@ -34,3 +34,12 @@ VERSIONING <major update>.<new feature>.<bug fix/patch>
 
 *removed*
 + Old commit method
+
+----------------------
+
+**version 0.2.9**  
+*added*  
++ Code clean  
++ Bugfix with commits
++ A marker next to "Sign-in" buttons appears if a logfile is found
+
