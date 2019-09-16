@@ -1,11 +1,9 @@
 # ----------------------------------------------
 #            ~{ GitHub Integration }~
 # [Author] Nicolò "fenix" Santilio 
-# [github] fenix-hub/godot.git-integration
-# [version] 0.0.1
-# [date] 2019 - 
-# 
-# {versioning: <grandi-cambiamenti>.<nuovi-contenuti>.<fix-patch> }
+# [github] fenix-hub/godot-engine.github-integration
+# [version] 0.2.9
+# [date] 09.13.2019
 
 
 
@@ -24,5 +22,4 @@ func _enter_tree():
 
 func _exit_tree():
 	remove_control_from_docks(doc)
-	remove_autoload_singleton("UserData")
 	doc.queue_free()
