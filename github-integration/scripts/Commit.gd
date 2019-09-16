@@ -331,16 +331,7 @@ func _on_loading2_visibility_changed():
 		Mat.set_shader_param("speed",0)
 
 func _on_close2_pressed():
-	repo_selected = ""
-	branches.clear()
-	branches_contents.clear()
-	
 	empty_fileds()
-	
-	_branch.clear()
-	
-	hide()
-	get_parent().Repo.show()
 
 func empty_fileds():
 	files.clear()
@@ -360,4 +351,5 @@ func empty_fileds():
 	
 	_message.text = ""
 	
-	_on_close2_pressed()
+	hide()
+	get_parent().Repo.show()
