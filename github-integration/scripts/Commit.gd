@@ -182,6 +182,8 @@ func list_files_in_directory(path):
 	dir.list_dir_begin(true,false)
 	var file = dir.get_next()
 	while (file != ""):
+		print("FILE ",file)
+		print("CURRENT DIR ",dir.get_current_dir())
 		if ! file in EXCEPTIONS:
 			if ONLY.size()<1:
 				if dir.current_is_dir():
@@ -329,6 +331,7 @@ func _on_loading2_visibility_changed():
 		Mat.set_shader_param("speed",5)
 	else:
 		Mat.set_shader_param("speed",0)
+
 
 func _on_close2_pressed():
 	empty_fileds()
