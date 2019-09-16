@@ -2,7 +2,7 @@
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *0.2.7*  
+Version: *0.3.1*  
 Godot Version: *3.1.1-stable*  
 
 **This repository was pushed directly from Godot Engine Editor!**

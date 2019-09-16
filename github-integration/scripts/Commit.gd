@@ -185,7 +185,6 @@ func list_files_in_directory(path):
 		print("FILE ",file)
 		print("CURRENT DIR ",dir.get_current_dir())
 		if ! file in EXCEPTIONS:
-			print(ONLY.size())
 			if ONLY.size()<1:
 				if dir.current_is_dir():
 					if !file.begins_with("."):
@@ -333,17 +332,9 @@ func _on_loading2_visibility_changed():
 	else:
 		Mat.set_shader_param("speed",0)
 
+
 func _on_close2_pressed():
-	repo_selected = ""
-	branches.clear()
-	branches_contents.clear()
-	
 	empty_fileds()
-	
-	_branch.clear()
-	
-	hide()
-	get_parent().Repo.show()
 
 func empty_fileds():
 	files.clear()
@@ -362,3 +353,6 @@ func empty_fileds():
 	_start_from.text = ""
 	
 	_message.text = ""
+	
+	hide()
+	get_parent().Repo.show()

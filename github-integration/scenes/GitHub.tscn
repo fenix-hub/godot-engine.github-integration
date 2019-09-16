@@ -90,7 +90,8 @@ script = ExtResource( 2 )
 margin_right = 40.0
 margin_bottom = 19.0
 custom_fonts/font = SubResource( 3 )
-text = "v 0.2.9"
+
+text = "v 0.3.1"
 
 [node name="SingIn" type="Control" parent="."]
 editor/display_folded = true
