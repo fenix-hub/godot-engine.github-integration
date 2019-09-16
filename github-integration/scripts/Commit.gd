@@ -157,16 +157,18 @@ func _on_Button_pressed():
 		if !ch is HTTPRequest:
 			ch.set_default_cursor_shape(CURSOR_WAIT)
 	
-	EXCEPTIONS = _filters.text.rsplit(",")
-	ONLY = _only.text.rsplit(",")
-	START_FROM = _start_from.text
+	if _filters.text != "":
+		EXCEPTIONS = _filters.text.rsplit(",")
+	if _only.text != "":
+		ONLY = _only.text.rsplit(",")
+	if _start_from.text!= "":
+		START_FROM = _start_from.text
 	
 	print(get_parent().plugin_name,"getting all files in project...")
 	
 	list_files_in_directory(DIRECTORY+START_FROM+"/")
 	
 	request_sha_latest_commit()
-
 
 # |---------------------------------------------------------|
 
@@ -175,14 +177,16 @@ func _on_Button_pressed():
 
 func list_files_in_directory(path):
 	directories = []
-	
 	var dir = Directory.new()
 	dir.open(path)
 	dir.list_dir_begin(true,false)
 	var file = dir.get_next()
 	while (file != ""):
+		print("FILE ",file)
+		print("CURRENT DIR ",dir.get_current_dir())
 		if ! file in EXCEPTIONS:
-			if ONLY[0]!=null:
+			print(ONLY.size())
+			if ONLY.size()<1:
 				if dir.current_is_dir():
 					if !file.begins_with("."):
 							directories.append(dir.get_current_dir()+"/"+file)
@@ -197,8 +201,7 @@ func list_files_in_directory(path):
 					else:
 						if file.get_extension()!="import":
 							files.append([dir.get_current_dir()+"/"+file,file])
-			
-			
+		
 		file = dir.get_next()
 	
 	dir.list_dir_end()
@@ -267,9 +270,9 @@ func request_blobs():
 func request_commit_tree():
 	requesting = REQUESTS.NEW_TREE
 	var tree = []
-	for i in range(0,files.size()-1):
+	for i in range(0,files.size()):
 		tree.append({
-			"path":files[i][0].lstrip(DIRECTORY+START_FROM),
+			"path":files[i][0].right((DIRECTORY+START_FROM+"/").length()),
 			"mode":"100644",
 			"type":"blob",
 			"sha":list_file_sha[i],

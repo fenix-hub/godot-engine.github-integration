@@ -35,6 +35,7 @@ var logfile = false
 
 
 func _ready():
+	logfile_lbl.hide()
 	set_process(false)
 	Loading.hide()
 	Error.hide()

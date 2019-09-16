@@ -93,6 +93,7 @@ custom_fonts/font = SubResource( 3 )
 text = "v 0.2.9"
 
 [node name="SingIn" type="Control" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 17.0

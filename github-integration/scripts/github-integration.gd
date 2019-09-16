@@ -22,5 +22,4 @@ func _enter_tree():
 
 func _exit_tree():
 	remove_control_from_docks(doc)
-	remove_autoload_singleton("UserData")
 	doc.queue_free()
