@@ -359,3 +359,5 @@ func empty_fileds():
 	_start_from.text = ""
 	
 	_message.text = ""
+	
+	_on_close2_pressed()
