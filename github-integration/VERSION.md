@@ -41,3 +41,8 @@
 + Bugfix with commits
 + A marker next to "Sign-in" buttons appears if a logfile is found
 
+----------------------
+
+**version 0.3.1**  
+*added*  
++ Several bugfixes 
