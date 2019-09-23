@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/avatar.png-c4b9b2296f50839f298fc230a7cab611.stex"
+path="res://.import/github-logo.png-ecbc9f6d20796b46b889486439e860bc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/github-integration/user/avatar.png"
-dest_files=[ "res://.import/avatar.png-c4b9b2296f50839f298fc230a7cab611.stex" ]
+source_file="res://addons/github-integration/resources/github-logo.png"
+dest_files=[ "res://.import/github-logo.png-ecbc9f6d20796b46b889486439e860bc.stex" ]
 
 [params]
 
@@ -20,15 +20,15 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
-process/fix_alpha_border=true
+process/fix_alpha_border=false
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
