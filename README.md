@@ -34,3 +34,6 @@ To check all the features included in the current version, please read the [VERS
 
 #### Upcoming features
 To check all the features I'm currently working on, please read the [TODO file](./TODO.md)
+
+# Want to contact me?  
+I'm planning to create a Discord group to collect each plugin I've made (and I will make), but until then you can directly talk with my via e-mail at *n.santilio97@gmail.com*
