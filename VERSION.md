@@ -46,3 +46,10 @@
 **version 0.3.1**  
 *added*  
 + Several bugfixes 
+
+--------------------
+
+**version 0.3.2**  
+*added*
++ New folder organization (whole plugin in *addon* folder)
++ New install method (AssetLib from GodotEngine Editor)
