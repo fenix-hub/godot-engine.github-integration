@@ -23,10 +23,16 @@ As soon as you download end activate the addon, a new tab in the Bottom Left Doc
 3. With *"New Repository*" and *"New Gist*" buttons you can create a new Repository or Gist.  
 ![new](https://i.imgur.com/ly71FH0.png)
 4. With a **double click** on one of your repositories (or a gists) you will enter the *"Repository*" panel, where you will be able to manage the repository (delete, commit).  
-![edit](https://i.imgur.com/mGenxAK.png) ![commit](https://i.imgur.com/0WEhZUR.png)
+![edit](https://i.imgur.com/mGenxAK.png) ![commit](https://i.imgur.com/0WEhZUR.png)  
+
 ## How do I install it?
+**Manual**  
 Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/v0.2.5) and put it in your `res://addons` folder inside the project you want to work on.  
 Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.  
+
+**Automatic**  
+You can find this plugin in the AssetLib of Godot Engine Editor. Just download it from there and everything should be fine!  
+(Remember to activate this plugin)
 
 ### What do I want for a v-1.0.0 ?
 The first complete and released version will be set once the main operations you can do on GitHub browser and app will be available in this addon (ex. Committing and Pushing, Branching, Pulling) placed side by side with a full error handling.
