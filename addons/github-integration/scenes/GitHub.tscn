@@ -1,0 +1,1151 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://addons/github-integration/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://addons/github-integration/scripts/GitHub.gd" type="Script" id=2]
+[ext_resource path="res://addons/github-integration/fonts/Roboto-Black.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://addons/github-integration/scripts/SignIn.gd" type="Script" id=4]
+[ext_resource path="res://addons/github-integration/resources/github-logo.png" type="Texture" id=5]
+[ext_resource path="res://addons/github-integration/resources/loading/Loading_indicator_circle.svg.png" type="Texture" id=6]
+[ext_resource path="res://addons/github-integration/scripts/UserPanel.gd" type="Script" id=7]
+[ext_resource path="res://addons/github-integration/user/placeholder.png" type="Texture" id=8]
+[ext_resource path="res://addons/github-integration/scripts/Repo.gd" type="Script" id=9]
+[ext_resource path="res://addons/github-integration/scripts/Commit.gd" type="Script" id=10]
+[ext_resource path="res://addons/github-integration/scripts/WindowDialog.gd" type="Script" id=11]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 11
+outline_size = 2
+outline_color = Color( 0.0901961, 0.0823529, 0.0862745, 1 )
+use_mipmaps = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxFlat" id=6]
+content_margin_left = 5.0
+content_margin_right = 5.0
+draw_center = false
+
+[sub_resource type="DynamicFont" id=7]
+size = 20
+outline_size = 2
+outline_color = Color( 0.0901961, 0.0823529, 0.0862745, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="Shader" id=8]
+code = "shader_type canvas_item;
+render_mode unshaded, blend_disabled;
+
+uniform float speed = 5.0;
+
+vec2 rotateUV(vec2 uv, vec2 pivot, float rotation) {
+    float cosa = cos(rotation);
+    float sina = sin(rotation);
+    uv -= pivot;
+    return vec2(
+        cosa * uv.x - sina * uv.y,
+        cosa * uv.y + sina * uv.x 
+    ) + pivot;
+}
+
+void vertex() {
+   VERTEX = rotateUV(VERTEX, TEXTURE_PIXEL_SIZE+vec2(25,25), TIME * speed);
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
+shader_param/speed = 0
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0, 0, 0, 0.392157 )
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="DynamicFont" id=12]
+size = 20
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=13]
+size = 20
+font_data = ExtResource( 3 )
+
+[node name="GitHub" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource( 2 )
+script = ExtResource( 2 )
+
+[node name="version" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 19.0
+custom_fonts/font = SubResource( 3 )
+text = "v 0.3.1"
+
+[node name="SingIn" type="Control" parent="."]
+editor/display_folded = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 17.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="signin_panel" type="VBoxContainer" parent="SingIn"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TextureRect" type="TextureRect" parent="SingIn/signin_panel"]
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 4
+
+[node name="Label2" type="Label" parent="SingIn/signin_panel"]
+margin_top = 64.0
+margin_right = 1024.0
+margin_bottom = 83.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.0901961, 0.0823529, 0.0862745, 1 )
+text = "Sign-in to GitHub"
+align = 1
+
+[node name="HSeparator5" type="HSeparator" parent="SingIn/signin_panel"]
+margin_top = 87.0
+margin_right = 1024.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 0, 8 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SingIn/signin_panel"]
+editor/display_folded = true
+margin_top = 99.0
+margin_right = 1024.0
+margin_bottom = 128.0
+alignment = 1
+
+[node name="Label" type="Label" parent="SingIn/signin_panel/HBoxContainer"]
+margin_top = 5.0
+margin_right = 83.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 83, 0 )
+text = "Email:"
+
+[node name="Mail" type="LineEdit" parent="SingIn/signin_panel/HBoxContainer"]
+margin_left = 87.0
+margin_right = 1024.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+clear_button_enabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="SingIn/signin_panel"]
+editor/display_folded = true
+margin_top = 132.0
+margin_right = 1024.0
+margin_bottom = 161.0
+alignment = 1
+
+[node name="Label2" type="Label" parent="SingIn/signin_panel/HBoxContainer2"]
+margin_top = 5.0
+margin_right = 83.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 83, 0 )
+text = "Password:"
+
+[node name="Password" type="LineEdit" parent="SingIn/signin_panel/HBoxContainer2"]
+margin_left = 87.0
+margin_right = 1024.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+secret = true
+clear_button_enabled = true
+
+[node name="HSeparator3" type="HSeparator" parent="SingIn/signin_panel"]
+margin_top = 165.0
+margin_right = 1024.0
+margin_bottom = 169.0
+rect_min_size = Vector2( 0, 3 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="SingIn/signin_panel"]
+margin_top = 173.0
+margin_right = 1024.0
+margin_bottom = 198.0
+alignment = 1
+
+[node name="btnCreateToken" type="Button" parent="SingIn/signin_panel/HBoxContainer3"]
+margin_left = 376.0
+margin_right = 504.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 120, 0 )
+size_flags_horizontal = 4
+text = "Create Token (?)"
+
+[node name="btnSignIn" type="Button" parent="SingIn/signin_panel/HBoxContainer3"]
+margin_left = 508.0
+margin_right = 628.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 120, 0 )
+size_flags_horizontal = 4
+text = "Sign-in"
+
+[node name="logfile" type="Label" parent="SingIn/signin_panel/HBoxContainer3"]
+margin_left = 632.0
+margin_right = 648.0
+margin_bottom = 24.0
+hint_tooltip = "A lofgile has been found! Just press \"Sign-in\" without filling the fields."
+mouse_filter = 1
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 0.92549, 0.133333, 0.392157, 1 )
+text = "!"
+
+[node name="error" type="Label" parent="SingIn/signin_panel"]
+visible = false
+margin_top = 190.0
+margin_right = 960.0
+margin_bottom = 209.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 1, 0, 0.235294, 1 )
+text = "Error: "
+align = 1
+
+[node name="HSeparator4" type="HSeparator" parent="SingIn/signin_panel"]
+margin_top = 202.0
+margin_right = 1024.0
+margin_bottom = 206.0
+rect_min_size = Vector2( 0, 3 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="loading" type="TextureRect" parent="SingIn/signin_panel"]
+visible = false
+material = SubResource( 9 )
+margin_left = 487.0
+margin_top = 210.0
+margin_right = 537.0
+margin_bottom = 260.0
+rect_min_size = Vector2( 50, 50 )
+rect_pivot_offset = Vector2( 25, 25 )
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 6
+
+[node name="UserPanel" type="Control" parent="."]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 9.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Panel" type="VBoxContainer" parent="UserPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UserPanel/Panel"]
+margin_right = 1024.0
+margin_bottom = 50.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="avatar" type="TextureRect" parent="UserPanel/Panel/HBoxContainer"]
+margin_left = 482.0
+margin_right = 532.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+size_flags_horizontal = 5
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="UserPanel/Panel/HBoxContainer"]
+visible = false
+margin_left = 450.0
+margin_top = 15.0
+margin_right = 550.0
+margin_bottom = 34.0
+size_flags_horizontal = 5
+text = "Connected as:"
+
+[node name="user" type="Label" parent="UserPanel/Panel/HBoxContainer"]
+margin_left = 532.0
+margin_top = 15.0
+margin_right = 541.0
+margin_bottom = 34.0
+size_flags_horizontal = 5
+custom_colors/font_color = Color( 0.133333, 0.356863, 0.94902, 1 )
+custom_colors/font_color_shadow = Color( 0.14902, 0.0705882, 0.47451, 1 )
+text = "a"
+align = 1
+
+[node name="HSeparator5" type="HSeparator" parent="UserPanel/Panel"]
+margin_top = 50.0
+margin_right = 1024.0
+margin_bottom = 65.0
+rect_min_size = Vector2( 0, 15 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="List" type="VBoxContainer" parent="UserPanel/Panel"]
+margin_top = 65.0
+margin_right = 1024.0
+margin_bottom = 583.0
+size_flags_vertical = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UserPanel/Panel/List"]
+margin_right = 1024.0
+margin_bottom = 19.0
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="UserPanel/Panel/List/HBoxContainer2"]
+margin_right = 92.0
+margin_bottom = 19.0
+text = "Repositories:"
+
+[node name="repos" type="Label" parent="UserPanel/Panel/List/HBoxContainer2"]
+margin_left = 92.0
+margin_right = 101.0
+margin_bottom = 19.0
+size_flags_horizontal = 5
+custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
+text = "b"
+align = 1
+
+[node name="Repos" type="Tree" parent="UserPanel/Panel/List"]
+margin_top = 23.0
+margin_right = 1024.0
+margin_bottom = 218.0
+size_flags_horizontal = 5
+size_flags_vertical = 3
+hide_root = true
+
+[node name="repos_buttons" type="HBoxContainer" parent="UserPanel/Panel/List"]
+margin_top = 222.0
+margin_right = 1024.0
+margin_bottom = 247.0
+grow_vertical = 2
+rect_clip_content = true
+custom_constants/separation = 10
+alignment = 1
+
+[node name="repo" type="Button" parent="UserPanel/Panel/List/repos_buttons"]
+margin_left = 450.0
+margin_right = 573.0
+margin_bottom = 25.0
+rect_clip_content = true
+text = "New Repository"
+
+[node name="HSeparator6" type="HSeparator" parent="UserPanel/Panel/List"]
+margin_top = 251.0
+margin_right = 1024.0
+margin_bottom = 266.0
+rect_min_size = Vector2( 0, 15 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="UserPanel/Panel/List"]
+margin_top = 270.0
+margin_right = 1024.0
+margin_bottom = 289.0
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="UserPanel/Panel/List/HBoxContainer3"]
+margin_right = 40.0
+margin_bottom = 19.0
+text = "Gists:"
+
+[node name="gists" type="Label" parent="UserPanel/Panel/List/HBoxContainer3"]
+margin_left = 40.0
+margin_right = 48.0
+margin_bottom = 19.0
+size_flags_horizontal = 5
+custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
+text = "c"
+align = 1
+
+[node name="Gist" type="Tree" parent="UserPanel/Panel/List"]
+margin_top = 293.0
+margin_right = 1024.0
+margin_bottom = 488.0
+size_flags_horizontal = 5
+size_flags_vertical = 3
+hide_root = true
+
+[node name="gist_buttons" type="HBoxContainer" parent="UserPanel/Panel/List"]
+margin_top = 492.0
+margin_right = 1024.0
+margin_bottom = 517.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="gist" type="Button" parent="UserPanel/Panel/List/gist_buttons"]
+margin_left = 474.0
+margin_right = 549.0
+margin_bottom = 25.0
+text = "New Gist"
+
+[node name="HSeparator7" type="HSeparator" parent="UserPanel/Panel"]
+margin_top = 583.0
+margin_right = 1024.0
+margin_bottom = 591.0
+rect_min_size = Vector2( 0, 8 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="Repo" type="Control" parent="."]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 9.0
+script = ExtResource( 9 )
+
+[node name="Panel2" type="VBoxContainer" parent="Repo"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 0
+
+[node name="close" type="Button" parent="Repo/Panel2"]
+margin_left = 1004.0
+margin_right = 1024.0
+margin_bottom = 24.0
+size_flags_horizontal = 8
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/normal = SubResource( 11 )
+custom_fonts/font = SubResource( 12 )
+custom_colors/font_color = Color( 0.101961, 0.101961, 0.101961, 1 )
+custom_colors/font_color_hover = Color( 0.937255, 0.937255, 0.937255, 1 )
+shortcut_in_tooltip = false
+text = " x "
+
+[node name="Label" type="Label" parent="Repo/Panel2"]
+margin_top = 24.0
+margin_right = 1024.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 13 )
+custom_colors/font_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+text = "REPOSITORY"
+align = 1
+valign = 1
+
+[node name="HSeparator8" type="HSeparator" parent="Repo/Panel2"]
+margin_top = 48.0
+margin_right = 1024.0
+margin_bottom = 52.0
+custom_styles/separator = SubResource( 5 )
+
+[node name="List" type="VBoxContainer" parent="Repo/Panel2"]
+margin_top = 52.0
+margin_right = 1024.0
+margin_bottom = 184.0
+custom_constants/separation = 0
+
+[node name="name" type="Label" parent="Repo/Panel2/List"]
+margin_right = 1024.0
+margin_bottom = 19.0
+size_flags_horizontal = 7
+size_flags_vertical = 1
+custom_colors/font_color = Color( 0.0980392, 0.705882, 0.866667, 1 )
+custom_colors/font_color_shadow = Color( 0.129412, 0.0784314, 0.423529, 1 )
+text = "aaaaaaaaaaaaaaaa"
+align = 1
+valign = 1
+
+[node name="description" type="Label" parent="Repo/Panel2/List"]
+margin_top = 19.0
+margin_right = 1024.0
+margin_bottom = 38.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.439216, 0.419608, 0.419608, 1 )
+autowrap = true
+
+[node name="HSeparator8" type="HSeparator" parent="Repo/Panel2/List"]
+margin_top = 38.0
+margin_right = 1024.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 0, 4 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Repo/Panel2/List"]
+editor/display_folded = true
+margin_top = 42.0
+margin_right = 1024.0
+margin_bottom = 61.0
+
+[node name="Link" type="Label" parent="Repo/Panel2/List/HBoxContainer5"]
+margin_right = 34.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+text = "Link:"
+
+[node name="html_url" type="LinkButton" parent="Repo/Panel2/List/HBoxContainer5"]
+margin_left = 38.0
+margin_right = 155.0
+margin_bottom = 19.0
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
+shortcut_in_tooltip = false
+text = "aaaaaaaaaaaaa"
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="Repo/Panel2/List"]
+editor/display_folded = true
+margin_top = 61.0
+margin_right = 1024.0
+margin_bottom = 80.0
+
+[node name="Label" type="Label" parent="Repo/Panel2/List/HBoxContainer7"]
+margin_right = 54.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+text = "Private:"
+
+[node name="private" type="Label" parent="Repo/Panel2/List/HBoxContainer7"]
+margin_left = 58.0
+margin_right = 121.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
+text = "bbbbbbb"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Repo/Panel2/List"]
+margin_top = 80.0
+margin_right = 1024.0
+margin_bottom = 99.0
+
+[node name="Label" type="Label" parent="Repo/Panel2/List/HBoxContainer4"]
+margin_right = 50.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+text = "Owner:"
+
+[node name="owner" type="Label" parent="Repo/Panel2/List/HBoxContainer4"]
+margin_left = 54.0
+margin_right = 54.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Repo/Panel2/List"]
+visible = false
+margin_top = 99.0
+margin_right = 1024.0
+margin_bottom = 118.0
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="Repo/Panel2/List/HBoxContainer6"]
+margin_right = 110.0
+margin_bottom = 19.0
+size_flags_vertical = 0
+text = "Default Branch:"
+
+[node name="default_branch" type="Label" parent="Repo/Panel2/List/HBoxContainer6"]
+margin_left = 114.0
+margin_right = 115.0
+margin_bottom = 19.0
+size_flags_vertical = 0
+custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
+autowrap = true
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="Repo/Panel2/List"]
+margin_top = 99.0
+margin_right = 1024.0
+margin_bottom = 124.0
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="Repo/Panel2/List/HBoxContainer8"]
+margin_right = 71.0
+margin_bottom = 19.0
+size_flags_vertical = 0
+text = "Branches:"
+
+[node name="branch2" type="OptionButton" parent="Repo/Panel2/List/HBoxContainer8"]
+margin_left = 75.0
+margin_right = 116.0
+margin_bottom = 25.0
+size_flags_vertical = 0
+
+[node name="HSeparator7" type="HSeparator" parent="Repo/Panel2/List"]
+margin_top = 124.0
+margin_right = 1024.0
+margin_bottom = 132.0
+rect_min_size = Vector2( 0, 8 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="contents" type="Tree" parent="Repo/Panel2"]
+margin_top = 184.0
+margin_right = 1024.0
+margin_bottom = 562.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+hide_root = true
+
+[node name="HSeparator9" type="HSeparator" parent="Repo/Panel2"]
+margin_top = 562.0
+margin_right = 1024.0
+margin_bottom = 566.0
+rect_min_size = Vector2( 0, 4 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="repos_buttons" type="HBoxContainer" parent="Repo/Panel2"]
+margin_top = 566.0
+margin_right = 1024.0
+margin_bottom = 591.0
+grow_vertical = 2
+rect_clip_content = true
+size_flags_vertical = 8
+custom_constants/separation = 10
+alignment = 1
+
+[node name="delete" type="Button" parent="Repo/Panel2/repos_buttons"]
+margin_left = 319.0
+margin_right = 432.0
+margin_bottom = 25.0
+rect_clip_content = true
+custom_colors/font_color = Color( 1, 0, 0.211765, 1 )
+custom_colors/font_color_hover = Color( 1, 0.419608, 0.470588, 1 )
+custom_colors/font_color_pressed = Color( 0.337255, 0.0156863, 0.0666667, 1 )
+text = "DELETE REPO"
+
+[node name="delete2" type="Button" parent="Repo/Panel2/repos_buttons"]
+margin_left = 442.0
+margin_right = 568.0
+margin_bottom = 25.0
+rect_clip_content = true
+custom_colors/font_color = Color( 1, 0, 0.211765, 1 )
+custom_colors/font_color_hover = Color( 1, 0.419608, 0.470588, 1 )
+custom_colors/font_color_pressed = Color( 0.337255, 0.0156863, 0.0666667, 1 )
+disabled = true
+text = "Delete Resource"
+
+[node name="commit" type="Button" parent="Repo/Panel2/repos_buttons"]
+margin_left = 578.0
+margin_right = 704.0
+margin_bottom = 25.0
+rect_clip_content = true
+text = "Commit to Repo"
+
+[node name="Commit" type="Control" parent="."]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 6.0
+script = ExtResource( 10 )
+
+[node name="FileDialog" type="FileDialog" parent="Commit"]
+margin_left = 212.742
+margin_top = 138.037
+margin_right = 780.742
+margin_bottom = 536.037
+size_flags_horizontal = 3
+size_flags_vertical = 3
+window_title = "Apri un file o una cartella"
+mode = 3
+show_hidden_files = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Commit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 2.0
+
+[node name="close2" type="Button" parent="Commit/VBoxContainer2"]
+margin_left = 1004.0
+margin_right = 1024.0
+margin_bottom = 24.0
+size_flags_horizontal = 8
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/normal = SubResource( 11 )
+custom_fonts/font = SubResource( 12 )
+custom_colors/font_color = Color( 0.101961, 0.101961, 0.101961, 1 )
+custom_colors/font_color_hover = Color( 0.937255, 0.937255, 0.937255, 1 )
+shortcut_in_tooltip = false
+text = " x "
+
+[node name="Label2" type="Label" parent="Commit/VBoxContainer2"]
+margin_top = 28.0
+margin_right = 1024.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 13 )
+custom_colors/font_color = Color( 0.133333, 0.133333, 0.133333, 1 )
+text = "COMMIT AND PUSH"
+align = 1
+valign = 1
+
+[node name="HSeparator9" type="HSeparator" parent="Commit/VBoxContainer2"]
+margin_top = 56.0
+margin_right = 1024.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 8 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Commit/VBoxContainer2"]
+margin_top = 68.0
+margin_right = 1024.0
+margin_bottom = 97.0
+
+[node name="CheckBox" type="HBoxContainer" parent="Commit/VBoxContainer2/HBoxContainer6"]
+margin_right = 510.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Commit/VBoxContainer2/HBoxContainer6/CheckBox"]
+margin_top = 5.0
+margin_right = 486.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Filters:"
+
+[node name="filters?" type="Button" parent="Commit/VBoxContainer2/HBoxContainer6/CheckBox"]
+margin_left = 490.0
+margin_right = 510.0
+margin_bottom = 29.0
+size_flags_horizontal = 8
+custom_colors/font_color = Color( 0.835294, 0.145098, 0.305882, 1 )
+text = "?"
+flat = true
+
+[node name="filters" type="LineEdit" parent="Commit/VBoxContainer2/HBoxContainer6"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "Exceptions"
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="Commit/VBoxContainer2"]
+margin_top = 101.0
+margin_right = 1024.0
+margin_bottom = 130.0
+
+[node name="CheckBox" type="HBoxContainer" parent="Commit/VBoxContainer2/HBoxContainer8"]
+margin_right = 510.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Commit/VBoxContainer2/HBoxContainer8/CheckBox"]
+margin_top = 5.0
+margin_right = 486.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="only?" type="Button" parent="Commit/VBoxContainer2/HBoxContainer8/CheckBox"]
+margin_left = 490.0
+margin_right = 510.0
+margin_bottom = 29.0
+size_flags_horizontal = 8
+custom_colors/font_color = Color( 0.835294, 0.145098, 0.305882, 1 )
+text = "?"
+flat = true
+
+[node name="only" type="LineEdit" parent="Commit/VBoxContainer2/HBoxContainer8"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "Only"
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="Commit/VBoxContainer2"]
+margin_top = 134.0
+margin_right = 1024.0
+margin_bottom = 163.0
+
+[node name="CheckBox" type="HBoxContainer" parent="Commit/VBoxContainer2/HBoxContainer9"]
+margin_right = 510.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Commit/VBoxContainer2/HBoxContainer9/CheckBox"]
+margin_top = 5.0
+margin_right = 486.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="start_from?" type="Button" parent="Commit/VBoxContainer2/HBoxContainer9/CheckBox"]
+margin_left = 490.0
+margin_right = 510.0
+margin_bottom = 29.0
+size_flags_horizontal = 8
+custom_colors/font_color = Color( 0.835294, 0.145098, 0.305882, 1 )
+text = "?"
+flat = true
+
+[node name="start_from" type="LineEdit" parent="Commit/VBoxContainer2/HBoxContainer9"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "Start from"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Commit/VBoxContainer2"]
+margin_top = 167.0
+margin_right = 1024.0
+margin_bottom = 192.0
+
+[node name="Branch" type="Label" parent="Commit/VBoxContainer2/HBoxContainer2"]
+margin_top = 3.0
+margin_right = 510.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "Branch:"
+
+[node name="branch" type="OptionButton" parent="Commit/VBoxContainer2/HBoxContainer2"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="Commit/VBoxContainer2"]
+margin_top = 196.0
+margin_right = 1024.0
+margin_bottom = 225.0
+
+[node name="Message" type="Label" parent="Commit/VBoxContainer2/HBoxContainer7"]
+margin_right = 510.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Message:"
+autowrap = true
+
+[node name="message" type="LineEdit" parent="Commit/VBoxContainer2/HBoxContainer7"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Commit/VBoxContainer2"]
+margin_top = 229.0
+margin_right = 1024.0
+margin_bottom = 375.0
+size_flags_vertical = 3
+
+[node name="Content" type="Label" parent="Commit/VBoxContainer2/HBoxContainer"]
+margin_right = 510.0
+margin_bottom = 146.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Committing to:"
+
+[node name="repository" type="Label" parent="Commit/VBoxContainer2/HBoxContainer"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 146.0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.0745098, 0.627451, 0.419608, 1 )
+autowrap = true
+
+[node name="HSeparator8" type="HSeparator" parent="Commit/VBoxContainer2"]
+margin_top = 379.0
+margin_right = 1024.0
+margin_bottom = 387.0
+rect_min_size = Vector2( 0, 8 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="error" type="Label" parent="Commit/VBoxContainer2"]
+visible = false
+margin_top = 475.0
+margin_right = 568.0
+margin_bottom = 494.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 1, 0, 0.235294, 1 )
+text = "Error: "
+align = 1
+
+[node name="loading2" type="TextureRect" parent="Commit/VBoxContainer2"]
+visible = false
+material = SubResource( 9 )
+margin_left = 487.0
+margin_top = 391.0
+margin_right = 537.0
+margin_bottom = 441.0
+rect_min_size = Vector2( 50, 50 )
+rect_pivot_offset = Vector2( 25, 25 )
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 6
+
+[node name="Button" type="Button" parent="Commit/VBoxContainer2"]
+margin_left = 442.0
+margin_top = 567.0
+margin_right = 581.0
+margin_bottom = 592.0
+size_flags_horizontal = 6
+size_flags_vertical = 10
+text = "Commit and Push"
+
+[node name="filters_dialog" type="WindowDialog" parent="Commit"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -296.5
+margin_top = -92.0
+margin_right = 296.5
+margin_bottom = 92.0
+window_title = "EXCEPTIONS"
+
+[node name="Label" type="Label" parent="Commit/filters_dialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 13.0
+margin_top = 3.0
+margin_right = -13.0
+margin_bottom = -2.0
+text = "\"Exceptions\" are a collection of files/directories you don't want to commit to your repository.
+For example, typing \"addons\" in exceptions'' field will avoid the whole \"addons\" folder in you project folder (res://), contents included.
+You don't have to insert the full path to a resource or directory even if it nested. Just type its name and extensions.
+To filter more files and directories, just space them with a comma. (ex. addons, temps, avatar.png, font.ttf)"
+autowrap = true
+
+[node name="only_dialog" type="WindowDialog" parent="Commit"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -296.0
+margin_top = -92.0
+margin_right = 297.0
+margin_bottom = 67.0
+window_title = "ONLY"
+
+[node name="Label" type="Label" parent="Commit/only_dialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 13.0
+margin_top = 3.0
+margin_right = -13.0
+margin_bottom = -2.0
+text = "\"Only\" lets you choose what file or directory will be committed.
+For example, typing \"addons\" in only's filed will commit only that folder in you project folder (res://), contents included.
+You don't have to insert the full path to a resource or directory even if it nested. Just type its name and extensions.
+If you want to explicitely commit more files and directories, just space them with a comma. (ex. addons, temps, avatar.png, font.ttf)"
+autowrap = true
+
+[node name="start_from" type="WindowDialog" parent="Commit"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -296.0
+margin_top = -92.0
+margin_right = 297.0
+margin_bottom = 67.0
+window_title = "START FROM"
+
+[node name="Label" type="Label" parent="Commit/start_from"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 13.0
+margin_top = 3.0
+margin_right = -13.0
+margin_bottom = -2.0
+text = "\"Start from\" lets you choose a specific directory from which the plugin will start analyze files.
+It is useful when you don't want to set specific filters but want to specify what folders you want to commit starting from \"res://\" in your project.
+(ex. to commit this plugin in my repository, I set \"start from\" to \"addons\" so files will be committed only from \"res://addons\")
+IT IS HIGLY RECOMMENDEND TO COMMIT WITH JUST ONE \"star from\""
+autowrap = true
+
+[node name="NewRepo" type="ConfirmationDialog" parent="."]
+editor/display_folded = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -288.5
+margin_top = -133.5
+margin_right = 288.5
+margin_bottom = 133.5
+popup_exclusive = true
+window_title = "[Create a new Repository]"
+dialog_hide_on_ok = false
+script = ExtResource( 11 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NewRepo"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -280.5
+margin_top = -125.5
+margin_right = 280.5
+margin_bottom = 92.5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NewRepo/VBoxContainer"]
+margin_right = 561.0
+margin_bottom = 29.0
+
+[node name="Label" type="Label" parent="NewRepo/VBoxContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 278.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Repository Name:"
+
+[node name="nome" type="LineEdit" parent="NewRepo/VBoxContainer/HBoxContainer"]
+margin_left = 282.0
+margin_right = 561.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="NewRepo/VBoxContainer"]
+margin_top = 33.0
+margin_right = 561.0
+margin_bottom = 62.0
+
+[node name="Label" type="Label" parent="NewRepo/VBoxContainer/HBoxContainer2"]
+margin_top = 5.0
+margin_right = 278.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Repository Description:"
+
+[node name="descrizione" type="LineEdit" parent="NewRepo/VBoxContainer/HBoxContainer2"]
+margin_left = 282.0
+margin_right = 561.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="NewRepo/VBoxContainer"]
+margin_top = 66.0
+margin_right = 561.0
+margin_bottom = 91.0
+
+[node name="Label" type="Label" parent="NewRepo/VBoxContainer/HBoxContainer3"]
+margin_top = 3.0
+margin_right = 278.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "Privacy:"
+
+[node name="privacy" type="OptionButton" parent="NewRepo/VBoxContainer/HBoxContainer3"]
+margin_left = 282.0
+margin_right = 561.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+text = "Private"
+items = [ "Private", null, false, 0, null, "Public", null, false, 1, null ]
+selected = 0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="NewRepo/VBoxContainer"]
+margin_top = 95.0
+margin_right = 561.0
+margin_bottom = 122.0
+
+[node name="Label" type="Label" parent="NewRepo/VBoxContainer/HBoxContainer4"]
+margin_top = 4.0
+margin_right = 278.0
+margin_bottom = 23.0
+size_flags_horizontal = 3
+text = "Initialize with README:"
+
+[node name="readme" type="CheckBox" parent="NewRepo/VBoxContainer/HBoxContainer4"]
+margin_left = 282.0
+margin_right = 561.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="NewRepo/VBoxContainer"]
+margin_top = 126.0
+margin_right = 561.0
+margin_bottom = 151.0
+
+[node name="Label" type="Label" parent="NewRepo/VBoxContainer/HBoxContainer5"]
+margin_top = 3.0
+margin_right = 278.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "Add .gitignore:"
+
+[node name="gitignore" type="OptionButton" parent="NewRepo/VBoxContainer/HBoxContainer5"]
+margin_left = 282.0
+margin_right = 561.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+text = "Haskell"
+items = [ "Haskell", null, false, 0, null ]
+selected = 0
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="NewRepo/VBoxContainer"]
+margin_top = 155.0
+margin_right = 561.0
+margin_bottom = 180.0
+
+[node name="Label" type="Label" parent="NewRepo/VBoxContainer/HBoxContainer6"]
+margin_top = 3.0
+margin_right = 278.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "Add license:"
+
+[node name="license" type="OptionButton" parent="NewRepo/VBoxContainer/HBoxContainer6"]
+margin_left = 282.0
+margin_right = 561.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+text = "mit"
+items = [ "mit", null, false, 0, null ]
+selected = 0
+
+[node name="HSeparator8" type="HSeparator" parent="NewRepo/VBoxContainer"]
+visible = false
+margin_top = 184.0
+margin_right = 561.0
+margin_bottom = 192.0
+rect_min_size = Vector2( 0, 8 )
+custom_styles/separator = SubResource( 5 )
+
+[node name="error" type="Label" parent="NewRepo/VBoxContainer"]
+visible = false
+margin_top = 184.0
+margin_right = 561.0
+margin_bottom = 203.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 1, 0, 0.235294, 1 )
+text = "Error: "
+align = 1
+[connection signal="visibility_changed" from="SingIn/signin_panel/loading" to="SingIn" method="_on_loading_visibility_changed"]
+[connection signal="item_selected" from="Repo/Panel2/List/HBoxContainer8/branch2" to="Repo" method="_on_branch2_item_selected"]
+[connection signal="item_activated" from="Repo/Panel2/contents" to="Repo" method="_on_contents_item_activated"]
+[connection signal="dir_selected" from="Commit/FileDialog" to="Commit" method="_on_FileDialog_dir_selected"]
+[connection signal="file_selected" from="Commit/FileDialog" to="Commit" method="_on_FileDialog_file_selected"]
+[connection signal="files_selected" from="Commit/FileDialog" to="Commit" method="_on_FileDialog_files_selected"]
+[connection signal="pressed" from="Commit/VBoxContainer2/close2" to="Commit" method="_on_close2_pressed"]
+[connection signal="pressed" from="Commit/VBoxContainer2/HBoxContainer6/CheckBox/filters?" to="Commit" method="_on_filters_pressed"]
+[connection signal="pressed" from="Commit/VBoxContainer2/HBoxContainer8/CheckBox/only?" to="Commit" method="_on_only_pressed"]
+[connection signal="pressed" from="Commit/VBoxContainer2/HBoxContainer9/CheckBox/start_from?" to="Commit" method="_on_start_from_pressed"]
+[connection signal="visibility_changed" from="Commit/VBoxContainer2/loading2" to="Commit" method="_on_loading2_visibility_changed"]
+[connection signal="pressed" from="Commit/VBoxContainer2/Button" to="Commit" method="_on_Button_pressed"]
+[connection signal="confirmed" from="NewRepo" to="NewRepo" method="_on_NewRepo_confirmed"]
