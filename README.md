@@ -1,3 +1,5 @@
+!You can delete this file, you'll find it in the github-integration folder!
+
 # GitHub Integration
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
