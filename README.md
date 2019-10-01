@@ -43,7 +43,7 @@ To check all the features included in the current version, please read the [VERS
 #### Upcoming features
 To check all the features I'm currently working on, please read the [TODO file](./TODO.md)
 
-# Disclaimer
+# ⚠️ Disclaimer
 I don't assume any responsibility for possible corruptions of the project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
 
 # Want to contact me?  
