@@ -43,5 +43,10 @@ To check all the features included in the current version, please read the [VERS
 #### Upcoming features
 To check all the features I'm currently working on, please read the [TODO file](./TODO.md)
 
+# ⚠️ Disclaimer  
+This addon was built for a **personal use** intention. It was released as an open source plugin in the hope that it could be useful to the Godot Engine Community.  
+As a "work in progress" project, there is *no warranty* for any eventual issue and bug that may broke your project.  
+I don't assume any responsibility for possible corruptions of your project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
+
 # Want to contact me?  
 I'm planning to create a Discord group to collect each plugin I've made (and I will make), but until then you can directly talk with my via e-mail at *n.santilio97@gmail.com*  
