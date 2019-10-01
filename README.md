@@ -27,7 +27,7 @@ As soon as you download end activate the addon, a new tab in the Bottom Left Doc
 
 ## How do I install it?
 **Manual**  
-Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/v0.2.5) and put it in your `res://addons` folder inside the project you want to work on.  
+Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/v0.3.2) and put it in your `res://addons` folder inside the project you want to work on.  
 Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.  
 
 **Automatic**  
