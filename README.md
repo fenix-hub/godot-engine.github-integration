@@ -1,7 +1,7 @@
 📣 Check my **[Discord](https://discord.gg/KnJGY9S)** to stay updated on this repository.  
 *(Recommended since the AssetLibrary is not automatically updated)*  
 
-# GitHub Integration
+# GitHub Integration  
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
