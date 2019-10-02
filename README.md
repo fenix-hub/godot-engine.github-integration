@@ -1,4 +1,4 @@
-!You can delete this file, you'll find it in the github-integration folder!
+📣 Check my [Discord](https://discord.gg/KnJGY9S) to stay updated on this repository. *(Recommended since the AssetLibrary is not automatically updated)*  
 
 # GitHub Integration
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
@@ -47,6 +47,3 @@ To check all the features I'm currently working on, please read the [TODO file](
 This addon was built for a **personal use** intention. It was released as an open source plugin in the hope that it could be useful to the Godot Engine Community.  
 As a "work in progress" project, there is *no warranty* for any eventual issue and bug that may broke your project.  
 I don't assume any responsibility for possible corruptions of your project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
-
-# Want to contact me?  
-You can reach me via my personal [Discord](https://discord.gg/KnJGY9S)
