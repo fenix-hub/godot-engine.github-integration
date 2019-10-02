@@ -49,4 +49,4 @@ As a "work in progress" project, there is *no warranty* for any eventual issue a
 I don't assume any responsibility for possible corruptions of your project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
 
 # Want to contact me?  
-I'm planning to create a Discord group to collect each plugin I've made (and I will make), but until then you can directly talk with my via e-mail at *n.santilio97@gmail.com*  
+You can reach me via my personal [Discord](https://discord.gg/KnJGY9S)
