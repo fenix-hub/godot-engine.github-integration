@@ -21,12 +21,21 @@ var file_name = "user_data.ud"
 var avatar_name = "avatar.png"
 
 var USER : Dictionary
+
+# --- on the USER usage
+# login = username
+# avatar
+# id
+
 var AUTH : String
 var AVATAR : ImageTexture
 var PWD : String
 var MAIL : String
 
 var header : Array
+
+
+
 
 func _ready():
 	pass # Replace with function body.
@@ -61,8 +70,6 @@ func save(user : Dictionary, avatar : PoolByteArray, auth : String, pwd : String
 		img.load_png_from_buffer(avatar)
 		img.save_png(directory+avatar_name)
 		print("[GitHub Integration] >> ","saved avatar in user folder")
-		
-		print(avatar)
 		var av : Image = Image.new()
 		av.load(directory+avatar_name)
 		var img_text : ImageTexture = ImageTexture.new()
@@ -90,6 +97,6 @@ func load_user() -> PoolStringArray :
 		
 		
 		AVATAR = img_text
-		header = ["Authorization: Basic "+UserData.AUTH]
+		header = ["Authorization: Basic "+AUTH]
 	
 	return content

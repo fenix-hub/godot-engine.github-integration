@@ -22,7 +22,10 @@ onready var UserPanel = $UserPanel
 onready var NewRepo = $NewRepo
 onready var CommitRepo = $Commit
 onready var Repo = $Repo
+onready var Gist = $Gist
 onready var Commit = $Commit
+
+onready var Version = $version
 
 
 func _ready():
@@ -33,7 +36,7 @@ func _ready():
 		plugin_version = config.get_value("plugin","version")
 		plugin_name = "["+config.get_value("plugin","name")+"] >> "
 	
-	$version.text = "v "+plugin_version
+	Version.text = "v "+plugin_version
 	Repo.hide()
 	NewRepo.hide()
 	SignIn.show()

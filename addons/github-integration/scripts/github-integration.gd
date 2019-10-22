@@ -13,13 +13,29 @@
 
 tool
 extends EditorPlugin
-var doc
+var doc = preload("../scenes/GitHub.tscn").instance()
+var IconLoaderGithub = preload("res://addons/github-integration/scripts/IconLoaderGithub.gd").new()
 
 func _enter_tree():
-	doc = preload("../scenes/GitHub.tscn").instance()
-	add_control_to_dock(EditorPlugin.DOCK_SLOT_LEFT_BR,doc)
 	add_autoload_singleton("UserData","res://addons/github-integration/scripts/user_data.gd")
+	add_autoload_singleton("IconLoaderGithub","res://addons/github-integration/scripts/IconLoaderGithub.gd")
+	get_editor_interface().get_editor_viewport().add_child(doc)
+	doc.hide()
+
 
 func _exit_tree():
-	remove_control_from_docks(doc)
-	doc.queue_free()
+	get_editor_interface().get_editor_viewport().remove_child(doc)
+	remove_autoload_singleton("UserData")
+	remove_autoload_singleton("IconLoaderGithub")
+
+func has_main_screen():
+	return true
+
+func get_plugin_name():
+	return "GitHub"
+
+func get_plugin_icon():
+	return IconLoaderGithub.load_icon_from_name("githubicon")
+
+func make_visible(visible):
+	doc.visible = visible

@@ -22,6 +22,9 @@ onready var Error = $signin_panel/error
 onready var Loading = $signin_panel/loading
 onready var logfile_lbl = $signin_panel/HBoxContainer3/logfile
 
+onready var btnSignIn = $signin_panel/HBoxContainer3/btnSignIn
+onready var btnCreateToken = $signin_panel/HBoxContainer3/btnCreateToken
+
 var mail : String 
 var password : String
 var signin_request = HTTPRequest.new()
@@ -39,8 +42,8 @@ func _ready():
 	set_process(false)
 	Loading.hide()
 	Error.hide()
-	$signin_panel/HBoxContainer3/btnSignIn.connect("pressed",self,"sign_in")
-	$signin_panel/HBoxContainer3/btnCreateToken.connect("pressed",self,"create_token")
+	btnSignIn.connect("pressed",self,"sign_in")
+	btnCreateToken.connect("pressed",self,"create_token")
 	call_deferred("add_child",signin_request)
 	call_deferred("add_child",download_image)
 	signin_request.connect("request_completed",self,"signin_completed")
@@ -69,8 +72,8 @@ func sign_in():
 			requesting = REQUESTS.LOGIN
 			signin_request.request("https://api.github.com/user",["Authorization: Basic "+auth],false,HTTPClient.METHOD_GET,"")
 	else:
-		Mail.text = UserData.MAIL
-		Token.text = UserData.PWD
+		Mail.text = "<logfile.mail>"
+		Token.text = "<logfile.password>"
 		print(get_parent().plugin_name,"found logfile, signing in.")
 		Loading.show()
 		emit_signal("signed")
@@ -94,7 +97,6 @@ func signin_completed(result, response_code, headers, body ):
 					Error.show()
 					Error.text = "Error: "+str((JSON.parse(body.get_string_from_utf8()).result).message)
 			REQUESTS.AVATAR:
-				
 				UserData.save(user_data,body,auth,password,mail) 
 				emit_signal("signed")
 				yield(get_parent().UserPanel,"completed_loading")
@@ -109,3 +111,4 @@ func _on_loading_visibility_changed():
 		Mat.set_shader_param("speed",5)
 	else:
 		Mat.set_shader_param("speed",0)
+
