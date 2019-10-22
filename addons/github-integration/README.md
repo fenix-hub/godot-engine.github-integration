@@ -1,13 +1,16 @@
-!You can delete this file, you'll find it in the github-integration folder!
+Check my **[Discord](https://discord.gg/KnJGY9S)** to stay updated on this repository.  
+*(Recommended since the AssetLibrary is not automatically updated)*  
+
+This plugin is now supported in [Godot Extended Library Discord](https://discord.gg/JNrcucg), check out the [Godot Extended Library Project](https://github.com/godot-extended-libraries)!
 
 # GitHub Integration
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *0.3.1*  
-Godot Version: *3.1.1-stable*  
+Version: *0.6.0*  
+Godot Version: *3.2alpha2*  
 
-**This repository was pushed directly from Godot Engine Editor!**
+**This repository was pushed directly from Godot Engine Editor, and README and VERSION files were edited with [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) directly in Godot Editor.**
 
 ## What is this?
 *GitHub Integration* is a addon for Godot Engine that I've created mainly for a personal purpose.  
@@ -15,38 +18,23 @@ Pushing and Pulling personal repositories while I'm working on Godot (especially
 With this little addon which works directly in the editor, managing all your repositories will be very easy.  
 
 ## How does it work?
-As soon as you download end activate the addon, a new tab in the Bottom Left Doc will open, the "GitHub" tab.  
+As soon as you download end activate the addon, a "GitHub" tool button will appear..  
 1. Sign in with your credentials: the field *"password"* can also be filled with a *"token"*. To know about GitHub tokens and how to create them, click on the *"Create Token"* button.  
-![sign](https://i.imgur.com/l0kPsWN.png)
+![sign](screenshots/singin.png.screenshot)
 2. Once you have signed in, your *"User Panel"* will load. Here you can see your avatar, profile name, number and list of repositories, number and list of gists. You will always see all you repositories and gists in your GitHub account, but the private ones will be tagged with a "lock" icon.  
-![profile](https://i.imgur.com/mmPYlLM.png)
+![user](screenshots/userpanel.png.screenshot)
 3. With *"New Repository*" and *"New Gist*" buttons you can create a new Repository or Gist.  
-![new](https://i.imgur.com/ly71FH0.png)
 4. With a **double click** on one of your repositories (or a gists) you will enter the *"Repository*" panel, where you will be able to manage the repository (delete, commit).  
-![edit](https://i.imgur.com/mGenxAK.png) ![commit](https://i.imgur.com/0WEhZUR.png)  
-
+![repo](screenshots/repo.png.screenshot)
+![gist](screenshots/gist.PNG.screenshot)
 ## How do I install it?
-**Manual**  
 Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/v0.2.5) and put it in your `res://addons` folder inside the project you want to work on.  
 Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.  
 
-**Automatic**  
-You can find this plugin in the AssetLib of Godot Engine Editor. Just download it from there and everything should be fine!  
-(Remember to activate this plugin)
-
 ### What do I want for a v-1.0.0 ?
 The first complete and released version will be set once the main operations you can do on GitHub browser and app will be available in this addon (ex. Committing and Pushing, Branching, Pulling) placed side by side with a full error handling.
-
-#### Current version
-To check all the features included in the current version, please read the [VERSION file](./VERSION.md)
-
-#### Upcoming features
-To check all the features I'm currently working on, please read the [TODO file](./TODO.md)
 
 # ⚠️ Disclaimer  
 This addon was built for a **personal use** intention. It was released as an open source plugin in the hope that it could be useful to the Godot Engine Community.  
 As a "work in progress" project, there is *no warranty* for any eventual issue and bug that may broke your project.  
 I don't assume any responsibility for possible corruptions of your project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
-
-# Want to contact me?  
-I'm planning to create a Discord group to collect each plugin I've made (and I will make), but until then you can directly talk with my via e-mail at *n.santilio97@gmail.com*  

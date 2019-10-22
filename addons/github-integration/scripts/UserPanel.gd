@@ -22,8 +22,11 @@ onready var RepoList = $Panel/List/Repos
 onready var GistList = $Panel/List/Gist
 onready var NewRepo = $Panel/List/repos_buttons/repo
 
+
+
 onready var NewGist = $Panel/List/gist_buttons/gist
 
+onready var GistDialog = $NewGist
 
 var request : HTTPRequest = HTTPRequest.new()
 #var request_gists : HTTPRequest = HTTPRequest.new()
@@ -38,6 +41,7 @@ signal new_branch()
 signal completed_loading()
 
 func _ready():
+	load_icons()
 	call_deferred("add_child",request)
 	request.connect("request_completed",self,"request_completed")
 #	call_deferred("add_child",request_gists)
@@ -45,10 +49,13 @@ func _ready():
 	NewRepo.connect("pressed",self,"new_repo")
 	NewGist.connect("pressed",self,"new_gist")
 	RepoList.connect("item_activated",self,"repo_selected")
+	GistList.connect("item_activated",self,"gist_selected")
 
+func load_icons():
+	$Panel/List/HBoxContainer3/gists_icon.texture = IconLoaderGithub.load_icon_from_name("gists")
+	$Panel/List/HBoxContainer2/repos_icon.texture = IconLoaderGithub.load_icon_from_name("repos")
 
 func load_panel() -> void:
-	
 	Avatar.texture = UserData.AVATAR
 	User.text = UserData.USER.login
 	Repos.text = str(UserData.USER.public_repos)
@@ -104,13 +111,16 @@ func load_gists(gists : Array) -> void:
 		var g = GistList.create_item(root)
 		
 		if gis.public:
-			pass
+			g.set_icon(0,IconLoaderGithub.load_icon_from_name("gists-back"))
 		else:
-			g.set_icon(0,load("res://addons/github-integration/resources//proxy.png"))
+			g.set_icon(0,IconLoaderGithub.load_icon_from_name("lock"))
 		
 		g.set_text(0,gis.files.values()[0].filename)
+		g.set_metadata(0,gis)
 		Gists.text = str(gists.size())
 		
+		g.set_icon(1,IconLoaderGithub.load_icon_from_name("gists"))
+		g.set_text(1,"Files: "+str(gis.files.size()))
 
 func load_repositories(rep : Array) -> void:
 	RepoList.clear()
@@ -123,10 +133,19 @@ func load_repositories(rep : Array) -> void:
 		
 		var repo = RepoList.create_item(root)
 		if r.private:
-			repo.set_icon(0,load("res://addons/github-integration/resources//proxy.png"))
+			repo.set_icon(0,IconLoaderGithub.load_icon_from_name("lock"))
 		else:
-			pass
+			if r.fork:
+				repo.set_icon(0,IconLoaderGithub.load_icon_from_name("forks"))
+			else:
+				repo.set_icon(0,IconLoaderGithub.load_icon_from_name("repos-back"))
 		repo.set_text(0,str(r.name))
+		
+		repo.set_icon(1,IconLoaderGithub.load_icon_from_name("stars"))
+		repo.set_text(2,"Forked "+str(r.stargazers_count))
+		repo.set_icon(2,IconLoaderGithub.load_icon_from_name("forks"))
+		repo.set_text(1,"Stars "+str(r.forks_count))
+		
 		repo.set_metadata(0,r)
 		
 	Repos.text = str(repositories.size())
@@ -163,6 +182,22 @@ func repo_selected():
 	yield(get_parent().Repo,"loaded_repo")
 	hide()
 
+func gist_selected():
+	print(get_parent().plugin_name,"opening selected gist...")
+	get_parent().set_default_cursor_shape(CURSOR_WAIT)
+	for ch in get_parent().get_children():
+		if !ch is HTTPRequest:
+			ch.set_default_cursor_shape(CURSOR_WAIT)
+	
+	var gist = GistList.get_selected()
+	get_parent().Gist.request_gist(gist.get_metadata(0).id)
+	yield(get_parent().Gist,"loaded_gist")
+	hide()
+	
+	get_parent().set_default_cursor_shape(CURSOR_ARROW)
+	for ch in get_parent().get_children():
+		if !ch is HTTPRequest:
+			ch.set_default_cursor_shape(CURSOR_ARROW)
+
 func new_gist():
-	pass
-	#request.request()
+	GistDialog.popup()
