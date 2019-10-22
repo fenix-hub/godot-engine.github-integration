@@ -24,11 +24,11 @@ As soon as you download end activate the addon, a "GitHub" tool button will appe
 2. Once you have signed in, your *"User Panel"* will load. Here you can see your avatar, profile name, number and list of repositories, number and list of gists. You will always see all you repositories and gists in your GitHub account, but the private ones will be tagged with a "lock" icon.  
 ![user](addons/github-integration/screenshots/userpanel.png.screenshot)
 3. With *"New Repository*" and *"New Gist*" buttons you can create a new Repository or Gist.  
-4. With a **double click** on one of your repositories (or a gists) you will enter the *"Repository*" panel, where you will be able to manage the repository (delete, commit).  
+4. With a **double click** on one of your repositories (or a gists) you will enter the *"Repository*" (or *Gist*) panel, where you will be able to manage everything (delete, commit).  
 ![repo](addons/github-integration/screenshots/repo.png.screenshot)
 ![gist](addons/github-integration/screenshots/gist.PNG.screenshot)
 ## How do I install it?
-Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/v0.2.5) and put it in your `res://addons` folder inside the project you want to work on.  
+Just download [this whole repository](https://github.com/fenix-hub/godot-engine.github-integration/tree/master) and put it in your `res://` folder inside the project you want to work on.  
 Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.  
 
 ### What do I want for a v-1.0.0 ?
