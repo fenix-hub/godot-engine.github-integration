@@ -28,7 +28,7 @@ var repo_body
 var LICENSES = ["afl-3.0","apache-2.0","artistic-2.0","bsl-1.0","bsd-2-clause","bsd-3-clause","bsd-3-clause-clear","cc","cc0-1.0","cc-by-4.0","cc-by-sa-4.0","wtfpl","ecl-2.0","epl-1.0","eupl-1.1",
 "agpl-3.0","gpl","gpl-2.0","gpl-3.0","lgpl","lgpl-2.1","lgpl-3.0","isc","lppl-1.3c","ms-pl","mit","mpl-2.0","osl-3.0","postgresql","ofl-1.1","ncsa","unlicense","zlib"]
 
-var GITIGNORE = ["Haskell"]
+#var GITIGNORE = ["Haskell","Godot"]
 
 onready var error = $VBoxContainer/error
 
@@ -43,8 +43,8 @@ func _ready():
 func load_metadata():
 	for l in range(0,license.get_item_count()):
 		license.set_item_metadata(l,LICENSES[l])
-	for g in range(0,gitignore.get_item_count()):
-		gitignore.set_item_metadata(g,GITIGNORE[g])
+#	for g in range(0,gitignore.get_item_count()):
+#		gitignore.set_item_metadata(g,GITIGNORE[g])
 
 func request_completed(result, response_code, headers, body ):
 	if result == 0:
@@ -54,10 +54,7 @@ func request_completed(result, response_code, headers, body ):
 					hide()
 					print(get_parent().plugin_name,"created new repository...")
 					get_parent().UserPanel.request_repositories(get_parent().UserPanel.REQUESTS.UP_REPOS)
-					set_default_cursor_shape(CURSOR_ARROW)
-					for ch in get_children():
-						if !ch is HTTPRequest:
-							ch.set_default_cursor_shape(CURSOR_ARROW)
+					get_parent().loading(false)
 				elif response_code == 422:
 					error.text = "Error: "+JSON.parse(body.get_string_from_utf8()).result.errors[0].message
 					error.show()
@@ -78,7 +75,7 @@ func load_body() -> Dictionary:
 	else:
 		read = false
 	
-	var gitignor = gitignore.get_item_metadata(gitignore.get_selected_id())
+	var gitignor = gitignore.get_item_text(gitignore.get_selected_id())
 	var licens = license.get_item_metadata(license.get_selected_id())
 	
 	repo_body = {
@@ -96,10 +93,7 @@ func load_body() -> Dictionary:
 	return repo_body
 
 func _on_NewRepo_confirmed():
-	set_default_cursor_shape(CURSOR_WAIT)
-	for ch in get_children():
-		if !ch is HTTPRequest:
-			ch.set_default_cursor_shape(CURSOR_WAIT)
+	get_parent().loading(true)
 	error.hide()
 	requesting = REQUESTS.REPOS
 	new_repo.request("https://api.github.com/user/repos",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(load_body()))

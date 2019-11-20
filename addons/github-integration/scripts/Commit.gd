@@ -162,10 +162,7 @@ func request_completed(result, response_code, headers, body ):
 			REQUESTS.PUSH:
 				if response_code == 200:
 					print(get_parent().plugin_name,"pushed and committed with success!")
-					set_default_cursor_shape(CURSOR_ARROW)
-					for ch in get_children():
-						if !ch is HTTPRequest:
-							ch.set_default_cursor_shape(CURSOR_ARROW)
+					get_parent().loading(false)
 					Loading.hide()
 					emit_signal("pushed")
 
@@ -192,11 +189,7 @@ func selected_branch(id : int):
 
 func _on_Button_pressed():
 #	Loading.show()
-	set_default_cursor_shape(CURSOR_WAIT)
-	for ch in get_children():
-		if !ch is HTTPRequest:
-			ch.set_default_cursor_shape(CURSOR_WAIT)
-	get_parent().set_default_cursor_shape(CURSOR_WAIT)
+	get_parent().loading(true)
 	
 	load_gitignore()
 	print(get_parent().plugin_name,"fetching all files in project...")

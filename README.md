@@ -10,7 +10,7 @@ This plugin is now supported in [Godot Extended Library Discord](https://discord
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *0.6.0*  
+Version: *0.6.2*  
 Godot Version: *3.2alpha2*  
 
 **This repository was pushed directly from Godot Engine Editor, and README and VERSION files were edited with [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) directly in Godot Editor.**

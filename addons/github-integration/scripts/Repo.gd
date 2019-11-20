@@ -99,8 +99,6 @@ func load_icons(r):
 func open_repo(repo : TreeItem):
 	item_repo = repo
 	
-	set_default_cursor_shape(CURSOR_ARROW)
-	
 	contents_.clear()
 	branches_.clear()
 	branches.clear()
@@ -133,26 +131,30 @@ func request_branches(rep : String):
 	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/branches",UserData.header,false,HTTPClient.METHOD_GET,"")
 	yield(self,"get_branches")
 	
-	requesting = REQUESTS.TREES
-	for b in branches:
-		request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/branches/"+b.name,UserData.header,false,HTTPClient.METHOD_GET,"")
-		yield(self,"get_branches_contents")
-	
-	var i = 0
-	for branch in branches_contents:
-		branches_.add_item(branch.name)
-		branches_.set_item_metadata(i,branch)
+	if branches.size() > 0:
+		requesting = REQUESTS.TREES
+		for b in branches:
+			request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/branches/"+b.name,UserData.header,false,HTTPClient.METHOD_GET,"")
+			yield(self,"get_branches_contents")
 		
-		branch3.add_item(branch.name)
-		branch3.set_item_metadata(i,branch)
-		i+=1
-	
-	current_branch = branches_.get_item_metadata(0)
-	
-	request_contents(current_repo.name,branches_.get_item_metadata(0))
-	yield(self,"get_contents")
-	
-	build_list()
+		var i = 0
+		for branch in branches_contents:
+			branches_.add_item(branch.name)
+			branches_.set_item_metadata(i,branch)
+			
+			branch3.add_item(branch.name)
+			branch3.set_item_metadata(i,branch)
+			i+=1
+		
+		current_branch = branches_.get_item_metadata(0)
+		
+		request_contents(current_repo.name,branches_.get_item_metadata(0))
+		yield(self,"get_contents")
+		
+		build_list()
+	else:
+		printerr(get_parent().plugin_name,"no branches found for this repository.")
+		get_parent().loading(false)
 
 
 func request_contents(rep : String, branch):
@@ -163,9 +165,9 @@ func request_contents(rep : String, branch):
 	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/git/trees/"+branch.commit.commit.tree.sha+"?recursive=1",UserData.header,false,HTTPClient.METHOD_GET,"")
 
 func open_html():
-	Input.set_default_cursor_shape(CURSOR_BUSY)
+	get_parent().loading(true)
 	OS.shell_open(html)
-	Input.set_default_cursor_shape(CURSOR_ARROW)
+	get_parent().loading(false)
 
 func close_tab():
 	contents.clear()
@@ -194,19 +196,12 @@ func delete_repo():
 	confirm.connect("confirmed",self,"request_delete",[current_repo.name])
 
 func request_delete(repo : String):
-	set_default_cursor_shape(CURSOR_WAIT)
-	for ch in get_children():
-		if !ch is HTTPRequest:
-			ch.set_default_cursor_shape(CURSOR_WAIT)
+	get_parent().loading(true)
 	requesting = REQUESTS.DELETE
 	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+repo,UserData.header,false,HTTPClient.METHOD_DELETE,"")
 
 func request_delete_resource(path : String, item : TreeItem = null):
-	set_default_cursor_shape(CURSOR_WAIT)
-	for ch in get_children():
-		if !ch is HTTPRequest:
-			ch.set_default_cursor_shape(CURSOR_WAIT)
-	get_parent().set_default_cursor_shape(CURSOR_WAIT)
+	get_parent().loading(true)
 	requesting = REQUESTS.DELETE_RESOURCE
 	
 	var body
@@ -242,10 +237,7 @@ func request_completed(result, response_code, headers, body ):
 					OS.delay_msec(1500)
 					get_parent().UserPanel.request_repositories(REQUESTS.UP_REPOS)
 					close_tab()
-					set_default_cursor_shape(CURSOR_ARROW)
-					for ch in get_children():
-						if !ch is HTTPRequest:
-							ch.set_default_cursor_shape(CURSOR_ARROW)
+					get_parent().loading(false)
 			REQUESTS.BRANCHES:
 				if response_code == 200:
 					branches = JSON.parse(body.get_string_from_utf8()).result
@@ -281,56 +273,71 @@ func request_completed(result, response_code, headers, body ):
 				elif response_code == 422:
 					print(get_parent().plugin_name,"can't delete a folder!")
 					emit_signal("resource_deleted")
-				set_default_cursor_shape(CURSOR_ARROW)
-				for ch in get_children():
-					if !ch is HTTPRequest:
-						ch.set_default_cursor_shape(CURSOR_ARROW)
-				get_parent().set_default_cursor_shape(CURSOR_ARROW)
+				get_parent().loading(false)
 
 func build_list():
+	get_parent().loading(true)
+	
 	contents_.clear()
 	
 	var root = contents_.create_item()
 	
-	var dir = null
+	var directories : Array = []
 	
 	for content in contents:
 		var content_name = content.path.get_file()
-		if content_name == ".gitignore":
-			request_file_content(content.path)
-		else:
-			gitignore_file = {}
 		var content_type = content.type
 		if content_type == "blob":
-			var ct = contents_.create_item(dir)
-			ct.set_text(0,content_name)
-			ct.set_icon(0,IconLoaderGithub.load_icon_from_name("file"))
-			ct.set_metadata(0,content)
-		elif content_type == "tree":
-			if dir!=null:
-				var new_dir_family = content.path.rsplit("/")
-				var dir_family = dir.get_metadata(0).path.rsplit("/")
-				if dir_family.size() >= new_dir_family.size():
-					var new_dir = contents_.create_item(dir.get_parent())
-					dir = new_dir
-					new_dir.set_text(0,content_name)
-					new_dir.set_icon(0,IconLoaderGithub.load_icon_from_name("dir"))
-					new_dir.set_metadata(0,content)
-				else:
-					var new_dir = contents_.create_item(dir)
-					dir = new_dir
-					new_dir.set_text(0,content_name)
-					new_dir.set_icon(0,IconLoaderGithub.load_icon_from_name("dir"))
-					new_dir.set_metadata(0,content)
-			else:
-				var new_dir = contents_.create_item(dir)
-				dir = new_dir
-				new_dir.set_text(0,content_name)
-				new_dir.set_icon(0,IconLoaderGithub.load_icon_from_name("dir"))
-				new_dir.set_metadata(0,content)
 			
-			dir.set_collapsed(true)
+			if content.path.get_file() == ".gitignore":
+				request_file_content(content.path)
+			else:
+				gitignore_file = {}
+			
+			var file_dir = null
+			
+			for directory in directories:
+				if directory.get_metadata(0) == content.path.get_base_dir():
+					file_dir = directory
+					continue
+			
+			var item = contents_.create_item(file_dir)
+			item.set_text(0,content_name)
+			
+			var icon
+			var extension = content_name.get_extension()
+			if extension == "gd":
+				icon = IconLoaderGithub.load_icon_from_name("script")
+			elif extension == "tscn":
+				icon = IconLoaderGithub.load_icon_from_name("scene")
+			elif extension == "png":
+				icon = IconLoaderGithub.load_icon_from_name("image")
+			elif extension == "tres":
+				icon = IconLoaderGithub.load_icon_from_name("resource")
+			else:
+				icon = IconLoaderGithub.load_icon_from_name("file")
+			
+			item.set_icon(0,icon)
+			item.set_metadata(0,content.path.get_base_dir())
+		elif content_type == "tree":
+			var dir_dir = null
+			
+			for directory in directories:
+				if directory.get_metadata(0) == content.path.get_base_dir():
+					dir_dir = directory
+					continue
+			
+			var new_dir = contents_.create_item(dir_dir)
+			new_dir.set_text(0,content_name)
+			new_dir.set_icon(0,IconLoaderGithub.load_icon_from_name("dir"))
+			new_dir.set_metadata(0,content.path)
+			directories.append(new_dir)
+			
+			
+			new_dir.set_collapsed(true)
+	
 	emit_signal("loaded_repo")
+	get_parent().loading(false)
 	show()
 
 func request_file_content(path : String):
@@ -339,6 +346,7 @@ func request_file_content(path : String):
 	yield(self,"get_contents")
 
 func _on_branch2_item_selected(ID):
+	get_parent().loading(true)
 	current_branch = branches_.get_item_metadata(ID)
 	request_contents(current_repo.name,current_branch)
 	yield(self,"get_contents")
@@ -395,6 +403,7 @@ func on_newbranch_confirmed():
 
 
 func _on_reload_pressed():
+	get_parent().loading(true)
 	print(get_parent().plugin_name,"reloading all branches, please wait...")
 	contents.clear()
 	contents_.clear()

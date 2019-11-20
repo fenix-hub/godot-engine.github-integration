@@ -82,7 +82,10 @@ func load_user() -> PoolStringArray :
 	var file = File.new()
 	var content : PoolStringArray
 	
+	print("[GitHub Integration] >> loading user profile, checking for existing logfile...")
+	
 	if file.file_exists(directory+file_name) :
+		print("[GitHub Integration] >> ","logfile found, fetching datas..")
 		file.open(directory+file_name,File.READ)
 		content = file.get_csv_line()
 		AUTH = content[0]
@@ -98,5 +101,7 @@ func load_user() -> PoolStringArray :
 		
 		AVATAR = img_text
 		header = ["Authorization: Basic "+AUTH]
+	else:
+		printerr("[GitHub Integration] >> ","no logfile found, log in for the first time to create a logfile.")
 	
 	return content
