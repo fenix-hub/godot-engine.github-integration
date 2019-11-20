@@ -49,38 +49,35 @@ func _ready():
 	signin_request.connect("request_completed",self,"signin_completed")
 	download_image.connect("request_completed",self,"signin_completed")
 	
-	if UserData.load_user():
+	if UserData.load_user().size():
 		logfile = true
 		logfile_lbl.show()
 	else:
 		logfile_lbl.hide()
 
-
 func create_token():
 	OS.shell_open("https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line")
 
 func sign_in():
-	
-	
 	if !logfile:
-		print(get_parent().plugin_name,"no logfiles found, signing in for the first time.")
 		mail = Mail.text
 		password = Token.text
 		if mail!="" and password!="":
-			Loading.show()
+			get_parent().loading(true)
 			auth = Marshalls.utf8_to_base64(mail+":"+password)
 			requesting = REQUESTS.LOGIN
 			signin_request.request("https://api.github.com/user",["Authorization: Basic "+auth],false,HTTPClient.METHOD_GET,"")
 	else:
 		Mail.text = "<logfile.mail>"
 		Token.text = "<logfile.password>"
-		print(get_parent().plugin_name,"found logfile, signing in.")
-		Loading.show()
+		get_parent().loading(true)
 		emit_signal("signed")
 		yield(get_parent().UserPanel,"completed_loading")
 		requesting = REQUESTS.END
-		Loading.hide()
+		get_parent().loading(false)
 		hide()
+	
+	print(get_parent().plugin_name,"logging in...")
 
 func signin_completed(result, response_code, headers, body ):
 	if result == 0:
@@ -93,7 +90,7 @@ func signin_completed(result, response_code, headers, body ):
 					requesting = REQUESTS.AVATAR
 				elif response_code == 401:
 					set_process(false)
-					Loading.hide()
+					get_parent().loading(true)
 					Error.show()
 					Error.text = "Error: "+str((JSON.parse(body.get_string_from_utf8()).result).message)
 			REQUESTS.AVATAR:
@@ -101,14 +98,5 @@ func signin_completed(result, response_code, headers, body ):
 				emit_signal("signed")
 				yield(get_parent().UserPanel,"completed_loading")
 				requesting = REQUESTS.END
-				Loading.hide()
+				get_parent().loading(true)
 				hide()
-
-
-func _on_loading_visibility_changed():
-	var Mat = Loading.get_material()
-	if Loading.visible:
-		Mat.set_shader_param("speed",5)
-	else:
-		Mat.set_shader_param("speed",0)
-

@@ -51,10 +51,6 @@ func _ready():
 	RepoList.connect("item_activated",self,"repo_selected")
 	GistList.connect("item_activated",self,"gist_selected")
 
-func load_icons():
-	$Panel/List/HBoxContainer3/gists_icon.texture = IconLoaderGithub.load_icon_from_name("gists")
-	$Panel/List/HBoxContainer2/repos_icon.texture = IconLoaderGithub.load_icon_from_name("repos")
-
 func load_panel() -> void:
 	Avatar.texture = UserData.AVATAR
 	User.text = UserData.USER.login
@@ -62,6 +58,10 @@ func load_panel() -> void:
 	Gists.text = str(UserData.USER.public_gists)
 	
 	request_repositories(REQUESTS.REPOS)
+
+func load_icons():
+	$Panel/List/HBoxContainer3/gists_icon.texture = IconLoaderGithub.load_icon_from_name("gists")
+	$Panel/List/HBoxContainer2/repos_icon.texture = IconLoaderGithub.load_icon_from_name("repos")
 
 func request_completed(result, response_code, headers, body ):
 	if result == 0:
@@ -172,32 +172,25 @@ func new_repo():
 
 func repo_selected():
 	print(get_parent().plugin_name,"opening selected repository...")
-	set_default_cursor_shape(CURSOR_WAIT)
-	for ch in get_children():
-		if !ch is HTTPRequest:
-			ch.set_default_cursor_shape(CURSOR_WAIT)
+	get_parent().loading(true)
 	
 	var repo = RepoList.get_selected()
 	get_parent().Repo.open_repo(repo)
 	yield(get_parent().Repo,"loaded_repo")
 	hide()
+	
+	get_parent().loading(false)
 
 func gist_selected():
 	print(get_parent().plugin_name,"opening selected gist...")
-	get_parent().set_default_cursor_shape(CURSOR_WAIT)
-	for ch in get_parent().get_children():
-		if !ch is HTTPRequest:
-			ch.set_default_cursor_shape(CURSOR_WAIT)
+	get_parent().loading(true)
 	
 	var gist = GistList.get_selected()
 	get_parent().Gist.request_gist(gist.get_metadata(0).id)
 	yield(get_parent().Gist,"loaded_gist")
 	hide()
 	
-	get_parent().set_default_cursor_shape(CURSOR_ARROW)
-	for ch in get_parent().get_children():
-		if !ch is HTTPRequest:
-			ch.set_default_cursor_shape(CURSOR_ARROW)
+	get_parent().loading(false)
 
 func new_gist():
 	GistDialog.popup()

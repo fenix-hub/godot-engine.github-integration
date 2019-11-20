@@ -24,12 +24,12 @@ onready var CommitRepo = $Commit
 onready var Repo = $Repo
 onready var Gist = $Gist
 onready var Commit = $Commit
-
+onready var LoadNode = $loading
 onready var Version = $version
 
-
 func _ready():
-
+	LoadNode.hide()
+	
 	var config =  ConfigFile.new()
 	var err = config.load("res://addons/github-integration/plugin.cfg")
 	if err == OK:
@@ -43,6 +43,9 @@ func _ready():
 	SignIn.connect("signed",self,"signed")
 	UserPanel.hide()
 	Commit.hide()
+
+func loading(value : bool) -> void:
+	LoadNode.visible = value
 
 func signed() -> void:
 	UserPanel.load_panel()
