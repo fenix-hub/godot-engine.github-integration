@@ -88,3 +88,11 @@
     + Files and directories can always be removed before committing  
 **Please, note that the gitignore filtering method is custom made. To fully support the same gitignore method applied by GitHub some tests are needed**
 + **Gists** can now be opened, edited, and pushed with a cusotm GitEditor. Gists which contain more than one file are supported, and you can edit more files at the same time.
+
+--------------------
+
+**version 0.6.2**  
+*fixed*  
+- new method to show contents of repositories: faster code and works better. Empty repositories won't be loaded
+- now each loading has a loading screen covering the whole scene: no more missclicks during a repository loading or a commit
+- new icons in repositories to visually show what's the content type ( adapted to Godot Engine's file types)
