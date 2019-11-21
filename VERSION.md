@@ -96,3 +96,9 @@
 - new method to show contents of repositories: faster code and works better. Empty repositories won't be loaded
 - now each loading has a loading screen covering the whole scene: no more missclicks during a repository loading or a commit
 - new icons in repositories to visually show what's the content type ( adapted to Godot Engine's file types)
+
+--------------------
+
+**version 0.7.0**  
+*added*  
+- **pull / clone button** : you can now pull from any branch of a selected repository. A local copy of your repository with files relative to the selected branch  will be created in a .zip file inside your 'res://' folder. In this way you will be able to manage your repository's files in the way you prefer. Pulling/Cloning works on public, private and forked repositories.
