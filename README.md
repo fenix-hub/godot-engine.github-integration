@@ -1,8 +1,8 @@
-[![version](https://img.shields.io/badge/plugin%20version-0.6.2-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
+[![version](https://img.shields.io/badge/plugin%20version-0.7.0-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
 [![updates](https://img.shields.io/badge/plugin%20updates-on%20discord-purple)](https://discord.gg/JNrcucg)
 [![paypal](https://img.shields.io/badge/donations-PayPal-cyan)](https://paypal.me/NSantilio?locale.x=it_IT)
 
-📣 Check my **[Discord](https://discord.gg/KnJGY9S)** to stay updated on this repository.  
+Check my **[Discord](https://discord.gg/KnJGY9S)** to stay updated on this repository.  
 *(Recommended since the AssetLibrary is not automatically updated)*  
 
 This plugin is now supported in [Godot Extended Library Discord](https://discord.gg/JNrcucg), check out the [Godot Extended Library Project](https://github.com/godot-extended-libraries)!
@@ -11,7 +11,7 @@ This plugin is now supported in [Godot Extended Library Discord](https://discord
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *0.6.2*  
+Version: *0.7.0*  
 Godot Version: *3.2alpha2*  
 
 **This repository was pushed directly from Godot Engine Editor, and README and VERSION files were edited with [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) directly in Godot Editor.**
@@ -38,7 +38,8 @@ Then, go to `Project > Plugins > "GitHub Integration" > Status > Activate`.
 ### What do I want for a v-1.0.0 ?
 The first complete and released version will be set once the main operations you can do on GitHub browser and app will be available in this addon (ex. Committing and Pushing, Branching, Pulling) placed side by side with a full error handling.
 
-# ⚠️ Disclaimer  
+# Disclaimer  
 This addon was built for a **personal use** intention. It was released as an open source plugin in the hope that it could be useful to the Godot Engine Community.  
 As a "work in progress" project, there is *no warranty* for any eventual issue and bug that may broke your project.  
 I don't assume any responsibility for possible corruptions of your project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
+
