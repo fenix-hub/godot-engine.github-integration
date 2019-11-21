@@ -82,6 +82,7 @@ signal pushed()
 signal files_filtered()
 
 func _ready():
+	new_repo.use_threads = true
 	connect_signals()
 	
 	Loading.hide()
@@ -479,3 +480,4 @@ func on_nothing_selected():
 
 func about_gitignore_pressed():
 	OS.shell_open("https://git-scm.com/docs/gitignore")
+

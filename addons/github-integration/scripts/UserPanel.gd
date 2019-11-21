@@ -194,3 +194,4 @@ func gist_selected():
 
 func new_gist():
 	GistDialog.popup()
+

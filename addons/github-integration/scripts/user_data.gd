@@ -105,3 +105,4 @@ func load_user() -> PoolStringArray :
 		printerr("[GitHub Integration] >> ","no logfile found, log in for the first time to create a logfile.")
 	
 	return content
+

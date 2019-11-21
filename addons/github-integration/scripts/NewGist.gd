@@ -67,3 +67,4 @@ func on_files_selected(files : PoolStringArray):
 	get_parent().get_parent().Gist.initialize_new_gist(priv,desc,files)
 	hide()
 	get_parent().hide()
+

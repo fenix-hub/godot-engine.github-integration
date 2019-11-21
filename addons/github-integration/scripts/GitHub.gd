@@ -47,5 +47,17 @@ func _ready():
 func loading(value : bool) -> void:
 	LoadNode.visible = value
 
+func show_loading_progress(value : float,  max_value : float) -> void:
+	LoadNode.show_progress(value,max_value)
+
+func hide_loading_progress():
+	LoadNode.hide_progress()
+
+func show_number(value : float, type : String) -> void:
+	LoadNode.show_number(value,type)
+
+func hide_number():
+	LoadNode.hide_number()
+
 func signed() -> void:
 	UserPanel.load_panel()

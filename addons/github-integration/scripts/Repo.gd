@@ -41,11 +41,12 @@ onready var DeleteRes = $Panel2/repos_buttons/HBoxContainer2/delete2
 onready var reload = $Panel2/repos_buttons/HBoxContainer/reload
 onready var new_branchBtn = $Panel2/List/branch/new_branchBtn
 onready var newBranch = $NewBranch
+onready var pull_btn = $Panel2/List/branch/pull_btn
 
 onready var branch3 = $NewBranch/VBoxContainer/HBoxContainer2/branch3
 
 
-enum REQUESTS { REPOS = 0, GISTS = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 , FILE_CONTENT = 10 ,NEW_BRANCH = 11}
+enum REQUESTS { REPOS = 0, GISTS = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 , FILE_CONTENT = 10 ,NEW_BRANCH = 11 , PULLING = 12}
 var requesting
 
 var html : String
@@ -71,6 +72,7 @@ signal get_branches_contents()
 signal loaded_repo()
 signal resource_deleted()
 signal new_branch_created()
+signal zip_pulled()
 
 func _ready():
 	DeleteRes.disabled = true
@@ -83,6 +85,7 @@ func _ready():
 	request.connect("request_completed",self,"request_completed")
 	new_branchBtn.connect("pressed",self,"on_newbranch_pressed")
 	newBranch.connect("confirmed",self,"on_newbranch_confirmed")
+	pull_btn.connect("pressed",self,"on_pull_pressed")
 
 func load_icons(r):
 	repo_icon.set_texture(IconLoaderGithub.load_icon_from_name("repos"))
@@ -95,6 +98,7 @@ func load_icons(r):
 	fork_icon.set_texture(IconLoaderGithub.load_icon_from_name("forks"))
 	reload.set_button_icon(IconLoaderGithub.load_icon_from_name("reload"))
 	new_branchBtn.set_button_icon(IconLoaderGithub.load_icon_from_name("add"))
+	pull_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("download"))
 
 func open_repo(repo : TreeItem):
 	item_repo = repo
@@ -227,8 +231,6 @@ func commit():
 	get_parent().CommitRepo.load_branches(branches,current_repo,contents,gitignore_file)
 
 func request_completed(result, response_code, headers, body ):
-#	print(JSON.parse(body.get_string_from_utf8()).result)
-#	print(response_code)
 	if result == 0:
 		match requesting:
 			REQUESTS.DELETE:
@@ -274,6 +276,9 @@ func request_completed(result, response_code, headers, body ):
 					print(get_parent().plugin_name,"can't delete a folder!")
 					emit_signal("resource_deleted")
 				get_parent().loading(false)
+			REQUESTS.PULLING:
+				if response_code == 200:
+					emit_signal("zip_pulled")
 
 func build_list():
 	get_parent().loading(true)
@@ -401,6 +406,28 @@ func on_newbranch_confirmed():
 	print(get_parent().plugin_name,"creating new branch...")
 	yield(self,"new_branch_created")
 
+func on_pull_pressed():
+	requesting = REQUESTS.PULLING
+	
+	var zipfile = File.new()
+	var zip_filepath : String = "res://"+current_repo.name+"-"+current_branch.name+".zip"
+	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
+	zipfile.close()
+	request.set_download_file(zip_filepath)
+	var zip_url : String = current_branch._links.html.replace("tree","zipball").replace("github.com","api.github.com/repos")
+	request.request(zip_url,UserData.header,false,HTTPClient.METHOD_GET)
+	get_parent().loading(true)
+	print(get_parent().plugin_name,"pulling from selected branch, a .zip file will automatically be created at the end of the process in 'res://' ...")
+	yield(self,"zip_pulled")
+	requesting = REQUESTS.END
+	print(get_parent().plugin_name,".zip file created with the selected branch inside, you can find it at -> "+zip_filepath)
+	get_parent().loading(false)
+	request.set_download_file("")
+
+func _process(delta):
+	if requesting == REQUESTS.PULLING:
+		if request.get_downloaded_bytes() > 0:
+			get_parent().show_number(request.get_downloaded_bytes(),"bytes downloaded")
 
 func _on_reload_pressed():
 	get_parent().loading(true)
@@ -418,3 +445,4 @@ func _on_reload_pressed():
 	commit_sha = ""
 	tree_sha = ""
 	open_repo(item_repo)
+

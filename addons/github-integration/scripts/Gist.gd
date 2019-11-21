@@ -325,3 +325,4 @@ func color_region(filextension : String):
 			Content.add_color_region(';','',Color8(128,128,128,255),true)
 		_:
 			pass
+

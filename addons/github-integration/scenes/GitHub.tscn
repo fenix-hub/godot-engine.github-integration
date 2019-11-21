@@ -1,12 +1,11 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://addons/github-integration/scripts/GitHub.gd" type="Script" id=1]
 [ext_resource path="res://addons/github-integration/fonts/Roboto-Black.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://addons/github-integration/scripts/SignIn.gd" type="Script" id=3]
-[ext_resource path="res://addons/github-integration/resources/github-logo.png" type="Texture" id=4]
+[ext_resource path="res://addons/github-integration/github-logo.png" type="Texture" id=4]
 [ext_resource path="res://addons/github-integration/resources/loading/throbber.png" type="Texture" id=5]
 [ext_resource path="res://addons/github-integration/scripts/UserPanel.gd" type="Script" id=6]
-[ext_resource path="res://addons/github-integration/user/placeholder.png" type="Texture" id=7]
 [ext_resource path="res://addons/github-integration/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://addons/github-integration/scripts/Repo.gd" type="Script" id=9]
 [ext_resource path="res://addons/github-integration/scripts/Commit.gd" type="Script" id=10]
@@ -200,23 +199,25 @@ __meta__ = {
 [node name="signin_panel" type="VBoxContainer" parent="SingIn"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -238.0
+margin_left = -239.0
 margin_top = 22.0
-margin_right = 238.0
-margin_bottom = 217.0
+margin_right = 239.0
+margin_bottom = 293.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TextureRect" type="TextureRect" parent="SingIn/signin_panel"]
-margin_right = 476.0
-margin_bottom = 60.0
+margin_right = 478.0
+margin_bottom = 128.0
 rect_min_size = Vector2( 0, 60 )
 texture = ExtResource( 4 )
-expand = true
 stretch_mode = 4
 
 [node name="Label2" type="Label" parent="SingIn/signin_panel"]
-margin_top = 64.0
-margin_right = 476.0
-margin_bottom = 83.0
+margin_top = 132.0
+margin_right = 478.0
+margin_bottom = 151.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.0901961, 0.0823529, 0.0862745, 1 )
@@ -224,16 +225,16 @@ text = "Sign-in to GitHub"
 align = 1
 
 [node name="HSeparator5" type="HSeparator" parent="SingIn/signin_panel"]
-margin_top = 87.0
-margin_right = 476.0
-margin_bottom = 95.0
+margin_top = 155.0
+margin_right = 478.0
+margin_bottom = 163.0
 rect_min_size = Vector2( 0, 8 )
 custom_styles/separator = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SingIn/signin_panel"]
-margin_top = 99.0
-margin_right = 476.0
-margin_bottom = 123.0
+margin_top = 167.0
+margin_right = 478.0
+margin_bottom = 191.0
 alignment = 1
 
 [node name="Label" type="Label" parent="SingIn/signin_panel/HBoxContainer"]
@@ -243,18 +244,21 @@ margin_bottom = 19.0
 rect_min_size = Vector2( 83, 0 )
 text = "Email:"
 align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Mail" type="LineEdit" parent="SingIn/signin_panel/HBoxContainer"]
 margin_left = 87.0
-margin_right = 476.0
+margin_right = 478.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 clear_button_enabled = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="SingIn/signin_panel"]
-margin_top = 127.0
-margin_right = 476.0
-margin_bottom = 151.0
+margin_top = 195.0
+margin_right = 478.0
+margin_bottom = 219.0
 alignment = 1
 
 [node name="Label2" type="Label" parent="SingIn/signin_panel/HBoxContainer2"]
@@ -264,48 +268,50 @@ margin_bottom = 19.0
 rect_min_size = Vector2( 83, 0 )
 text = "Password:"
 align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Password" type="LineEdit" parent="SingIn/signin_panel/HBoxContainer2"]
 margin_left = 87.0
-margin_right = 476.0
+margin_right = 478.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 secret = true
 clear_button_enabled = true
 
 [node name="HSeparator3" type="HSeparator" parent="SingIn/signin_panel"]
-margin_top = 155.0
-margin_right = 476.0
-margin_bottom = 159.0
+margin_top = 223.0
+margin_right = 478.0
+margin_bottom = 227.0
 rect_min_size = Vector2( 0, 3 )
 custom_styles/separator = SubResource( 3 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="SingIn/signin_panel"]
-margin_top = 163.0
-margin_right = 476.0
-margin_bottom = 183.0
+margin_top = 231.0
+margin_right = 478.0
+margin_bottom = 255.0
 alignment = 1
 
 [node name="btnCreateToken" type="Button" parent="SingIn/signin_panel/HBoxContainer3"]
-margin_left = 116.0
-margin_right = 236.0
-margin_bottom = 20.0
+margin_left = 107.0
+margin_right = 227.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 4
 text = "Create Token (?)"
 
 [node name="btnSignIn" type="Button" parent="SingIn/signin_panel/HBoxContainer3"]
-margin_left = 240.0
-margin_right = 360.0
-margin_bottom = 20.0
+margin_left = 231.0
+margin_right = 351.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 4
 text = "Sign-in"
 
 [node name="logfile" type="Label" parent="SingIn/signin_panel/HBoxContainer3"]
-visible = false
-margin_left = 354.0
-margin_right = 370.0
+margin_left = 355.0
+margin_right = 371.0
 margin_bottom = 24.0
 hint_tooltip = "A lofgile has been found! Just press \"Sign-in\" without filling the fields."
 mouse_filter = 1
@@ -316,9 +322,9 @@ custom_colors/font_color = Color( 0.92549, 0.133333, 0.392157, 1 )
 text = "!"
 
 [node name="HSeparator6" type="HSeparator" parent="SingIn/signin_panel"]
-margin_top = 187.0
-margin_right = 476.0
-margin_bottom = 191.0
+margin_top = 259.0
+margin_right = 478.0
+margin_bottom = 263.0
 rect_min_size = Vector2( 0, 3 )
 custom_styles/separator = SubResource( 3 )
 
@@ -333,9 +339,9 @@ text = "Error: "
 align = 1
 
 [node name="HSeparator4" type="HSeparator" parent="SingIn/signin_panel"]
-margin_top = 195.0
-margin_right = 476.0
-margin_bottom = 199.0
+margin_top = 267.0
+margin_right = 478.0
+margin_bottom = 271.0
 rect_min_size = Vector2( 0, 3 )
 custom_styles/separator = SubResource( 3 )
 
@@ -350,12 +356,10 @@ rect_min_size = Vector2( 50, 50 )
 rect_pivot_offset = Vector2( 25, 25 )
 size_flags_horizontal = 4
 size_flags_vertical = 0
-texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 
 [node name="UserPanel" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
@@ -375,10 +379,20 @@ anchor_bottom = 1.0
 margin_left = 10.0
 margin_right = -10.0
 custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator8" type="HSeparator" parent="UserPanel/Panel"]
+margin_right = 1004.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 0, 15 )
+custom_styles/separator = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UserPanel/Panel"]
+margin_top = 15.0
 margin_right = 1004.0
-margin_bottom = 60.0
+margin_bottom = 75.0
 custom_constants/separation = 0
 alignment = 1
 
@@ -388,7 +402,6 @@ margin_right = 526.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 size_flags_horizontal = 5
-texture = ExtResource( 7 )
 expand = true
 stretch_mode = 6
 
@@ -405,7 +418,7 @@ text = "a"
 align = 1
 
 [node name="List" type="VBoxContainer" parent="UserPanel/Panel"]
-margin_top = 60.0
+margin_top = 75.0
 margin_right = 1004.0
 margin_bottom = 593.0
 size_flags_vertical = 3
@@ -442,17 +455,17 @@ align = 1
 [node name="Repos" type="Tree" parent="UserPanel/Panel/List"]
 margin_top = 20.0
 margin_right = 1004.0
-margin_bottom = 231.0
+margin_bottom = 223.0
 size_flags_horizontal = 5
 size_flags_vertical = 3
-columns = 3
+columns = 4
 hide_root = true
 select_mode = 1
 
 [node name="repos_buttons" type="HBoxContainer" parent="UserPanel/Panel/List"]
-margin_top = 235.0
+margin_top = 227.0
 margin_right = 1004.0
-margin_bottom = 255.0
+margin_bottom = 247.0
 grow_vertical = 2
 rect_clip_content = true
 custom_constants/separation = 10
@@ -466,16 +479,16 @@ rect_clip_content = true
 text = "New Repository"
 
 [node name="HSeparator6" type="HSeparator" parent="UserPanel/Panel/List"]
-margin_top = 259.0
+margin_top = 251.0
 margin_right = 1004.0
-margin_bottom = 274.0
+margin_bottom = 266.0
 rect_min_size = Vector2( 0, 15 )
 custom_styles/separator = SubResource( 3 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="UserPanel/Panel/List"]
-margin_top = 278.0
+margin_top = 270.0
 margin_right = 1004.0
-margin_bottom = 294.0
+margin_bottom = 286.0
 custom_constants/separation = 0
 
 [node name="gists_icon" type="TextureRect" parent="UserPanel/Panel/List/HBoxContainer3"]
@@ -503,9 +516,9 @@ text = "c"
 align = 1
 
 [node name="Gist" type="Tree" parent="UserPanel/Panel/List"]
-margin_top = 298.0
+margin_top = 290.0
 margin_right = 1004.0
-margin_bottom = 509.0
+margin_bottom = 493.0
 size_flags_horizontal = 5
 size_flags_vertical = 3
 columns = 2
@@ -513,9 +526,9 @@ hide_root = true
 select_mode = 1
 
 [node name="gist_buttons" type="HBoxContainer" parent="UserPanel/Panel/List"]
-margin_top = 513.0
+margin_top = 497.0
 margin_right = 1004.0
-margin_bottom = 533.0
+margin_bottom = 517.0
 custom_constants/separation = 10
 alignment = 1
 
@@ -658,7 +671,6 @@ __meta__ = {
 }
 
 [node name="Repo" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 9 )
@@ -950,19 +962,32 @@ margin_bottom = 20.0
 size_flags_vertical = 0
 
 [node name="VSeparator2" type="VSeparator" parent="Repo/Panel2/List/branch"]
-visible = false
 margin_left = 97.0
-margin_right = 147.0
+margin_right = 107.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 50, 0 )
+rect_min_size = Vector2( 10, 0 )
 custom_styles/separator = SubResource( 18 )
 
 [node name="new_branchBtn" type="Button" parent="Repo/Panel2/List/branch"]
-margin_left = 97.0
-margin_right = 185.0
+margin_left = 111.0
+margin_right = 199.0
 margin_bottom = 20.0
 rect_clip_content = true
 text = "New Branch"
+
+[node name="VSeparator3" type="VSeparator" parent="Repo/Panel2/List/branch"]
+margin_left = 203.0
+margin_right = 213.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 10, 0 )
+custom_styles/separator = SubResource( 18 )
+
+[node name="pull_btn" type="Button" parent="Repo/Panel2/List/branch"]
+margin_left = 217.0
+margin_right = 363.0
+margin_bottom = 20.0
+rect_clip_content = true
+text = "Pull from this Branch"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="Repo/Panel2/List/branch"]
 margin_left = 829.0
@@ -1506,7 +1531,6 @@ rect_min_size = Vector2( 50, 50 )
 rect_pivot_offset = Vector2( 25, 25 )
 size_flags_horizontal = 4
 size_flags_vertical = 8
-texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 
@@ -2062,12 +2086,13 @@ custom_colors/font_color = Color( 0.145098, 0.172549, 0.231373, 1 )
 text = "v 0.6.0"
 
 [node name="loading" type="ColorRect" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.439216 )
+color = Color( 0, 0, 0, 0.588235 )
 script = ExtResource( 15 )
 __meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -2091,6 +2116,32 @@ stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ProgressBar" type="ProgressBar" parent="loading"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -237.0
+margin_top = 64.5
+margin_right = 237.0
+margin_bottom = 78.5
+
+[node name="Number" type="Label" parent="loading"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = 59.0662
+margin_right = 20.0
+margin_bottom = 73.0662
+grow_horizontal = 2
+grow_vertical = 2
+text = "..."
+align = 1
 [connection signal="visibility_changed" from="SingIn/signin_panel/loading" to="SingIn" method="_on_loading_visibility_changed"]
 [connection signal="item_selected" from="Repo/Panel2/List/branch2/branch2" to="Repo" method="_on_branch2_item_selected"]
 [connection signal="item_selected" from="Repo/Panel2/List/branch/branch2" to="Repo" method="_on_branch2_item_selected"]
@@ -2108,4 +2159,3 @@ __meta__ = {
 [connection signal="pressed" from="Commit/VBoxContainer2/Button" to="Commit" method="_on_Button_pressed"]
 [connection signal="confirmed" from="NewRepo" to="NewRepo" method="_on_NewRepo_confirmed"]
 [connection signal="visibility_changed" from="loading" to="loading" method="_on_loading_visibility_changed"]
-[connection signal="visibility_changed" from="loading/loading2" to="SingIn" method="_on_loading_visibility_changed"]

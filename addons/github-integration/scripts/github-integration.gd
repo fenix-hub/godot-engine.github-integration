@@ -39,3 +39,4 @@ func get_plugin_icon():
 
 func make_visible(visible):
 	doc.visible = visible
+
