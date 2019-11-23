@@ -371,7 +371,6 @@ func delete_resource():
 		yield(self,"resource_deleted")
 	
 	multi_selected.clear()
-	get_parent().loading(false)
 	_on_reload_pressed()
 	DeleteRes.disabled = true
 
