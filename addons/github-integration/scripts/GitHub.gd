@@ -14,9 +14,6 @@
 tool
 extends Control
 
-var plugin_version
-var plugin_name
-
 onready var SignIn = $SingIn
 onready var UserPanel = $UserPanel
 onready var NewRepo = $NewRepo
@@ -25,10 +22,18 @@ onready var Repo = $Repo
 onready var Gist = $Gist
 onready var Commit = $Commit
 onready var LoadNode = $loading
-onready var Version = $version
+onready var Version = $datas/version
+onready var Debug = $datas/debug
+
+var plugin_version
+var plugin_name
+var debug : bool
+
 
 func _ready():
+	debug = true
 	LoadNode.hide()
+	Debug.set_pressed(debug)
 	
 	var config =  ConfigFile.new()
 	var err = config.load("res://addons/github-integration/plugin.cfg")
@@ -61,3 +66,14 @@ func hide_number():
 
 func signed() -> void:
 	UserPanel.load_panel()
+
+func print_debug_message(message : String = "",type : int = 0):
+	if debug == true:
+		match type:
+			0:
+				print(plugin_name,message)
+			1:
+				printerr(plugin_name,message)
+
+func _on_debug_toggled(button_pressed):
+	debug = button_pressed

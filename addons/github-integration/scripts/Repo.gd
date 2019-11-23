@@ -45,6 +45,8 @@ onready var pull_btn = $Panel2/List/branch/pull_btn
 
 onready var branch3 = $NewBranch/VBoxContainer/HBoxContainer2/branch3
 
+onready var ExtractionRequest = $extraction_request
+onready var ExtractionOverwriting = $extraction_overwriting
 
 enum REQUESTS { REPOS = 0, GISTS = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 , FILE_CONTENT = 10 ,NEW_BRANCH = 11 , PULLING = 12}
 var requesting
@@ -65,6 +67,7 @@ var tree_sha = ""
 var multi_selected = []
 var gitignore_file : Dictionary
 
+var zip_filepath : String = ""
 
 signal get_branches()
 signal get_contents()
@@ -157,7 +160,7 @@ func request_branches(rep : String):
 		
 		build_list()
 	else:
-		printerr(get_parent().plugin_name,"no branches found for this repository.")
+		get_parent().print_debug_message("ERROR: no branches found for this repository.",1)
 		get_parent().loading(false)
 
 
@@ -235,7 +238,7 @@ func request_completed(result, response_code, headers, body ):
 		match requesting:
 			REQUESTS.DELETE:
 				if response_code == 204:
-					print(get_parent().plugin_name,"deleted repository...")
+					get_parent().print_debug_message("deleted repository...")
 					OS.delay_msec(1500)
 					get_parent().UserPanel.request_repositories(REQUESTS.UP_REPOS)
 					close_tab()
@@ -258,24 +261,23 @@ func request_completed(result, response_code, headers, body ):
 					emit_signal("get_contents")
 			REQUESTS.NEW_BRANCH:
 				if response_code == 201:
-					print(get_parent().plugin_name,"new branch created!")
+					get_parent().print_debug_message("new branch created!")
 					emit_signal("new_branch_created")
 					_on_reload_pressed()
 				elif response_code == 422:
-					printerr(get_parent().plugin_name,"ERROR: a branch with this name already exists, try choosing another name.")
+					get_parent().print_debug_message("ERROR: a branch with this name already exists, try choosing another name.",1)
 					emit_signal("new_branch_created")
 			REQUESTS.DELETE_RESOURCE:
 				if response_code == 200:
-					print(get_parent().plugin_name,"deleted selected resource")
+					get_parent().print_debug_message("deleted selected resource")
 					if multi_selected.size()>0:
 						contents.remove(0)
 					else:
 						contents.erase(contents_.get_selected().get_metadata(0))
 					emit_signal("resource_deleted")
 				elif response_code == 422:
-					print(get_parent().plugin_name,"can't delete a folder!")
+					get_parent().print_debug_message("ERROR: can't delete a folder!",1)
 					emit_signal("resource_deleted")
-				get_parent().loading(false)
 			REQUESTS.PULLING:
 				if response_code == 200:
 					emit_signal("zip_pulled")
@@ -302,7 +304,7 @@ func build_list():
 			var file_dir = null
 			
 			for directory in directories:
-				if directory.get_metadata(0) == content.path.get_base_dir():
+				if directory.get_metadata(0).path == content.path.get_base_dir():
 					file_dir = directory
 					continue
 			
@@ -323,19 +325,19 @@ func build_list():
 				icon = IconLoaderGithub.load_icon_from_name("file")
 			
 			item.set_icon(0,icon)
-			item.set_metadata(0,content.path.get_base_dir())
+			item.set_metadata(0,content)
 		elif content_type == "tree":
 			var dir_dir = null
 			
 			for directory in directories:
-				if directory.get_metadata(0) == content.path.get_base_dir():
+				if directory.get_metadata(0).path == content.path.get_base_dir():
 					dir_dir = directory
 					continue
 			
 			var new_dir = contents_.create_item(dir_dir)
 			new_dir.set_text(0,content_name)
 			new_dir.set_icon(0,IconLoaderGithub.load_icon_from_name("dir"))
-			new_dir.set_metadata(0,content.path)
+			new_dir.set_metadata(0,content)
 			directories.append(new_dir)
 			
 			
@@ -361,16 +363,16 @@ func delete_resource():
 	if multi_selected.size()>0:
 		for item in multi_selected:
 			request_delete_resource(item.get_metadata(0).path,item)
-			print(get_parent().plugin_name,"deleting "+item.get_metadata(0).path+"...")
+			get_parent().print_debug_message("deleting "+item.get_metadata(0).path+"...")
 			yield(self,"resource_deleted")
 	else:
 		request_delete_resource(contents_.get_selected().get_metadata(0).path)
-		print(get_parent().plugin_name,"deleting "+contents_.get_selected().get_metadata(0).path+"...")
+		get_parent().print_debug_message("deleting "+contents_.get_selected().get_metadata(0).path+"...")
 		yield(self,"resource_deleted")
 	
 	multi_selected.clear()
-	
-	build_list()
+	get_parent().loading(false)
+	_on_reload_pressed()
 	DeleteRes.disabled = true
 
 func _on_contents_item_activated():
@@ -394,7 +396,7 @@ func on_newbranch_confirmed():
 	
 	
 	if " " in newBranch.get_node("VBoxContainer/HBoxContainer/name").get_text():
-		printerr(get_parent().plugin_name,"ERROR: a branch name cannot contain spaces. Please, use '-' or '_' instead.")
+		get_parent().print_debug_message("ERROR: a branch name cannot contain spaces. Please, use '-' or '_' instead.",1)
 		return
 	
 	var body = {
@@ -403,26 +405,29 @@ func on_newbranch_confirmed():
 	}
 	
 	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+current_repo.name+"/git/refs",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(body))
-	print(get_parent().plugin_name,"creating new branch...")
+	get_parent().print_debug_message("creating new branch...")
 	yield(self,"new_branch_created")
 
 func on_pull_pressed():
 	requesting = REQUESTS.PULLING
 	
 	var zipfile = File.new()
-	var zip_filepath : String = "res://"+current_repo.name+"-"+current_branch.name+".zip"
+	zip_filepath = "res://"+current_repo.name+"-"+current_branch.name+".zip"
 	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
 	zipfile.close()
 	request.set_download_file(zip_filepath)
+	
 	var zip_url : String = current_branch._links.html.replace("tree","zipball").replace("github.com","api.github.com/repos")
 	request.request(zip_url,UserData.header,false,HTTPClient.METHOD_GET)
 	get_parent().loading(true)
-	print(get_parent().plugin_name,"pulling from selected branch, a .zip file will automatically be created at the end of the process in 'res://' ...")
+	get_parent().print_debug_message("pulling from selected branch, a .zip file will automatically be created at the end of the process in 'res://' ...")
 	yield(self,"zip_pulled")
 	requesting = REQUESTS.END
-	print(get_parent().plugin_name,".zip file created with the selected branch inside, you can find it at -> "+zip_filepath)
+	get_parent().print_debug_message(".zip file created with the selected branch inside, you can find it at -> "+zip_filepath)
 	get_parent().loading(false)
 	request.set_download_file("")
+	
+	ExtractionRequest.popup()
 
 func _process(delta):
 	if requesting == REQUESTS.PULLING:
@@ -431,7 +436,7 @@ func _process(delta):
 
 func _on_reload_pressed():
 	get_parent().loading(true)
-	print(get_parent().plugin_name,"reloading all branches, please wait...")
+	get_parent().print_debug_message("reloading all branches, please wait...")
 	contents.clear()
 	contents_.clear()
 	branches_.clear()
@@ -446,3 +451,12 @@ func _on_reload_pressed():
 	tree_sha = ""
 	open_repo(item_repo)
 
+func extraction_process():
+	var zipfile = File.new()
+	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
+
+func _on_extraction_request_confirmed():
+	extraction_process()
+
+func _on_extraction_overwriting_confirmed():
+	pass # Replace with function body.

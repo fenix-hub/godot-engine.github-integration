@@ -77,7 +77,7 @@ func sign_in():
 		get_parent().loading(false)
 		hide()
 	
-	print(get_parent().plugin_name,"logging in...")
+	get_parent().print_debug_message("logging in...")
 
 func signin_completed(result, response_code, headers, body ):
 	if result == 0:
