@@ -12,7 +12,7 @@ A complete GitHub integration for your Godot Editor! Manage your project without
 
 Author: *"Nicolo (fenix) Santilio"*  
 Version: *0.7.2*  
-Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*
+Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
 Godot Version: *3.2alpha2*  
 
 **This repository was pushed directly from Godot Engine Editor, and README and VERSION files were edited with [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) directly in Godot Editor.**
@@ -24,7 +24,7 @@ With this little addon which works directly in the editor, managing all your rep
 
 ## How does it work?
 I'm currently working on a [Wiki](https://github.com/fenix-hub/godot-engine.github-integration/wiki) for this plugin. It is a process that will take some time to complete since I want to provide a well-organized wiki with some basic explanations about GitHub itself. Anyway, I'm working on a user-friendly plugin, so everything should be the very ease to use for GitHub experienced users, and a little intuitive for people who never used GitHub or are not so experienced.
-If you want to see some screenshots you can find them here 'addons/github-integration/screenshots'
+If you want to see some screenshots you can find them here `addons/github-integration/screenshots`
 
 ## Supporters page
 For my first donation I decided to add a SUPPORTERS.md file where there is a list of people who decided to financially support this plugin. I will never ask for anything in return for the free service I want to offer to  Godot's community, but it will always be an act of kindness that will encourage me to keep my plugins and projects updated.
