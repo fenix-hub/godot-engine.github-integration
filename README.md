@@ -13,7 +13,7 @@ A complete GitHub integration for your Godot Editor! Manage your project without
 Author: *"Nicolo (fenix) Santilio"*  
 Version: *0.7.2*  
 Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
-Godot Version: *3.2alpha2*  
+Godot Version: *3.2beta1*  
 
 **This repository was pushed directly from Godot Engine Editor, and README and VERSION files were edited with [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) directly in Godot Editor.**
 
