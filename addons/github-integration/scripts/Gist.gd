@@ -77,17 +77,17 @@ func request_completed(result, response_code, headers, body ):
 			REQUESTS.COMMIT:
 				if response_code == 201:
 					GistName.set_text(UserData.USER.login+"/"+JSON.parse(body.get_string_from_utf8()).result.files.values()[0].filename)
-					print(get_parent().plugin_name,"gist committed with success!")
+					get_parent().print_debug_message("gist committed with success!")
 					get_parent().UserPanel.request_gists(REQUESTS.GIST)
 					emit_signal("gist_committed")
 			REQUESTS.UP_GISTS:
 				if response_code == 200:
-					print(get_parent().plugin_name,"gist updated with success!")
+					get_parent().print_debug_message("gist updated with success!")
 					get_parent().UserPanel.request_gists(REQUESTS.GIST)
 					emit_signal("gist_updated")
 			REQUESTS.DELETE:
 				if response_code == 204:
-					print(get_parent().plugin_name,"gist deleted with success!")
+					get_parent().print_debug_message("gist deleted with success!")
 					get_parent().UserPanel.request_gists(REQUESTS.GIST)
 					emit_signal("gist_deleted")
 
@@ -223,7 +223,7 @@ func on_commit():
 		}
 		requesting = REQUESTS.COMMIT
 		request.request("https://api.github.com/gists",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(body))
-		print(get_parent().plugin_name,"committing new gist...")
+		get_parent().print_debug_message("committing new gist...")
 		yield(self,"gist_committed")
 		close_editor()
 	elif gist_mode == GIST_MODE.EDITING:
@@ -233,7 +233,7 @@ func on_commit():
 		}
 		requesting = REQUESTS.UP_GISTS
 		request.request("https://api.github.com/gists/"+gistid,UserData.header,false,HTTPClient.METHOD_PATCH,JSON.print(body))
-		print(get_parent().plugin_name,"updating this gist...")
+		get_parent().print_debug_message("updating this gist...")
 		yield(self,"gist_updated")
 		close_editor()
 
@@ -271,7 +271,7 @@ func _on_Readonly_toggled(button_pressed):
 func on_delete():
 	requesting = REQUESTS.DELETE
 	request.request("https://api.github.com/gists/"+gistid,UserData.header,false,HTTPClient.METHOD_DELETE)
-	print(get_parent().plugin_name,"deleting this gist...")
+	get_parent().print_debug_message("deleting this gist...")
 	yield(self,"gist_deleted")
 	close_editor()
 

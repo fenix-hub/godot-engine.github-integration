@@ -113,7 +113,7 @@ func request_completed(result, response_code, headers, body ):
 			REQUESTS.UPLOAD:
 				if response_code == 201:
 					hide()
-					print(get_parent().plugin_name,"commited and pushed...")
+					get_parent().print_debug_message("commited and pushed...")
 					get_parent().UserPanel.request_repositories(get_parent().UserPanel.REQUESTS.UP_REPOS)
 				elif response_code == 422:
 					error.text = "Error: "+JSON.parse(body.get_string_from_utf8()).result.errors[0].message
@@ -123,46 +123,46 @@ func request_completed(result, response_code, headers, body ):
 					pass
 			REQUESTS.COMMIT:
 				if response_code == 201:
-					print(get_parent().plugin_name,"file committed!")
-					print(get_parent().plugin_name," ")
+					get_parent().print_debug_message("file committed!")
+					get_parent().print_debug_message(" ")
 					emit_signal("file_committed")
 				if response_code == 200:
-					print(get_parent().plugin_name,"file updated!")
-					print(get_parent().plugin_name," ")
+					get_parent().print_debug_message("file updated!")
+					get_parent().print_debug_message(" ")
 					emit_signal("file_committed")
 				if response_code == 422:
-					print(get_parent().plugin_name,"file already exists, skipping...")
-					print(get_parent().plugin_name," ")
+					get_parent().print_debug_message("file already exists, skipping...")
+					get_parent().print_debug_message(" ")
 					emit_signal("file_committed")
 			REQUESTS.LATEST_COMMIT:
 				if response_code == 200:
 					sha_latest_commit = JSON.parse(body.get_string_from_utf8()).result.object.sha
-					print(get_parent().plugin_name,"got last commit")
+					get_parent().print_debug_message("got last commit")
 					emit_signal("latest_commit")
 			REQUESTS.BASE_TREE:
 				if response_code == 200:
 					sha_base_tree = JSON.parse(body.get_string_from_utf8()).result.tree.sha
-					print(get_parent().plugin_name,"got base tree")
+					get_parent().print_debug_message("got base tree")
 					emit_signal("base_tree")
 			REQUESTS.BLOB:
 				if response_code == 201:
 					list_file_sha.append(JSON.parse(body.get_string_from_utf8()).result.sha)
-					print(get_parent().plugin_name,"blobbed file")
+					get_parent().print_debug_message("blobbed file")
 #					OS.delay_msec(1000)
 					emit_signal("file_blobbed")
 			REQUESTS.NEW_TREE:
 				if response_code == 201:
 						sha_new_tree = JSON.parse(body.get_string_from_utf8()).result.sha
-						print(get_parent().plugin_name,"created new tree of files")
+						get_parent().print_debug_message("created new tree of files")
 						emit_signal("new_tree")
 			REQUESTS.NEW_COMMIT:
 				if response_code == 201:
 					sha_new_commit = JSON.parse(body.get_string_from_utf8()).result.sha
-					print(get_parent().plugin_name,"created new commit")
+					get_parent().print_debug_message("created new commit")
 					emit_signal("new_commit")
 			REQUESTS.PUSH:
 				if response_code == 200:
-					print(get_parent().plugin_name,"pushed and committed with success!")
+					get_parent().print_debug_message("pushed and committed with success!")
 					get_parent().loading(false)
 					Loading.hide()
 					emit_signal("pushed")
@@ -193,7 +193,7 @@ func _on_Button_pressed():
 	get_parent().loading(true)
 	
 	load_gitignore()
-	print(get_parent().plugin_name,"fetching all files in project...")
+	get_parent().print_debug_message("fetching all files in project...")
 	
 	
 	request_sha_latest_commit()
@@ -282,11 +282,9 @@ func request_blobs():
 			f.open(file,File.READ)
 			content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
 		
-#		for content in branches_contents:
-#			if content.path == file[0].lstrip(DIRECTORY+START_FROM+"/"):
-#				sha = content.sha
+		get_parent().print_debug_message("blobbing ~> "+file.get_file())
 		
-		print(get_parent().plugin_name,"blobbing ~> "+file.get_file())
+		
 		
 		var bod = {
 			"content":content,
@@ -298,7 +296,7 @@ func request_blobs():
 		
 		Progress.set_value(range_lerp(files.find(file),0,files.size(),0,100))
 	
-	print(get_parent().plugin_name,"blobbed each file with success, start committing...")
+	get_parent().print_debug_message("blobbed each file with success, start committing...")
 	Progress.set_value(100)
 	request_commit_tree()
 

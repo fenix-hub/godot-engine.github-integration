@@ -52,7 +52,7 @@ func request_completed(result, response_code, headers, body ):
 			REQUESTS.REPOS:
 				if response_code == 201:
 					hide()
-					print(get_parent().plugin_name,"created new repository...")
+					get_parent().print_debug_message("created new repository...")
 					get_parent().UserPanel.request_repositories(get_parent().UserPanel.REQUESTS.UP_REPOS)
 					get_parent().loading(false)
 				elif response_code == 422:

@@ -70,13 +70,13 @@ func request_completed(result, response_code, headers, body ):
 				if response_code == 200:
 					repositories = JSON.parse(body.get_string_from_utf8()).result
 					load_repositories(repositories)
-					print(get_parent().plugin_name,"loaded all repositories...")
+					get_parent().print_debug_message("loaded all repositories...")
 					#requesting = REQUESTS.END
 			REQUESTS.GISTS:
 				if response_code == 200:
 					gists = JSON.parse(body.get_string_from_utf8()).result
 					load_gists(gists)
-					print(get_parent().plugin_name,"loaded all gists...")
+					get_parent().print_debug_message("loaded all gists...")
 					emit_signal("completed_loading")
 					show()
 			REQUESTS.BRANCHES:
@@ -88,16 +88,16 @@ func request_completed(result, response_code, headers, body ):
 					repositories.clear()
 					repositories = JSON.parse(body.get_string_from_utf8()).result
 					load_repositories(repositories)
-					print(get_parent().plugin_name,"updated all repositories...")
+					get_parent().print_debug_message("updated all repositories...")
 			REQUESTS.UP_GISTS:
 				if response_code == 200:
 					gists.clear()
 					gists = JSON.parse(body.get_string_from_utf8()).result
 					load_gists(gists)
-					print(get_parent().plugin_name,"updated all gists...")
+					get_parent().print_debug_message("updated all gists...")
 			REQUESTS.DELETE:
 				if response_code == 204:
-					print(get_parent().plugin_name,"deleted repository...")
+					get_parent().print_debug_message("deleted repository...")
 					OS.delay_msec(1500)
 					request_repositories(REQUESTS.UP_REPOS)
 
@@ -171,7 +171,7 @@ func new_repo():
 	#request.request()
 
 func repo_selected():
-	print(get_parent().plugin_name,"opening selected repository...")
+	get_parent().print_debug_message("opening selected repository...")
 	get_parent().loading(true)
 	
 	var repo = RepoList.get_selected()
@@ -182,7 +182,7 @@ func repo_selected():
 	get_parent().loading(false)
 
 func gist_selected():
-	print(get_parent().plugin_name,"opening selected gist...")
+	get_parent().print_debug_message("opening selected gist...")
 	get_parent().loading(true)
 	
 	var gist = GistList.get_selected()
