@@ -426,7 +426,7 @@ func on_pull_pressed():
 	get_parent().loading(false)
 	request.set_download_file("")
 	
-	ExtractionRequest.popup()
+	#ExtractionRequest.popup()
 
 func _process(delta):
 	if requesting == REQUESTS.PULLING:
