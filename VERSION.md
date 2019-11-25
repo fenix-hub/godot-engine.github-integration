@@ -112,10 +112,16 @@
 *fidex*  
 - **deleting repository's resources** : with the previous version a bug occured and it wasn't possible to delete resources within a repository. 
   
-  
+  --------------------
+
+**version 0.7.4**  
+*added*  
+- **auto extraction** : the plugin is now able to auto-extract downloaded archives automatically. _your OS needs python_ to run the extraction script since it is not currently built in Godot Engine. It is still a beta script, so it is highly recommended to use it inside empty projects and have some tests. You can always report issues and contact me for any bug.  
+- **sing up link** : if you don't have an account, or want to create a new one, you can click on the *'Don't have a GitHub account yet?'* button in  the main tab of the plugin
   
   
   
   
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
+

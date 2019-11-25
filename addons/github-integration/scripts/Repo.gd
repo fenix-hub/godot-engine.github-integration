@@ -426,7 +426,7 @@ func on_pull_pressed():
 	get_parent().loading(false)
 	request.set_download_file("")
 	
-	#ExtractionRequest.popup()
+	ExtractionRequest.popup()
 
 func _process(delta):
 	if requesting == REQUESTS.PULLING:
@@ -451,8 +451,10 @@ func _on_reload_pressed():
 	open_repo(item_repo)
 
 func extraction_process():
-	var zipfile = File.new()
-	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
+	var output = []
+	var unzipper_path = ProjectSettings.globalize_path("res://addons/github-integration/resources/extraction/unzip.py")
+	var arguments : PoolStringArray = [unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
+	OS.execute("python",arguments,true)
 
 func _on_extraction_request_confirmed():
 	extraction_process()

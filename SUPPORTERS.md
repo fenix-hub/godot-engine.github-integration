@@ -31,3 +31,5 @@ This is a list of people who decided to support my plugin with donations. Even t
   
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
+
+

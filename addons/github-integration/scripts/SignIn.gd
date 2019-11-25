@@ -19,8 +19,7 @@ signal signed()
 onready var Mail : LineEdit = $signin_panel/HBoxContainer/Mail
 onready var Token : LineEdit = $signin_panel/HBoxContainer2/Password
 onready var Error = $signin_panel/error
-onready var Loading = $signin_panel/loading
-onready var logfile_lbl = $signin_panel/HBoxContainer3/logfile
+onready var logfile_icon = $signin_panel/HBoxContainer3/logfile
 
 onready var btnSignIn = $signin_panel/HBoxContainer3/btnSignIn
 onready var btnCreateToken = $signin_panel/HBoxContainer3/btnCreateToken
@@ -38,9 +37,6 @@ var logfile = false
 
 
 func _ready():
-	logfile_lbl.hide()
-	set_process(false)
-	Loading.hide()
 	Error.hide()
 	btnSignIn.connect("pressed",self,"sign_in")
 	btnCreateToken.connect("pressed",self,"create_token")
@@ -51,9 +47,7 @@ func _ready():
 	
 	if UserData.load_user().size():
 		logfile = true
-		logfile_lbl.show()
-	else:
-		logfile_lbl.hide()
+		logfile_icon.show()
 
 func create_token():
 	OS.shell_open("https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line")
@@ -101,3 +95,7 @@ func signin_completed(result, response_code, headers, body ):
 				get_parent().loading(true)
 				hide()
 
+
+
+func _on_singup_pressed():
+	OS.shell_open("https://github.com/join?source=header-home")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://addons/github-integration/scripts/GitHub.gd" type="Script" id=1]
 [ext_resource path="res://addons/github-integration/fonts/Roboto-Black.ttf" type="DynamicFontData" id=2]
@@ -33,7 +33,62 @@ outline_size = 2
 outline_color = Color( 0.0901961, 0.0823529, 0.0862745, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="Shader" id=6]
+[sub_resource type="DynamicFont" id=6]
+size = 12
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 20
+font_data = ExtResource( 8 )
+
+[sub_resource type="Image" id=43]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 175, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 207, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 207, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 207, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 143, 0, 0, 0, 0, 255, 255, 255, 143, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=9]
+image = SubResource( 43 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="Image" id=44]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 175, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 32, 255, 255, 255, 191, 255, 255, 255, 16, 255, 255, 255, 16, 255, 255, 255, 191, 255, 255, 255, 16, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 32, 255, 255, 255, 223, 255, 255, 255, 143, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 143, 255, 255, 255, 223, 255, 255, 255, 16, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 207, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 191, 255, 255, 255, 191, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 32, 255, 255, 255, 239, 255, 255, 255, 112, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 112, 255, 255, 255, 223, 255, 255, 255, 32, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 32, 255, 255, 255, 207, 0, 0, 0, 0, 255, 255, 255, 16, 255, 255, 255, 207, 255, 255, 255, 32, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 207, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 207, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=11]
+image = SubResource( 44 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="DynamicFont" id=14]
+size = 20
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=15]
+size = 20
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=16]
+size = 19
+font_data = ExtResource( 8 )
+
+[sub_resource type="StyleBoxEmpty" id=17]
+
+[sub_resource type="StyleBoxFlat" id=18]
+bg_color = Color( 0.121569, 0.145098, 0.192157, 1 )
+
+[sub_resource type="Shader" id=19]
 code = "shader_type canvas_item;
 render_mode unshaded, blend_disabled;
 
@@ -55,64 +110,13 @@ void vertex() {
 
 "
 
-[sub_resource type="ShaderMaterial" id=7]
-shader = SubResource( 6 )
+[sub_resource type="ShaderMaterial" id=20]
+shader = SubResource( 19 )
 shader_param/speed = 0
 
-[sub_resource type="DynamicFont" id=8]
-size = 20
-font_data = ExtResource( 8 )
+[sub_resource type="StyleBoxEmpty" id=21]
 
-[sub_resource type="Image" id=42]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 175, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 207, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 207, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 207, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 143, 0, 0, 0, 0, 255, 255, 255, 143, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=10]
-image = SubResource( 42 )
-size = Vector2( 16, 16 )
-
-[sub_resource type="Image" id=43]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 175, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 32, 255, 255, 255, 191, 255, 255, 255, 16, 255, 255, 255, 16, 255, 255, 255, 191, 255, 255, 255, 16, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 32, 255, 255, 255, 223, 255, 255, 255, 143, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 143, 255, 255, 255, 223, 255, 255, 255, 16, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 207, 255, 255, 255, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 191, 255, 255, 255, 191, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 255, 32, 255, 255, 255, 239, 255, 255, 255, 112, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 112, 255, 255, 255, 223, 255, 255, 255, 32, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 32, 255, 255, 255, 207, 0, 0, 0, 0, 255, 255, 255, 16, 255, 255, 255, 207, 255, 255, 255, 32, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 207, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 207, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "RGBA8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=12]
-image = SubResource( 43 )
-size = Vector2( 16, 16 )
-
-[sub_resource type="StyleBoxEmpty" id=13]
-
-[sub_resource type="StyleBoxEmpty" id=14]
-
-[sub_resource type="DynamicFont" id=15]
-size = 20
-font_data = ExtResource( 8 )
-
-[sub_resource type="DynamicFont" id=16]
-size = 20
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=17]
-size = 19
-font_data = ExtResource( 8 )
-
-[sub_resource type="StyleBoxEmpty" id=18]
-
-[sub_resource type="StyleBoxFlat" id=19]
-bg_color = Color( 0.121569, 0.145098, 0.192157, 1 )
-
-[sub_resource type="StyleBoxEmpty" id=20]
-
-[sub_resource type="Image" id=44]
+[sub_resource type="Image" id=45]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 224, 224, 224, 112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 112, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 224, 224, 224, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "RGBA8",
@@ -121,11 +125,11 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=22]
-image = SubResource( 44 )
+[sub_resource type="ImageTexture" id=23]
+image = SubResource( 45 )
 size = Vector2( 16, 16 )
 
-[sub_resource type="Image" id=45]
+[sub_resource type="Image" id=46]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 255, 93, 93, 160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 159, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 159, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 159, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 240, 255, 93, 93, 48, 255, 93, 93, 48, 255, 93, 93, 240, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 240, 255, 93, 93, 48, 255, 93, 93, 48, 255, 93, 93, 240, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 48, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 48, 255, 93, 93, 240, 255, 93, 93, 240, 255, 93, 93, 48, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 48, 255, 93, 93, 240, 255, 93, 93, 240, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 48, 255, 93, 93, 48, 0, 0, 0, 0, 255, 93, 93, 48, 255, 93, 93, 48, 0, 0, 0, 0, 255, 93, 93, 48, 255, 93, 93, 48, 0, 0, 0, 0, 255, 93, 93, 48, 255, 93, 93, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 48, 255, 93, 93, 239, 255, 93, 93, 239, 255, 93, 93, 48, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 48, 255, 93, 93, 239, 255, 93, 93, 239, 255, 93, 93, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 240, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 239, 255, 93, 93, 48, 255, 93, 93, 48, 255, 93, 93, 239, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 239, 255, 93, 93, 48, 255, 93, 93, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "RGBA8",
@@ -134,11 +138,9 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=24]
-image = SubResource( 45 )
+[sub_resource type="ImageTexture" id=25]
+image = SubResource( 46 )
 size = Vector2( 16, 16 )
-
-[sub_resource type="StyleBoxEmpty" id=25]
 
 [sub_resource type="StyleBoxEmpty" id=26]
 
@@ -150,21 +152,21 @@ size = Vector2( 16, 16 )
 
 [sub_resource type="StyleBoxEmpty" id=30]
 
-[sub_resource type="DynamicFont" id=31]
+[sub_resource type="StyleBoxEmpty" id=31]
+
+[sub_resource type="DynamicFont" id=32]
 font_data = ExtResource( 14 )
 
-[sub_resource type="StyleBoxFlat" id=32]
+[sub_resource type="StyleBoxFlat" id=33]
 bg_color = Color( 0, 0, 0, 0.156863 )
 
-[sub_resource type="StyleBoxEmpty" id=33]
+[sub_resource type="StyleBoxEmpty" id=34]
 
-[sub_resource type="DynamicFont" id=34]
+[sub_resource type="DynamicFont" id=35]
 size = 11
 outline_color = Color( 1, 1, 1, 0 )
 use_mipmaps = true
 font_data = ExtResource( 2 )
-
-[sub_resource type="StyleBoxEmpty" id=35]
 
 [sub_resource type="StyleBoxEmpty" id=36]
 
@@ -176,7 +178,9 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="StyleBoxEmpty" id=40]
 
-[sub_resource type="DynamicFont" id=41]
+[sub_resource type="StyleBoxEmpty" id=41]
+
+[sub_resource type="DynamicFont" id=42]
 size = 12
 outline_color = Color( 1, 1, 1, 0 )
 use_mipmaps = true
@@ -341,40 +345,36 @@ text = "!"
 [node name="HSeparator6" type="HSeparator" parent="SingIn/signin_panel"]
 margin_top = 259.0
 margin_right = 478.0
-margin_bottom = 263.0
+margin_bottom = 274.0
+rect_min_size = Vector2( 0, 15 )
+custom_styles/separator = SubResource( 3 )
+
+[node name="singup" type="LinkButton" parent="SingIn/signin_panel"]
+margin_left = 149.0
+margin_top = 278.0
+margin_right = 329.0
+margin_bottom = 293.0
+size_flags_horizontal = 4
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0.760784, 0.760784, 0.760784, 1 )
+text = "Don't have a GitHub account yet?"
+
+[node name="HSeparator4" type="HSeparator" parent="SingIn/signin_panel"]
+margin_top = 297.0
+margin_right = 478.0
+margin_bottom = 301.0
 rect_min_size = Vector2( 0, 3 )
 custom_styles/separator = SubResource( 3 )
 
 [node name="error" type="Label" parent="SingIn/signin_panel"]
 visible = false
-margin_top = 199.0
-margin_right = 476.0
-margin_bottom = 213.0
+margin_top = 293.0
+margin_right = 478.0
+margin_bottom = 307.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 1, 0, 0.235294, 1 )
 text = "Error: "
 align = 1
-
-[node name="HSeparator4" type="HSeparator" parent="SingIn/signin_panel"]
-margin_top = 267.0
-margin_right = 478.0
-margin_bottom = 271.0
-rect_min_size = Vector2( 0, 3 )
-custom_styles/separator = SubResource( 3 )
-
-[node name="loading" type="TextureRect" parent="SingIn/signin_panel"]
-visible = false
-material = SubResource( 7 )
-margin_left = 213.0
-margin_top = 199.0
-margin_right = 263.0
-margin_bottom = 249.0
-rect_min_size = Vector2( 50, 50 )
-rect_pivot_offset = Vector2( 25, 25 )
-size_flags_horizontal = 4
-size_flags_vertical = 0
-expand = true
-stretch_mode = 6
 
 [node name="UserPanel" type="Control" parent="."]
 visible = false
@@ -429,7 +429,7 @@ margin_top = 18.0
 margin_right = 537.0
 margin_bottom = 42.0
 size_flags_horizontal = 5
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0.133333, 0.356863, 0.94902, 1 )
 custom_colors/font_color_shadow = Color( 0.14902, 0.0705882, 0.47451, 1 )
 text = "a"
@@ -450,7 +450,7 @@ custom_constants/separation = 0
 margin_right = 16.0
 margin_bottom = 16.0
 size_flags_horizontal = 5
-texture = SubResource( 10 )
+texture = SubResource( 9 )
 stretch_mode = 6
 
 [node name="Label" type="Label" parent="UserPanel/Panel/List/HBoxContainer2"]
@@ -513,7 +513,7 @@ custom_constants/separation = 0
 margin_right = 16.0
 margin_bottom = 16.0
 size_flags_horizontal = 5
-texture = SubResource( 12 )
+texture = SubResource( 11 )
 stretch_mode = 6
 
 [node name="Label" type="Label" parent="UserPanel/Panel/List/HBoxContainer3"]
@@ -631,7 +631,7 @@ selected = 0
 margin_top = 52.0
 margin_right = 555.0
 margin_bottom = 56.0
-custom_styles/separator = SubResource( 13 )
+custom_styles/separator = SubResource( 12 )
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="UserPanel/NewGist/VBoxContainer"]
 margin_top = 60.0
@@ -714,10 +714,10 @@ margin_left = 984.0
 margin_right = 1004.0
 margin_bottom = 24.0
 size_flags_horizontal = 8
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 14 )
-custom_styles/normal = SubResource( 14 )
-custom_fonts/font = SubResource( 15 )
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
+custom_fonts/font = SubResource( 14 )
 custom_colors/font_color = Color( 0.121569, 0.145098, 0.192157, 1 )
 custom_colors/font_color_hover = Color( 0.937255, 0.937255, 0.937255, 1 )
 shortcut_in_tooltip = false
@@ -730,7 +730,7 @@ margin_top = 24.0
 margin_right = 1004.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 16 )
+custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 text = "REPOSITORY"
 align = 1
@@ -769,7 +769,7 @@ margin_left = 16.0
 margin_right = 69.0
 margin_bottom = 23.0
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = SubResource( 16 )
 text = "owner"
 
 [node name="slash" type="Label" parent="Repo/Panel2/List/repo_infos"]
@@ -777,7 +777,7 @@ margin_left = 69.0
 margin_right = 77.0
 margin_bottom = 23.0
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = SubResource( 16 )
 text = "/"
 align = 1
 
@@ -786,7 +786,7 @@ margin_left = 77.0
 margin_right = 125.0
 margin_bottom = 23.0
 size_flags_vertical = 1
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = SubResource( 16 )
 custom_colors/font_color = Color( 0.0470588, 0.835294, 0.466667, 1 )
 text = "name"
 align = 1
@@ -796,7 +796,7 @@ visible = false
 margin_right = 31.0
 margin_bottom = 23.0
 size_flags_vertical = 3
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = SubResource( 16 )
 custom_colors/font_color = Color( 0.184314, 0.909804, 0.486275, 1 )
 shortcut_in_tooltip = false
 text = "link"
@@ -959,7 +959,7 @@ margin_left = 97.0
 margin_right = 147.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 50, 0 )
-custom_styles/separator = SubResource( 18 )
+custom_styles/separator = SubResource( 17 )
 
 [node name="branch" type="HBoxContainer" parent="Repo/Panel2/List"]
 margin_top = 41.0
@@ -985,7 +985,7 @@ margin_left = 97.0
 margin_right = 107.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 10, 0 )
-custom_styles/separator = SubResource( 18 )
+custom_styles/separator = SubResource( 17 )
 
 [node name="new_branchBtn" type="Button" parent="Repo/Panel2/List/branch"]
 margin_left = 111.0
@@ -999,7 +999,7 @@ margin_left = 203.0
 margin_right = 213.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 10, 0 )
-custom_styles/separator = SubResource( 18 )
+custom_styles/separator = SubResource( 17 )
 
 [node name="pull_btn" type="Button" parent="Repo/Panel2/List/branch"]
 margin_left = 217.0
@@ -1300,10 +1300,10 @@ margin_left = 984.0
 margin_right = 1004.0
 margin_bottom = 24.0
 size_flags_horizontal = 8
-custom_styles/hover = SubResource( 19 )
-custom_styles/pressed = SubResource( 14 )
-custom_styles/normal = SubResource( 14 )
-custom_fonts/font = SubResource( 15 )
+custom_styles/hover = SubResource( 18 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
+custom_fonts/font = SubResource( 14 )
 custom_colors/font_color = Color( 0.101961, 0.101961, 0.101961, 1 )
 custom_colors/font_color_hover = Color( 0.937255, 0.937255, 0.937255, 1 )
 shortcut_in_tooltip = false
@@ -1314,7 +1314,7 @@ margin_top = 28.0
 margin_right = 1004.0
 margin_bottom = 52.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 16 )
+custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 text = "COMMIT AND PUSH"
 align = 1
@@ -1608,7 +1608,7 @@ align = 1
 
 [node name="loading2" type="TextureRect" parent="Commit/VBoxContainer2"]
 visible = false
-material = SubResource( 7 )
+material = SubResource( 20 )
 margin_left = 477.0
 margin_top = 482.0
 margin_right = 527.0
@@ -1778,7 +1778,7 @@ flat = true
 margin_top = 24.0
 margin_right = 1004.0
 margin_bottom = 48.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0.317647, 0.498039, 0.815686, 1 )
 custom_colors/font_color_shadow = Color( 0.12549, 0.109804, 0.27451, 1 )
 text = "AAAA"
@@ -1827,7 +1827,7 @@ __meta__ = {
 margin_top = 70.0
 margin_right = 1004.0
 margin_bottom = 74.0
-custom_styles/separator = SubResource( 20 )
+custom_styles/separator = SubResource( 21 )
 
 [node name="GistEditor" type="HSplitContainer" parent="Gist/GistContainer"]
 margin_top = 78.0
@@ -1859,7 +1859,7 @@ alignment = 1
 margin_right = 64.0
 margin_bottom = 20.0
 text = "Add File"
-icon = SubResource( 22 )
+icon = SubResource( 23 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1869,7 +1869,7 @@ margin_left = 68.0
 margin_right = 150.0
 margin_bottom = 20.0
 text = "Delete File"
-icon = SubResource( 24 )
+icon = SubResource( 25 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1891,13 +1891,13 @@ margin_left = 455.0
 margin_right = 546.0
 margin_bottom = 20.0
 size_flags_horizontal = 10
-custom_styles/hover = SubResource( 25 )
-custom_styles/pressed = SubResource( 26 )
-custom_styles/focus = SubResource( 27 )
-custom_styles/disabled = SubResource( 28 )
-custom_styles/hover_pressed = SubResource( 29 )
-custom_styles/normal = SubResource( 30 )
-custom_fonts/font = SubResource( 31 )
+custom_styles/hover = SubResource( 26 )
+custom_styles/pressed = SubResource( 27 )
+custom_styles/focus = SubResource( 28 )
+custom_styles/disabled = SubResource( 29 )
+custom_styles/hover_pressed = SubResource( 30 )
+custom_styles/normal = SubResource( 31 )
+custom_fonts/font = SubResource( 32 )
 custom_colors/font_color = Color( 0.145098, 0.172549, 0.231373, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 pressed = true
@@ -1928,7 +1928,7 @@ margin_right = 752.0
 margin_bottom = 491.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/read_only = SubResource( 32 )
+custom_styles/read_only = SubResource( 33 )
 custom_colors/selection_color = Color( 1, 1, 1, 0.196078 )
 custom_colors/background_color = Color( 0.14902, 0.172549, 0.231373, 1 )
 custom_colors/current_line_color = Color( 1, 1, 1, 0.0588235 )
@@ -1965,7 +1965,7 @@ align = 0
 margin_top = 597.0
 margin_right = 1004.0
 margin_bottom = 601.0
-custom_styles/separator = SubResource( 33 )
+custom_styles/separator = SubResource( 34 )
 
 [node name="NewFile" type="AcceptDialog" parent="Gist"]
 anchor_left = 0.5
@@ -2176,21 +2176,24 @@ __meta__ = {
 margin_top = 1.0
 margin_right = 33.0
 margin_bottom = 15.0
-custom_fonts/font = SubResource( 34 )
+hint_tooltip = "Version of this plugin: always check this plugin's GitHub repository for latest releases."
+mouse_filter = 1
+custom_fonts/font = SubResource( 35 )
 custom_colors/font_color = Color( 0.121569, 0.137255, 0.172549, 1 )
-text = "v 0.7.1"
+text = "v 0.7.3"
 
 [node name="debug" type="CheckBox" parent="datas"]
 margin_left = 48.0
 margin_right = 158.0
 margin_bottom = 16.0
-custom_styles/hover = SubResource( 35 )
-custom_styles/pressed = SubResource( 36 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/disabled = SubResource( 38 )
-custom_styles/hover_pressed = SubResource( 39 )
-custom_styles/normal = SubResource( 40 )
-custom_fonts/font = SubResource( 41 )
+hint_tooltip = "Leave it checked if you want to print debug messages in Output, uncheck this otherwise."
+custom_styles/hover = SubResource( 36 )
+custom_styles/pressed = SubResource( 37 )
+custom_styles/focus = SubResource( 38 )
+custom_styles/disabled = SubResource( 39 )
+custom_styles/hover_pressed = SubResource( 40 )
+custom_styles/normal = SubResource( 41 )
+custom_fonts/font = SubResource( 42 )
 custom_colors/font_color = Color( 0.131256, 0.145996, 0.179688, 1 )
 pressed = true
 text = "debug messages"
@@ -2212,7 +2215,7 @@ __meta__ = {
 }
 
 [node name="loading2" type="TextureRect" parent="loading"]
-material = SubResource( 7 )
+material = SubResource( 20 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -2257,7 +2260,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "..."
 align = 1
-[connection signal="visibility_changed" from="SingIn/signin_panel/loading" to="SingIn" method="_on_loading_visibility_changed"]
+[connection signal="pressed" from="SingIn/signin_panel/singup" to="SingIn" method="_on_singup_pressed"]
 [connection signal="item_selected" from="Repo/Panel2/List/branch2/branch2" to="Repo" method="_on_branch2_item_selected"]
 [connection signal="item_selected" from="Repo/Panel2/List/branch/branch2" to="Repo" method="_on_branch2_item_selected"]
 [connection signal="item_activated" from="Repo/Panel2/contents" to="Repo" method="_on_contents_item_activated"]
