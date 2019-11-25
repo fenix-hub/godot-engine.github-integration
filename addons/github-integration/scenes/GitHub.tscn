@@ -689,7 +689,6 @@ __meta__ = {
 }
 
 [node name="Repo" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 9 )
@@ -708,6 +707,9 @@ anchor_bottom = 1.0
 margin_left = 10.0
 margin_right = -10.0
 custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="close" type="Button" parent="Repo/Panel2"]
 margin_left = 984.0
@@ -1016,6 +1018,9 @@ size_flags_horizontal = 10
 size_flags_vertical = 0
 custom_constants/separation = 0
 alignment = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Label2" type="Label" parent="Repo/Panel2/List/branch/HBoxContainer6"]
 margin_right = 98.0
@@ -1255,6 +1260,49 @@ margin_bottom = 107.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 max_columns = 2
+
+[node name="extension_choosing" type="AcceptDialog" parent="Repo"]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -210.0
+margin_top = -47.5
+margin_right = 210.0
+margin_bottom = 47.5
+rect_min_size = Vector2( 0, 95 )
+window_title = "Pulling Repository"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Repo/extension_choosing"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Repo/extension_choosing/VBoxContainer"]
+margin_right = 404.0
+margin_bottom = 14.0
+text = "Choose an extension for the archive containing your repository:"
+
+[node name="extension_option" type="OptionButton" parent="Repo/extension_choosing/VBoxContainer"]
+margin_top = 18.0
+margin_right = 404.0
+margin_bottom = 38.0
+text = ".zip"
+items = [ ".zip", null, false, 0, null, ".tar.gz", null, false, 1, null ]
+selected = 0
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Commit" type="Control" parent="."]
 visible = false
@@ -2180,7 +2228,7 @@ hint_tooltip = "Version of this plugin: always check this plugin's GitHub reposi
 mouse_filter = 1
 custom_fonts/font = SubResource( 35 )
 custom_colors/font_color = Color( 0.121569, 0.137255, 0.172549, 1 )
-text = "v 0.7.3"
+text = "v 0.7.4"
 
 [node name="debug" type="CheckBox" parent="datas"]
 margin_left = 48.0
@@ -2268,6 +2316,8 @@ align = 1
 [connection signal="pressed" from="Repo/Panel2/repos_buttons/HBoxContainer/reload" to="Repo" method="_on_reload_pressed"]
 [connection signal="confirmed" from="Repo/extraction_request" to="Repo" method="_on_extraction_request_confirmed"]
 [connection signal="confirmed" from="Repo/extraction_overwriting" to="Repo" method="_on_extraction_overwriting_confirmed"]
+[connection signal="confirmed" from="Repo/extension_choosing" to="Repo" method="_on_extension_choosing_confirmed"]
+[connection signal="item_selected" from="Repo/extension_choosing/VBoxContainer/extension_option" to="Repo" method="_on_extension_option_item_selected"]
 [connection signal="dir_selected" from="Commit/FileDialog" to="Commit" method="_on_FileDialog_dir_selected"]
 [connection signal="file_selected" from="Commit/FileDialog" to="Commit" method="_on_FileDialog_file_selected"]
 [connection signal="files_selected" from="Commit/FileDialog" to="Commit" method="_on_FileDialog_files_selected"]

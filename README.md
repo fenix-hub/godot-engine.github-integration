@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/badge/plugin%20version-0.7.4-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
+[![version](https://img.shields.io/badge/plugin%20version-0.7.5-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
 [![updates](https://img.shields.io/badge/plugin%20updates-on%20discord-purple)](https://discord.gg/JNrcucg)
 [![paypal](https://img.shields.io/badge/donations-PayPal-cyan)](https://paypal.me/NSantilio?locale.x=it_IT)
 
@@ -11,7 +11,7 @@ This plugin is now supported in [Godot Extended Library Discord](https://discord
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *0.7.4*  
+Version: *0.7.5*  
 Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
 Godot Version: *3.2beta1*  
 
@@ -38,4 +38,5 @@ I don't assume any responsibility for possible corruptions of your project. It i
 
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
+
 

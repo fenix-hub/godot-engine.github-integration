@@ -21,6 +21,8 @@ onready var star_icon = $Panel2/List/repo_infos/star_values/star_icon
 onready var fork_icon = $Panel2/List/repo_infos/fork_values/fork_icon
 onready var forked_icon = $Panel2/List/repo_infos/forked_icon
 
+onready var extension_option = $extension_choosing/VBoxContainer/extension_option
+onready var extension_choosing = $extension_choosing
 onready var watch_value = $Panel2/List/repo_infos/watch_values/watch
 onready var star_value = $Panel2/List/repo_infos/star_values/star
 onready var fork_value = $Panel2/List/repo_infos/fork_values/fork
@@ -68,6 +70,7 @@ var multi_selected = []
 var gitignore_file : Dictionary
 
 var zip_filepath : String = ""
+var archive_extension : String = ""
 
 signal get_branches()
 signal get_contents()
@@ -78,6 +81,7 @@ signal new_branch_created()
 signal zip_pulled()
 
 func _ready():
+	branch3.clear()
 	DeleteRes.disabled = true
 	DeleteRes.connect("pressed",self,"delete_resource")
 	html_url_.connect("pressed",self,"open_html")
@@ -133,7 +137,7 @@ func open_repo(repo : TreeItem):
 
 func request_branches(rep : String):
 	branches_.clear()
-	
+	branch3.clear()
 	requesting = REQUESTS.BRANCHES
 	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/branches",UserData.header,false,HTTPClient.METHOD_GET,"")
 	yield(self,"get_branches")
@@ -408,25 +412,7 @@ func on_newbranch_confirmed():
 	yield(self,"new_branch_created")
 
 func on_pull_pressed():
-	requesting = REQUESTS.PULLING
-	
-	var zipfile = File.new()
-	zip_filepath = "res://"+current_repo.name+"-"+current_branch.name+".zip"
-	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
-	zipfile.close()
-	request.set_download_file(zip_filepath)
-	
-	var zip_url : String = current_branch._links.html.replace("tree","zipball").replace("github.com","api.github.com/repos")
-	request.request(zip_url,UserData.header,false,HTTPClient.METHOD_GET)
-	get_parent().loading(true)
-	get_parent().print_debug_message("pulling from selected branch, a .zip file will automatically be created at the end of the process in 'res://' ...")
-	yield(self,"zip_pulled")
-	requesting = REQUESTS.END
-	get_parent().print_debug_message(".zip file created with the selected branch inside, you can find it at -> "+zip_filepath)
-	get_parent().loading(false)
-	request.set_download_file("")
-	
-	ExtractionRequest.popup()
+	extension_choosing.popup()
 
 func _process(delta):
 	if requesting == REQUESTS.PULLING:
@@ -436,6 +422,7 @@ func _process(delta):
 func _on_reload_pressed():
 	get_parent().loading(true)
 	get_parent().print_debug_message("reloading all branches, please wait...")
+	branch3.clear()
 	contents.clear()
 	contents_.clear()
 	branches_.clear()
@@ -461,3 +448,35 @@ func _on_extraction_request_confirmed():
 
 func _on_extraction_overwriting_confirmed():
 	pass # Replace with function body.
+
+
+func _on_extension_option_item_selected(id):
+	archive_extension = extension_option.get_item_text(id)
+
+
+func _on_extension_choosing_confirmed():
+	requesting = REQUESTS.PULLING
+	
+	var zipfile = File.new()
+	zip_filepath = "res://"+current_repo.name+"-"+current_branch.name+archive_extension
+	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
+	zipfile.close()
+	request.set_download_file(zip_filepath)
+	var typeball : String = ""
+	match archive_extension:
+		".zip":
+			typeball = "zipball"
+		".tar.gz":
+			typeball = "tarball"
+	
+	var zip_url : String = current_branch._links.html.replace("tree",typeball).replace("github.com","api.github.com/repos")
+	request.request(zip_url,UserData.header,false,HTTPClient.METHOD_GET)
+	get_parent().loading(true)
+	get_parent().print_debug_message("pulling from selected branch, a "+archive_extension+" file will automatically be created at the end of the process in 'res://' ...")
+	yield(self,"zip_pulled")
+	requesting = REQUESTS.END
+	get_parent().print_debug_message(archive_extension+" file created with the selected branch inside, you can find it at -> "+zip_filepath)
+	get_parent().loading(false)
+	request.set_download_file("")
+	
+	ExtractionRequest.popup()
