@@ -205,10 +205,10 @@ func load_gitignore():
 	var dir = Directory.new()
 	if not dir.dir_exists(gitignore_filepath):
 		dir.make_dir_recursive(gitignore_filepath)
-		print("[GitHub Integration] >> ","made directory in user folder for this .gitignore file, at ",gitignore_filepath)
+		get_parent().print_debug_message(0,"made directory in user folder for this .gitignore file, at ",gitignore_filepath)
 	
 	var ignorefile = File.new()
-	var error = ignorefile.open(gitignore_filepath+"gitignore.txt",File.WRITE)
+	var error = ignorefile.open(gitignore_filepath+".gitignore",File.WRITE)
 	for line in range(0,Gitignore.get_line_count()):
 		var gitline = Gitignore.get_line(line)
 		ignorefile.store_line(gitline)
@@ -220,7 +220,7 @@ func load_gitignore():
 			pass
 	ignorefile.close()
 	
-	files.push_front(gitignore_filepath+"gitignore.txt")
+	files.push_front(gitignore_filepath+".gitignore")
 	
 	var filtered_files : Array = []
 	
@@ -239,6 +239,7 @@ func load_gitignore():
 	
 	files.clear()
 	files = filtered_files
+	files.push_front(gitignore_filepath+".gitignore")
 	emit_signal("files_filtered")
 
 # |---------------------------------------------------------|
@@ -304,7 +305,7 @@ func request_commit_tree():
 	requesting = REQUESTS.NEW_TREE
 	var tree = []
 	for i in range(0,files.size()):
-		if files[i].get_file() == "gitignore.txt":
+		if files[i].get_file() == ".gitignore":
 			tree.append({
 					"path":".gitignore",
 					"mode":"100644",
