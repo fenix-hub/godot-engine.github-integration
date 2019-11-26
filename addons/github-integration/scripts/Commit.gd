@@ -240,7 +240,6 @@ func load_gitignore():
 	files.clear()
 	files = filtered_files
 	files.push_front(gitignore_filepath+".gitignore")
-	print(files)
 	emit_signal("files_filtered")
 
 # |---------------------------------------------------------|
