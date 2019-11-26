@@ -113,7 +113,7 @@ func request_completed(result, response_code, headers, body ):
 			REQUESTS.UPLOAD:
 				if response_code == 201:
 					hide()
-					get_parent().print_debug_message("commited and pushed...")
+					print(get_parent().plugin_name,"commited and pushed...")
 					get_parent().UserPanel.request_repositories(get_parent().UserPanel.REQUESTS.UP_REPOS)
 				elif response_code == 422:
 					error.text = "Error: "+JSON.parse(body.get_string_from_utf8()).result.errors[0].message
@@ -123,46 +123,46 @@ func request_completed(result, response_code, headers, body ):
 					pass
 			REQUESTS.COMMIT:
 				if response_code == 201:
-					get_parent().print_debug_message("file committed!")
-					get_parent().print_debug_message(" ")
+					print(get_parent().plugin_name,"file committed!")
+					print(get_parent().plugin_name," ")
 					emit_signal("file_committed")
 				if response_code == 200:
-					get_parent().print_debug_message("file updated!")
-					get_parent().print_debug_message(" ")
+					print(get_parent().plugin_name,"file updated!")
+					print(get_parent().plugin_name," ")
 					emit_signal("file_committed")
 				if response_code == 422:
-					get_parent().print_debug_message("file already exists, skipping...")
-					get_parent().print_debug_message(" ")
+					print(get_parent().plugin_name,"file already exists, skipping...")
+					print(get_parent().plugin_name," ")
 					emit_signal("file_committed")
 			REQUESTS.LATEST_COMMIT:
 				if response_code == 200:
 					sha_latest_commit = JSON.parse(body.get_string_from_utf8()).result.object.sha
-					get_parent().print_debug_message("got last commit")
+					print(get_parent().plugin_name,"got last commit")
 					emit_signal("latest_commit")
 			REQUESTS.BASE_TREE:
 				if response_code == 200:
 					sha_base_tree = JSON.parse(body.get_string_from_utf8()).result.tree.sha
-					get_parent().print_debug_message("got base tree")
+					print(get_parent().plugin_name,"got base tree")
 					emit_signal("base_tree")
 			REQUESTS.BLOB:
 				if response_code == 201:
 					list_file_sha.append(JSON.parse(body.get_string_from_utf8()).result.sha)
-					get_parent().print_debug_message("blobbed file")
+					print(get_parent().plugin_name,"blobbed file")
 #					OS.delay_msec(1000)
 					emit_signal("file_blobbed")
 			REQUESTS.NEW_TREE:
 				if response_code == 201:
 						sha_new_tree = JSON.parse(body.get_string_from_utf8()).result.sha
-						get_parent().print_debug_message("created new tree of files")
+						print(get_parent().plugin_name,"created new tree of files")
 						emit_signal("new_tree")
 			REQUESTS.NEW_COMMIT:
 				if response_code == 201:
 					sha_new_commit = JSON.parse(body.get_string_from_utf8()).result.sha
-					get_parent().print_debug_message("created new commit")
+					print(get_parent().plugin_name,"created new commit")
 					emit_signal("new_commit")
 			REQUESTS.PUSH:
 				if response_code == 200:
-					get_parent().print_debug_message("pushed and committed with success!")
+					print(get_parent().plugin_name,"pushed and committed with success!")
 					get_parent().loading(false)
 					Loading.hide()
 					emit_signal("pushed")
@@ -193,7 +193,7 @@ func _on_Button_pressed():
 	get_parent().loading(true)
 	
 	load_gitignore()
-	get_parent().print_debug_message("fetching all files in project...")
+	print(get_parent().plugin_name,"fetching all files in project...")
 	
 	
 	request_sha_latest_commit()
@@ -205,10 +205,10 @@ func load_gitignore():
 	var dir = Directory.new()
 	if not dir.dir_exists(gitignore_filepath):
 		dir.make_dir_recursive(gitignore_filepath)
-		get_parent().print_debug_message(0,"made directory in user folder for this .gitignore file, at ",gitignore_filepath)
+		get_parent().print_debug_message(0,"made directory in user folder for this .gitignore file, at %s"%gitignore_filepath)
 	
 	var ignorefile = File.new()
-	var error = ignorefile.open(gitignore_filepath+".gitignore",File.WRITE)
+	var error = ignorefile.open(gitignore_filepath+"gitignore.txt",File.WRITE)
 	for line in range(0,Gitignore.get_line_count()):
 		var gitline = Gitignore.get_line(line)
 		ignorefile.store_line(gitline)
@@ -220,7 +220,7 @@ func load_gitignore():
 			pass
 	ignorefile.close()
 	
-	files.push_front(gitignore_filepath+".gitignore")
+	files.push_front(gitignore_filepath+"gitignore.txt")
 	
 	var filtered_files : Array = []
 	
@@ -239,7 +239,7 @@ func load_gitignore():
 	
 	files.clear()
 	files = filtered_files
-	files.push_front(gitignore_filepath+".gitignore")
+	files.push_front(gitignore_filepath+"gitignore.txt")
 	emit_signal("files_filtered")
 
 # |---------------------------------------------------------|
@@ -283,9 +283,11 @@ func request_blobs():
 			f.open(file,File.READ)
 			content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
 		
-		get_parent().print_debug_message("blobbing ~> "+file.get_file())
+#		for content in branches_contents:
+#			if content.path == file[0].lstrip(DIRECTORY+START_FROM+"/"):
+#				sha = content.sha
 		
-		
+		print(get_parent().plugin_name,"blobbing ~> "+file.get_file())
 		
 		var bod = {
 			"content":content,
@@ -297,7 +299,7 @@ func request_blobs():
 		
 		Progress.set_value(range_lerp(files.find(file),0,files.size(),0,100))
 	
-	get_parent().print_debug_message("blobbed each file with success, start committing...")
+	print(get_parent().plugin_name,"blobbed each file with success, start committing...")
 	Progress.set_value(100)
 	request_commit_tree()
 
@@ -305,7 +307,7 @@ func request_commit_tree():
 	requesting = REQUESTS.NEW_TREE
 	var tree = []
 	for i in range(0,files.size()):
-		if files[i].get_file() == ".gitignore":
+		if files[i].get_file() == "gitignore.txt":
 			tree.append({
 					"path":".gitignore",
 					"mode":"100644",
@@ -479,4 +481,3 @@ func on_nothing_selected():
 
 func about_gitignore_pressed():
 	OS.shell_open("https://git-scm.com/docs/gitignore")
-
