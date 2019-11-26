@@ -41,6 +41,3 @@ I don't assume any responsibility for possible corruptions of your project. It i
 
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
-
-
-
