@@ -114,7 +114,7 @@ void vertex() {
 
 [sub_resource type="ShaderMaterial" id=20]
 shader = SubResource( 19 )
-shader_param/speed = 0
+shader_param/speed = 5
 
 [sub_resource type="StyleBoxEmpty" id=21]
 
