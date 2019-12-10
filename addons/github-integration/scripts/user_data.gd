@@ -16,7 +16,8 @@ extends Node
 
 # saves and loads user datas from custom folder in user://github_integration/user_data.ud
 
-var directory = "user://github_integration/"
+var directory : String = ""
+var directory_name = "github_integration"
 var file_name = "user_data.ud"
 var avatar_name = "avatar.png"
 
@@ -35,10 +36,8 @@ var MAIL : String
 var header : Array
 
 
-
-
 func _ready():
-	pass # Replace with function body.
+	directory = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
 
 func save(user : Dictionary, avatar : PoolByteArray, auth : String, pwd : String, mail : String) -> void:
 	
@@ -48,10 +47,10 @@ func save(user : Dictionary, avatar : PoolByteArray, auth : String, pwd : String
 	
 	if not dir.dir_exists(directory):
 		dir.make_dir(directory)
-		print("[GitHub Integration] >> ","made custom directory in user folder, it is called 'github-integration'")
+		print("[GitHub Integration] >> ","made custom directory in user folder, it is placed at ", directory)
 		
 	if user!=null:
-		var err = file.open(directory+file_name,File.WRITE)
+		var err = file.open_encrypted_with_pass(directory+file_name,File.WRITE,OS.get_unique_id())
 		USER = user
 		AUTH = auth
 		PWD = pwd
@@ -79,6 +78,7 @@ func save(user : Dictionary, avatar : PoolByteArray, auth : String, pwd : String
 	header = ["Authorization: Basic "+AUTH]
 
 func load_user() -> PoolStringArray :
+	directory = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
 	var file = File.new()
 	var content : PoolStringArray
 	
@@ -86,7 +86,7 @@ func load_user() -> PoolStringArray :
 	
 	if file.file_exists(directory+file_name) :
 		print("[GitHub Integration] >> ","logfile found, fetching datas..")
-		file.open(directory+file_name,File.READ)
+		file.open_encrypted_with_pass(directory+file_name,File.READ,OS.get_unique_id())
 		content = file.get_csv_line()
 		AUTH = content[0]
 		MAIL = content[1]

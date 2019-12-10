@@ -72,6 +72,8 @@ var gitignore_file : Dictionary
 var zip_filepath : String = ""
 var archive_extension : String = ""
 
+var unzipper = load("res://addons/github-integration/resources/extraction/gdunzip.gd").new()
+
 signal get_branches()
 signal get_contents()
 signal get_branches_contents()
@@ -437,14 +439,29 @@ func _on_reload_pressed():
 	tree_sha = ""
 	open_repo(item_repo)
 
-func extraction_process():
+func gdscript_extraction():
+	var archive = unzipper.load(zip_filepath)
+	
+	if archive:
+		var root : String = unzipper.files.values()[0].file_name
+		for file in unzipper.files.values():
+			var uncompressed = unzipper.uncompress(file.file_name)
+			if uncompressed:
+				#print("File:" +file.file_name.lstrip(root))
+				if file.file_name.lstrip(root).get_base_dir()!='':
+					var dir : Directory = Directory.new()
+					dir.make_dir("res://uncompressed/"+file.file_name.lstrip(root).get_base_dir())
+					#print("Directory:" +file.file_name.lstrip(root).get_base_dir())
+				var uncompressed_file : File = File.new()
+				uncompressed_file.open("res://uncompressed/"+file.file_name.lstrip(root),File.WRITE)
+				uncompressed_file.store_string(uncompressed.get_string_from_utf8())
+				uncompressed_file.close()
+
+func python_extraction():
 	var output = []
 	var unzipper_path = ProjectSettings.globalize_path("res://addons/github-integration/resources/extraction/unzip.py")
 	var arguments : PoolStringArray = [unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
 	OS.execute("python",arguments,true)
-
-func _on_extraction_request_confirmed():
-	extraction_process()
 
 func _on_extraction_overwriting_confirmed():
 	pass # Replace with function body.
@@ -453,21 +470,26 @@ func _on_extraction_overwriting_confirmed():
 func _on_extension_option_item_selected(id):
 	archive_extension = extension_option.get_item_text(id)
 
-
 func _on_extension_choosing_confirmed():
 	requesting = REQUESTS.PULLING
+	
+	var typeball : String = ""
+	
+	match archive_extension:
+		".zip":
+			typeball = "zipball"
+		".tar.gz":
+			typeball = "tarball"
+		_:
+			archive_extension = ".zip"
+			typeball = "zipball"
 	
 	var zipfile = File.new()
 	zip_filepath = "res://"+current_repo.name+"-"+current_branch.name+archive_extension
 	zipfile.open_compressed(zip_filepath,File.WRITE,File.COMPRESSION_GZIP)
 	zipfile.close()
 	request.set_download_file(zip_filepath)
-	var typeball : String = ""
-	match archive_extension:
-		".zip":
-			typeball = "zipball"
-		".tar.gz":
-			typeball = "tarball"
+	
 	
 	var zip_url : String = current_branch._links.html.replace("tree",typeball).replace("github.com","api.github.com/repos")
 	request.request(zip_url,UserData.header,false,HTTPClient.METHOD_GET)
@@ -480,3 +502,13 @@ func _on_extension_choosing_confirmed():
 	request.set_download_file("")
 	
 	ExtractionRequest.popup()
+
+
+func _on_cancel_pressed():
+	ExtractionRequest.hide()
+
+func _on_gdscript_pressed():
+	gdscript_extraction()
+
+func _on_python_pressed():
+	python_extraction()
