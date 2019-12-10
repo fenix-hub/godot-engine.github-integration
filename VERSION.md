@@ -124,8 +124,20 @@
 **version 0.7.5**  
 *fixed*  
 - **minor bugs**  
-  
+ 
+--------------------
+
+**version 0.7.8**  
+*fixed*  
+- *[!] icon for log file* appeared even though there weren't log files already stored  
+
+*added*  
+- user's datas are now stored in an **encrypted file**, and datas are shared on an upper level folder. Now you won't need to save the same datas for each 'github integration' plugin you install in your new projects, but all the projects you have and in which you use this plugin will always use the same log file. This log file will be stored at `<path_to_user>/AppData/Roaming/Godot/github_integration/`  
+- the plugin now supports two different unzipping methods, one with a *Python script* and one with a *GDScript*. The second one is offered by an external plugin, which is the [gdunzip](https://github.com/jellehermsen/gdunzip) plugin developed by [jellehermsen](https://github.com/jellehermsen) (please, check it out!!).   **NOTE:** If you've got Python installed on your PC, it is recommended using the Python one, since the GDScript one is not developed by me and may not work. In that case, please make an issue with specific informations about the problem you've encountered, and I'll make sure to discuss about it with the developer.
+
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
+
+
 
 

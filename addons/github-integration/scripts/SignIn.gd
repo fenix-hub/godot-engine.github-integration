@@ -1,16 +1,3 @@
-# ----------------------------------------------
-#            ~{ GitHub Integration }~
-# [Author] Nicolò "fenix" Santilio 
-# [github] fenix-hub/godot-engine.github-integration
-# [version] 0.2.9
-# [date] 09.13.2019
-
-
-
-
-
-# -----------------------------------------------
-
 tool
 extends Control
 
@@ -37,6 +24,7 @@ var logfile = false
 
 
 func _ready():
+	logfile_icon.hide()
 	Error.hide()
 	btnSignIn.connect("pressed",self,"sign_in")
 	btnCreateToken.connect("pressed",self,"create_token")
@@ -45,7 +33,7 @@ func _ready():
 	signin_request.connect("request_completed",self,"signin_completed")
 	download_image.connect("request_completed",self,"signin_completed")
 	
-	if UserData.load_user().size():
+	if UserData.load_user().size() > 0:
 		logfile = true
 		logfile_icon.show()
 
@@ -53,6 +41,8 @@ func create_token():
 	OS.shell_open("https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line")
 
 func sign_in():
+	get_parent().print_debug_message("logging in...")
+	
 	if !logfile:
 		mail = Mail.text
 		password = Token.text
@@ -61,6 +51,8 @@ func sign_in():
 			auth = Marshalls.utf8_to_base64(mail+":"+password)
 			requesting = REQUESTS.LOGIN
 			signin_request.request("https://api.github.com/user",["Authorization: Basic "+auth],false,HTTPClient.METHOD_GET,"")
+		else:
+			get_parent().print_debug_message("Bad credentials - you need to insert your e-mail and password/token.",1)
 	else:
 		Mail.text = "<logfile.mail>"
 		Token.text = "<logfile.password>"
@@ -70,8 +62,6 @@ func sign_in():
 		requesting = REQUESTS.END
 		get_parent().loading(false)
 		hide()
-	
-	get_parent().print_debug_message("logging in...")
 
 func signin_completed(result, response_code, headers, body ):
 	if result == 0:
@@ -87,6 +77,8 @@ func signin_completed(result, response_code, headers, body ):
 					get_parent().loading(true)
 					Error.show()
 					Error.text = "Error: "+str((JSON.parse(body.get_string_from_utf8()).result).message)
+					get_parent().print_debug_message("Bad credentials - incorrect username or password.",1)
+					get_parent().loading(false)
 			REQUESTS.AVATAR:
 				UserData.save(user_data,body,auth,password,mail) 
 				emit_signal("signed")
@@ -94,8 +86,7 @@ func signin_completed(result, response_code, headers, body ):
 				requesting = REQUESTS.END
 				get_parent().loading(true)
 				hide()
-
-
+				get_parent().loading(false)
 
 func _on_singup_pressed():
 	OS.shell_open("https://github.com/join?source=header-home")

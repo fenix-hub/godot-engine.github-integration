@@ -1,16 +1,3 @@
-# ----------------------------------------------
-#            ~{ GitHub Integration }~
-# [Author] Nicolò "fenix" Santilio 
-# [github] fenix-hub/godot-engine.github-integration
-# [version] 0.2.9
-# [date] 09.13.2019
-
-
-
-
-
-# -----------------------------------------------
-
 tool
 extends Control
 
@@ -29,7 +16,6 @@ onready var NewGist = $Panel/List/gist_buttons/gist
 onready var GistDialog = $NewGist
 
 var request : HTTPRequest = HTTPRequest.new()
-#var request_gists : HTTPRequest = HTTPRequest.new()
 
 enum REQUESTS { REPOS = 0, GISTS = 1,  UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, END = -1 }
 var requesting

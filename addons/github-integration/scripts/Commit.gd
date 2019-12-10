@@ -205,7 +205,7 @@ func load_gitignore():
 	var dir = Directory.new()
 	if not dir.dir_exists(gitignore_filepath):
 		dir.make_dir_recursive(gitignore_filepath)
-		get_parent().print_debug_message(0,"made directory in user folder for this .gitignore file, at %s"%gitignore_filepath)
+		get_parent().print_debug_message("made directory in user folder for this .gitignore file, at %s"%gitignore_filepath)
 	
 	var ignorefile = File.new()
 	var error = ignorefile.open(gitignore_filepath+"gitignore.txt",File.WRITE)
@@ -474,10 +474,10 @@ func on_selectdirectory_pressed():
 	SelectFiles.popup()
 
 func on_item_selected(idx : int):
-	removefileBtn.set_disabled(true)
+	removefileBtn.set_disabled(false)
 
 func on_nothing_selected():
-	removefileBtn.set_disabled(false)
+	removefileBtn.set_disabled(true)
 
 func about_gitignore_pressed():
 	OS.shell_open("https://git-scm.com/docs/gitignore")
