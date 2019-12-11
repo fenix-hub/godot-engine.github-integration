@@ -15,6 +15,8 @@ Version: *0.7.8*
 Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
 Godot Version: *3.2beta1*  
 
+![m](/github-integration/screenshots/mainpanel1.PNG)
+
 ## What is this?
 *GitHub Integration* is a addon for Godot Engine that I've created mainly for a personal purpose.  
 Pushing and Pulling personal repositories while I'm working on Godot (especially if I'm under a GameJam) could take some time and force me to save the project, open the brwoser/git bash/git gui, and do all the stuff.  
