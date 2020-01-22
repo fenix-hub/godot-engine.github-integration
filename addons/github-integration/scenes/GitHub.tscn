@@ -1014,6 +1014,14 @@ margin_bottom = 20.0
 rect_clip_content = true
 text = "Pull from this Branch"
 
+[node name="git_lfs" type="Button" parent="Repo/Panel2/List/branch"]
+margin_left = 371.0
+margin_right = 467.0
+margin_bottom = 20.0
+rect_clip_content = true
+text = "Setup Git LFS"
+
+
 [node name="HBoxContainer6" type="HBoxContainer" parent="Repo/Panel2/List/branch"]
 margin_left = 829.0
 margin_right = 1004.0
@@ -1332,6 +1340,103 @@ margin_bottom = 107.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 max_columns = 2
+
+[node name="setup_git_lfs" type="ConfirmationDialog" parent="Repo"]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -226.0
+margin_top = -133.5
+margin_right = 225.0
+margin_bottom = 133.5
+window_title = "Stup Git LFS"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Repo/setup_git_lfs"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -217.5
+margin_top = -125.5
+margin_right = 217.5
+margin_bottom = 97.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Repo/setup_git_lfs/VBoxContainer"]
+margin_right = 435.0
+margin_bottom = 31.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "List the file extensions you want to track with git LFS, then press \"OK\" to proceed or \"Cancel\" to end this Setup."
+autowrap = true
+
+[node name="whatis" type="LinkButton" parent="Repo/setup_git_lfs/VBoxContainer"]
+margin_left = 333.0
+margin_top = 35.0
+margin_right = 435.0
+margin_bottom = 49.0
+size_flags_horizontal = 8
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "What is Git LFS?"
+
+[node name="extensions_list" type="TextEdit" parent="Repo/setup_git_lfs/VBoxContainer"]
+margin_top = 53.0
+margin_right = 435.0
+margin_bottom = 223.0
+hint_tooltip = "List the file extensions you want to track with git LFS"
+size_flags_vertical = 3
+text = "psd
+inkscape
+mp4
+svg"
+show_line_numbers = true
+wrap_enabled = true
+
+[node name="whatis_dialog" type="WindowDialog" parent="Repo"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -201.5
+margin_top = -96.0
+margin_right = 200.5
+margin_bottom = 96.0
+window_title = "What is Git LFS?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Repo/whatis_dialog"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -187.0
+margin_top = -83.5
+margin_right = 188.0
+margin_bottom = 32.5
+custom_colors/font_color = Color( 1, 0, 0.235294, 1 )
+text = "GitHub repositories have a default size limit on files you can upload, which consists of 100MB per file.
+If you want to overcome this limit, you have to setup the Git Large Storage extension for your repository.
+You don't need to download or set it up manually on your machine. just list the file extension you want to track for your Git LFS, and this plugin will do the rest."
+autowrap = true
+
+[node name="learnmore" type="LinkButton" parent="Repo/whatis_dialog"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -97.0
+margin_top = 69.0
+margin_right = 97.0
+margin_bottom = 83.0
+text = "Learn more about Git LFS here"
 
 [node name="extension_choosing" type="AcceptDialog" parent="Repo"]
 anchor_left = 0.5
@@ -2389,6 +2494,8 @@ align = 1
 [connection signal="pressed" from="Repo/extraction_request/VBoxContainer/buttons/gdscript" to="Repo" method="_on_gdscript_pressed"]
 [connection signal="pressed" from="Repo/extraction_request/VBoxContainer/buttons/cancel" to="Repo" method="_on_cancel_pressed"]
 [connection signal="confirmed" from="Repo/extraction_overwriting" to="Repo" method="_on_extraction_overwriting_confirmed"]
+[connection signal="confirmed" from="Repo/setup_git_lfs" to="Repo" method="_on_setup_git_lfs_confirmed"]
+[connection signal="pressed" from="Repo/setup_git_lfs/VBoxContainer/whatis" to="Repo" method="_on_whatis_pressed"]
 [connection signal="confirmed" from="Repo/extension_choosing" to="Repo" method="_on_extension_choosing_confirmed"]
 [connection signal="item_selected" from="Repo/extension_choosing/VBoxContainer/extension_option" to="Repo" method="_on_extension_option_item_selected"]
 [connection signal="dir_selected" from="Commit/FileDialog" to="Commit" method="_on_FileDialog_dir_selected"]

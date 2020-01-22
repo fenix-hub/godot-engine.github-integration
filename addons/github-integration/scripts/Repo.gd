@@ -44,11 +44,17 @@ onready var reload = $Panel2/repos_buttons/HBoxContainer/reload
 onready var new_branchBtn = $Panel2/List/branch/new_branchBtn
 onready var newBranch = $NewBranch
 onready var pull_btn = $Panel2/List/branch/pull_btn
+onready var git_lfs = $Panel2/List/branch/git_lfs
 
 onready var branch3 = $NewBranch/VBoxContainer/HBoxContainer2/branch3
 
 onready var ExtractionRequest = $extraction_request
 onready var ExtractionOverwriting = $extraction_overwriting
+
+onready var SetupDialog = $setup_git_lfs
+onready var WhatIsDialog = $whatis_dialog
+
+onready var ExtensionsList = $setup_git_lfs/VBoxContainer/extensions_list
 
 enum REQUESTS { REPOS = 0, GISTS = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 , FILE_CONTENT = 10 ,NEW_BRANCH = 11 , PULLING = 12}
 var requesting
@@ -95,6 +101,7 @@ func _ready():
 	new_branchBtn.connect("pressed",self,"on_newbranch_pressed")
 	newBranch.connect("confirmed",self,"on_newbranch_confirmed")
 	pull_btn.connect("pressed",self,"on_pull_pressed")
+	git_lfs.connect("pressed",self,"setup_git_lfs")
 
 func load_icons(r):
 	repo_icon.set_texture(IconLoaderGithub.load_icon_from_name("repos"))
@@ -108,6 +115,7 @@ func load_icons(r):
 	reload.set_button_icon(IconLoaderGithub.load_icon_from_name("reload"))
 	new_branchBtn.set_button_icon(IconLoaderGithub.load_icon_from_name("add"))
 	pull_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("download"))
+	git_lfs.set_button_icon(IconLoaderGithub.load_icon_from_name("git_lfs"))
 
 func open_repo(repo : TreeItem):
 	item_repo = repo
@@ -503,6 +511,19 @@ func _on_extension_choosing_confirmed():
 	
 	ExtractionRequest.popup()
 
+func setup_git_lfs():
+	var path : String = UserData.directory+current_repo.name+"/"+current_branch.name+"/.gitattributes"
+	var extensions : String = ""
+	if File.new().file_exists(path) :
+		get_parent().print_debug_message(".gitattributes file already set for this repository. You can overwrite it.")
+		var gitattributes = File.new()
+		gitattributes.open(path,File.READ)
+		ExtensionsList.set_text("")
+		while not gitattributes.eof_reached():
+			extensions += (gitattributes.get_line().split(" "))[0].replace("*","")+"\n"
+		ExtensionsList.set_text(extensions)
+	
+	SetupDialog.popup()
 
 func _on_cancel_pressed():
 	ExtractionRequest.hide()
@@ -512,3 +533,30 @@ func _on_gdscript_pressed():
 
 func _on_python_pressed():
 	python_extraction()
+
+
+func _on_whatis_pressed():
+	WhatIsDialog.popup()
+
+func _on_learnmore_pressed():
+	OS.shell_open("https://git-lfs.github.com")
+
+func _on_setup_git_lfs_confirmed():
+	var exstensionList : Array = []
+	if ExtensionsList.get_line_count() > 0 and ExtensionsList.get_line(0) != "":
+		for exstension in ExtensionsList.get_line_count():
+			exstensionList.append(ExtensionsList.get_line(exstension))
+	setup_gitlfs(exstensionList)
+
+func setup_gitlfs(extensions : Array):
+	var gitattributes = File.new()
+	var dir = Directory.new()
+	var directory : String = UserData.directory+current_repo.name+"/"+current_branch.name
+	if not dir.dir_exists(directory):
+		dir.make_dir(directory)
+	gitattributes.open(directory+"/.gitattributes",File.WRITE_READ)
+	for extension in extensions:
+		var tracking : String = "*."+extension+" filter=lfs diff=lfs merge=lfs -text"
+		gitattributes.store_line(tracking)
+	gitattributes.close()
+	get_parent().print_debug_message("New .gitattributes created with the file extensions you want to track. It will be uploaded to you repository during the next push.")

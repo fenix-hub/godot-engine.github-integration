@@ -6,7 +6,8 @@
 # [date] 09.13.2019
 
 
-
+# Committing this repo I always need to delete all .import files
+# and don't import this gitignore.
 
 
 # -----------------------------------------------
@@ -20,10 +21,7 @@ onready var _message = $VBoxContainer2/HBoxContainer7/message
 onready var _branch = $VBoxContainer2/HBoxContainer2/branch
 onready var file_chooser = $FileDialog
 onready var repository = $VBoxContainer2/HBoxContainer/repository
-onready var _filters = $VBoxContainer2/HBoxContainer6/filters
-onready var _only = $VBoxContainer2/HBoxContainer8/only
 onready var Loading = $VBoxContainer2/loading2
-onready var _start_from = $VBoxContainer2/HBoxContainer9/start_from
 
 onready var Gitignore = $VBoxContainer2/HBoxContainer3/VBoxContainer2/gitignore
 onready var gitignoreBtn = $VBoxContainer2/HBoxContainer3/VBoxContainer2/girignorebuttons/gitignoreBtn
@@ -38,7 +36,7 @@ onready var Progress = $VBoxContainer2/ProgressBar
 
 onready var Uncommitted = $VBoxContainer2/HBoxContainer3/VBoxContainer/uncommitted
 
-enum REQUESTS { UPLOAD = 0, UPDATE = 1, BLOB = 2 , LATEST_COMMIT = 4, BASE_TREE = 5, NEW_TREE = 8, NEW_COMMIT = 6, PUSH = 7, COMMIT = 9, END = -1 }
+enum REQUESTS { UPLOAD = 0, UPDATE = 1, BLOB = 2 , LATEST_COMMIT = 4, BASE_TREE = 5, NEW_TREE = 8, NEW_COMMIT = 6, PUSH = 7, COMMIT = 9, LFS = 10, END = -1 }
 var requesting
 var new_repo = HTTPRequest.new()
 
@@ -58,13 +56,12 @@ var sha_new_tree
 var sha_new_commit
 
 var list_file_sha = []
+var list_file_size = []
+var lfs = []
 
 var gitignore_file : Dictionary
 
 const DIRECTORY : String = "res://"
-var EXCEPTIONS : PoolStringArray = []           # don't commit this stuff
-var ONLY : PoolStringArray = []                 # commit only this stuff
-var START_FROM : String = ""
 const GITIGNOREPATH : String = "user://gitignores/"
 
 var IGNORE_FILES : PoolStringArray = []
@@ -80,6 +77,7 @@ signal file_blobbed()
 signal file_committed()
 signal pushed()
 signal files_filtered()
+signal lfs()
 
 func _ready():
 	new_repo.use_threads = true
@@ -107,13 +105,12 @@ func connect_signals():
 	about_gitignoreBtn.connect("pressed",self,"about_gitignore_pressed")
 
 func request_completed(result, response_code, headers, body ):
-#	print(response_code," ",JSON.parse(body.get_string_from_utf8()).result)
 	if result == 0:
 		match requesting:
 			REQUESTS.UPLOAD:
 				if response_code == 201:
 					hide()
-					print(get_parent().plugin_name,"commited and pushed...")
+					get_parent().print_debug_message("commited and pushed...")
 					get_parent().UserPanel.request_repositories(get_parent().UserPanel.REQUESTS.UP_REPOS)
 				elif response_code == 422:
 					error.text = "Error: "+JSON.parse(body.get_string_from_utf8()).result.errors[0].message
@@ -123,49 +120,56 @@ func request_completed(result, response_code, headers, body ):
 					pass
 			REQUESTS.COMMIT:
 				if response_code == 201:
-					print(get_parent().plugin_name,"file committed!")
-					print(get_parent().plugin_name," ")
+					get_parent().print_debug_message("file committed!")
+					get_parent().print_debug_message(" ")
 					emit_signal("file_committed")
 				if response_code == 200:
-					print(get_parent().plugin_name,"file updated!")
-					print(get_parent().plugin_name," ")
+					get_parent().print_debug_message("file updated!")
+					get_parent().print_debug_message(" ")
 					emit_signal("file_committed")
 				if response_code == 422:
-					print(get_parent().plugin_name,"file already exists, skipping...")
-					print(get_parent().plugin_name," ")
+					get_parent().print_debug_message("file already exists, skipping...")
+					get_parent().print_debug_message(" ")
 					emit_signal("file_committed")
 			REQUESTS.LATEST_COMMIT:
 				if response_code == 200:
 					sha_latest_commit = JSON.parse(body.get_string_from_utf8()).result.object.sha
-					print(get_parent().plugin_name,"got last commit")
+					get_parent().print_debug_message("got last commit")
 					emit_signal("latest_commit")
 			REQUESTS.BASE_TREE:
 				if response_code == 200:
 					sha_base_tree = JSON.parse(body.get_string_from_utf8()).result.tree.sha
-					print(get_parent().plugin_name,"got base tree")
+					get_parent().print_debug_message("got base tree")
 					emit_signal("base_tree")
 			REQUESTS.BLOB:
-				if response_code == 201:
 					list_file_sha.append(JSON.parse(body.get_string_from_utf8()).result.sha)
-					print(get_parent().plugin_name,"blobbed file")
+					get_parent().print_debug_message("blobbed file")
 #					OS.delay_msec(1000)
 					emit_signal("file_blobbed")
 			REQUESTS.NEW_TREE:
 				if response_code == 201:
 						sha_new_tree = JSON.parse(body.get_string_from_utf8()).result.sha
-						print(get_parent().plugin_name,"created new tree of files")
+						get_parent().print_debug_message("created new tree of files")
 						emit_signal("new_tree")
 			REQUESTS.NEW_COMMIT:
 				if response_code == 201:
 					sha_new_commit = JSON.parse(body.get_string_from_utf8()).result.sha
-					print(get_parent().plugin_name,"created new commit")
+					get_parent().print_debug_message("created new commit")
 					emit_signal("new_commit")
 			REQUESTS.PUSH:
 				if response_code == 200:
-					print(get_parent().plugin_name,"pushed and committed with success!")
+					get_parent().print_debug_message("pushed and committed with success!")
+					if not lfs.size():
+						get_parent().loading(false)
+						Loading.hide()
+					emit_signal("pushed")
+			REQUESTS.LFS:
+				if response_code == 200:
+					print(response_code," ",JSON.parse(body.get_string_from_utf8()).result)
+					get_parent().print_debug_message("pushed all git lfs files!")
 					get_parent().loading(false)
 					Loading.hide()
-					emit_signal("pushed")
+					emit_signal("lfs")
 
 func load_branches(br : Array, s_r : Dictionary, ct : Array, gitignore : Dictionary) :
 	_branch.clear()
@@ -200,7 +204,9 @@ func _on_Button_pressed():
 
 # ------- gitignore ----
 func load_gitignore():
-	var gitignore_filepath = GITIGNOREPATH+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/"
+	list_file_size.clear()
+	
+	var gitignore_filepath = UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/"
 	
 	var dir = Directory.new()
 	if not dir.dir_exists(gitignore_filepath):
@@ -208,7 +214,7 @@ func load_gitignore():
 		get_parent().print_debug_message("made directory in user folder for this .gitignore file, at %s"%gitignore_filepath)
 	
 	var ignorefile = File.new()
-	var error = ignorefile.open(gitignore_filepath+"gitignore.txt",File.WRITE)
+	var error = ignorefile.open(gitignore_filepath+".gitignore",File.WRITE)
 	for line in range(0,Gitignore.get_line_count()):
 		var gitline = Gitignore.get_line(line)
 		ignorefile.store_line(gitline)
@@ -220,7 +226,17 @@ func load_gitignore():
 			pass
 	ignorefile.close()
 	
-	files.push_front(gitignore_filepath+"gitignore.txt")
+	# load the gitignore
+	files.push_front(gitignore_filepath+".gitignore")
+#	list_file_size.append(0)
+	
+	# load the gitattributes
+	if File.new().file_exists(UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/.gitattributes"):
+		files.push_front(UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/.gitattributes")
+#		list_file_size.append(0)
+	
+	
+	lfs.clear()
 	
 	var filtered_files : Array = []
 	
@@ -236,10 +252,14 @@ func load_gitignore():
 		
 		if not filter_file:
 			filtered_files.append(file)
+			var size = File.new()
+			size.open(file,File.READ)
+			list_file_size.append(size.get_len())
+			size.close()
 	
 	files.clear()
 	files = filtered_files
-	files.push_front(gitignore_filepath+"gitignore.txt")
+#	files.push_front(gitignore_filepath+".gitignore")
 	emit_signal("files_filtered")
 
 # |---------------------------------------------------------|
@@ -261,42 +281,48 @@ func request_blobs():
 	list_file_sha.clear()
 	
 	for file in files:
-		var content = ""
-		var sha = "" # is set to update a file
-		
-		## this cases are not really necessary, will be used in future versions
-		
-		if file.get_extension()=="png" or file[0].get_extension()=="jpg":
-			## for images
-			var img_src = File.new()
-			img_src.open(file,File.READ)
-			content = Marshalls.raw_to_base64(img_src.get_buffer(img_src.get_len()))
+		if list_file_size[files.find(file)] < 104857600:
+			var content = ""
+			var sha = "" # is set to update a file
 			
-		elif file.get_extension()=="ttf":
-			## for fonts
-			var font = File.new()
-			font.open(file,File.READ)
-			content = Marshalls.raw_to_base64(font.get_buffer(font.get_len()))
+			## this cases are not really necessary, will be used in future versions
+			
+			if file.get_extension()=="png" or file[0].get_extension()=="jpg":
+				## for images
+				var img_src = File.new()
+				img_src.open(file,File.READ)
+				content = Marshalls.raw_to_base64(img_src.get_buffer(img_src.get_len()))
+				
+			elif file.get_extension()=="ttf":
+				## for fonts
+				var font = File.new()
+				font.open(file,File.READ)
+				content = Marshalls.raw_to_base64(font.get_buffer(font.get_len()))
+			else:
+				## for readable files
+				var f = File.new()
+				f.open(file,File.READ)
+				content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
+			
+	#		for content in branches_contents:
+	#			if content.path == file[0].lstrip(DIRECTORY+START_FROM+"/"):
+	#				sha = content.sha
+			
+			print(get_parent().plugin_name,"blobbing ~> "+file.get_file())
+			
+			var bod = {
+				"content":content,
+				"encoding":"base64",
+			}
+			
+			new_repo.request("https://api.github.com/repos/"+UserData.USER.login+"/"+repo_selected.name+"/git/blobs",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
+			yield(self,"file_blobbed")
 		else:
-			## for readable files
-			var f = File.new()
-			f.open(file,File.READ)
-			content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
-		
-#		for content in branches_contents:
-#			if content.path == file[0].lstrip(DIRECTORY+START_FROM+"/"):
-#				sha = content.sha
-		
-		print(get_parent().plugin_name,"blobbing ~> "+file.get_file())
-		
-		var bod = {
-			"content":content,
-			"encoding":"base64",
-		}
-		
-		new_repo.request("https://api.github.com/repos/"+UserData.USER.login+"/"+repo_selected.name+"/git/blobs",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
-		yield(self,"file_blobbed")
-		
+			var output = []
+			OS.execute( 'git', [ "lfs", "pointer",'--file',ProjectSettings.globalize_path(file)], true, output )
+			var oid : String = output[0].split(":",false)[2]
+			var onlyoid : String = oid.rstrip("size").split(" ")[0].replace("\nsize","")
+			list_file_sha.append(onlyoid)
 		Progress.set_value(range_lerp(files.find(file),0,files.size(),0,100))
 	
 	print(get_parent().plugin_name,"blobbed each file with success, start committing...")
@@ -307,22 +333,32 @@ func request_commit_tree():
 	requesting = REQUESTS.NEW_TREE
 	var tree = []
 	for i in range(0,files.size()):
-		if files[i].get_file() == "gitignore.txt":
-			tree.append({
-					"path":".gitignore",
+		if list_file_size[i] < 104857600:
+			if files[i].get_file() == ".gitignore":
+				tree.append({
+						"path":".gitignore",
+						"mode":"100644",
+						"type":"blob",
+						"sha":list_file_sha[i],
+						})
+			elif files[i].get_file() == ".gitattributes":
+				tree.append({
+						"path":".gitattributes",
+						"mode":"100644",
+						"type":"blob",
+						"sha":list_file_sha[i],
+						})
+			else:
+				tree.append({
+					"path":files[i].right((DIRECTORY).length()),
 					"mode":"100644",
 					"type":"blob",
 					"sha":list_file_sha[i],
 					})
 		else:
-			tree.append({
-				"path":files[i].right((DIRECTORY).length()),
-				"mode":"100644",
-				"type":"blob",
-				"sha":list_file_sha[i],
-				})
+			lfs.append({"oid": list_file_sha[i],"size": list_file_size[i]})
 	
-	var bod = {
+	var bod : Dictionary  = {
 		"base_tree": sha_base_tree,
 		"tree":tree
 		}
@@ -352,22 +388,17 @@ func request_push_commit():
 	new_repo.request("https://api.github.com/repos/"+UserData.USER.login+"/"+repo_selected.name+"/git/refs/heads/"+_branch.get_item_text(branch_idx),UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
 	yield(self,"pushed")
 	
+	if lfs.size() > 0:
+		requesting = REQUESTS.LFS
+		var body = {"operation": "upload","ref": {"name":"refs/heads/"+_branch.get_item_text(branch_idx)},"transfers": [ "basic" ],"objects": lfs}
+		new_repo.request("https://github.com/"+UserData.USER.login+"/"+repo_selected.name+UserData.gitlfs_request,UserData.gitlfs_header,false,HTTPClient.METHOD_POST,JSON.print(body))
+		yield(self,"lfs")
+	
 	empty_fileds()
 	Progress.set_value(0)
 	get_parent().Repo._on_reload_pressed()
 
 # --------------------------------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-func _on_filters_pressed():
-	$filters_dialog.popup()
-
-
-func _on_only_pressed():
-	$only_dialog.popup()
-
-func _on_start_from_pressed():
-	$start_from.popup()
 
 func _on_loading2_visibility_changed():
 	var Mat = Loading.get_material()
@@ -389,16 +420,8 @@ func empty_fileds():
 	sha_new_tree = ""
 	sha_new_commit = ""
 	list_file_sha.clear()
-	EXCEPTIONS.resize(0)
 	IGNORE_FILES.resize(0)
 	IGNORE_FOLDERS.resize(0)
-	ONLY.resize(0)
-	START_FROM = ""
-	
-	_filters.text = ""
-	_only.text = ""
-	_start_from.text = ""
-	
 	_message.text = ""
 	
 	Uncommitted.clear()

@@ -12,7 +12,7 @@ onready var btnSignIn = $signin_panel/HBoxContainer3/btnSignIn
 onready var btnCreateToken = $signin_panel/HBoxContainer3/btnCreateToken
 
 var mail : String 
-var password : String
+var token : String
 var signin_request = HTTPRequest.new()
 var download_image = HTTPRequest.new()
 var auth
@@ -45,12 +45,12 @@ func sign_in():
 	
 	if !logfile:
 		mail = Mail.text
-		password = Token.text
-		if mail!="" and password!="":
+		token = Token.text
+		if mail!="" and token!="":
 			get_parent().loading(true)
-			auth = Marshalls.utf8_to_base64(mail+":"+password)
+			auth = Marshalls.utf8_to_base64(mail+":"+token)
 			requesting = REQUESTS.LOGIN
-			signin_request.request("https://api.github.com/user",["Authorization: Basic "+auth],false,HTTPClient.METHOD_GET,"")
+			signin_request.request("https://api.github.com/user",["Authorization: token "+token],false,HTTPClient.METHOD_GET,"")
 		else:
 			get_parent().print_debug_message("Bad credentials - you need to insert your e-mail and password/token.",1)
 	else:
@@ -80,7 +80,7 @@ func signin_completed(result, response_code, headers, body ):
 					get_parent().print_debug_message("Bad credentials - incorrect username or password.",1)
 					get_parent().loading(false)
 			REQUESTS.AVATAR:
-				UserData.save(user_data,body,auth,password,mail) 
+				UserData.save(user_data,body,auth,token,mail) 
 				emit_signal("signed")
 				yield(get_parent().UserPanel,"completed_loading")
 				requesting = REQUESTS.END

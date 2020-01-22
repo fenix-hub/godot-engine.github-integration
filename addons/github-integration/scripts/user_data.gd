@@ -30,16 +30,18 @@ var USER : Dictionary
 
 var AUTH : String
 var AVATAR : ImageTexture
-var PWD : String
+var TOKEN : String
 var MAIL : String
 
-var header : Array
+var header : Array = [""]
+var gitlfs_header : Array = [""]
+var gitlfs_request : String = ".git/info/lfs/objects/batch"
 
 
 func _ready():
 	directory = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
 
-func save(user : Dictionary, avatar : PoolByteArray, auth : String, pwd : String, mail : String) -> void:
+func save(user : Dictionary, avatar : PoolByteArray, auth : String, token : String, mail : String) -> void:
 	
 	var dir = Directory.new()
 	var file = File.new()
@@ -53,12 +55,12 @@ func save(user : Dictionary, avatar : PoolByteArray, auth : String, pwd : String
 		var err = file.open_encrypted_with_pass(directory+file_name,File.WRITE,OS.get_unique_id())
 		USER = user
 		AUTH = auth
-		PWD = pwd
+		TOKEN = token
 		MAIL = mail
 		var formatting : PoolStringArray
 		formatting.append(auth)                     #0
 		formatting.append(mail)                     #1
-		formatting.append(pwd)                      #2
+		formatting.append(token)                    #2
 		formatting.append(JSON.print(user))         #3
 		file.store_csv_line(formatting)
 		file.close()
@@ -75,7 +77,7 @@ func save(user : Dictionary, avatar : PoolByteArray, auth : String, pwd : String
 		img_text.create_from_image(av)
 		AVATAR = img_text
 	
-	header = ["Authorization: Basic "+AUTH]
+	header = ["Authorization: token "+token]
 
 func load_user() -> PoolStringArray :
 	directory = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
@@ -90,7 +92,7 @@ func load_user() -> PoolStringArray :
 		content = file.get_csv_line()
 		AUTH = content[0]
 		MAIL = content[1]
-		PWD = content[2]
+		TOKEN = content[2]
 		USER = JSON.parse(content[3]).result
 		
 		var av : Image = Image.new()
@@ -100,7 +102,11 @@ func load_user() -> PoolStringArray :
 		
 		
 		AVATAR = img_text
-		header = ["Authorization: Basic "+AUTH]
+		header = ["Authorization: token "+TOKEN]
+		gitlfs_header = [
+			"Accept: application/vnd.git-lfs+json",
+			"Content-Type: application/vnd.git-lfs+json"]
+		gitlfs_header.append(header[0])
 	else:
 		printerr("[GitHub Integration] >> ","no logfile found, log in for the first time to create a logfile.")
 	
