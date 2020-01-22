@@ -13,6 +13,7 @@ func _ready():
 
 func _on_loading_visibility_changed():
 	if visible:
+		$loading2.show()
 		$loading2.material.set_shader_param("speed",5)
 	else:
 		Progress.hide()

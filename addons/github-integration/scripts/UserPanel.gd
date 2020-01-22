@@ -149,7 +149,7 @@ func request_gists(req : int):
 
 func request_repositories(req : int):
 	requesting = req
-	request.request("https://api.github.com/user/repos",UserData.header,false,HTTPClient.METHOD_GET,"")
+	request.request("https://api.github.com/user/repos?per_page=100",UserData.header,false,HTTPClient.METHOD_GET,"")
 
 func new_repo():
 	get_parent().NewRepo.popup()

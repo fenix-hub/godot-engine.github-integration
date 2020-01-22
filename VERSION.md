@@ -130,10 +130,23 @@
 **version 0.7.8**  
 *fixed*  
 - *[!] icon for log file* appeared even though there weren't log files already stored  
+- increased the number of repositories that will be listed. Default GitHub repository listing provides only 30 repositories at time. Now the limit is increased to 100.
 
 *added*  
 - user's datas are now stored in an **encrypted file**, and datas are shared on an upper level folder. Now you won't need to save the same datas for each 'github integration' plugin you install in your new projects, but all the projects you have and in which you use this plugin will always use the same log file. This log file will be stored at `<path_to_user>/AppData/Roaming/Godot/github_integration/`  
 - the plugin now supports two different unzipping methods, one with a *Python script* and one with a *GDScript*. The second one is offered by an external plugin, which is the [gdunzip](https://github.com/jellehermsen/gdunzip) plugin developed by [jellehermsen](https://github.com/jellehermsen) (please, check it out!!).   **NOTE:** If you've got Python installed on your PC, it is recommended using the Python one, since the GDScript one is not developed by me and may not work. In that case, please make an issue with specific informations about the problem you've encountered, and I'll make sure to discuss about it with the developer.
+
+--------------------
+
+**version 1.0.0**  
+*fixed*  
+- autoload errors with 3.2 beta versions (and so on) 
+- some interface bugs  
+- minor bugfixes
+  
+*added*
+- **new authentication method** : it is now possible to log into your GitHub profile with an *Access Token*. Since GitHub will deprecate the basic authentication method (which consists of `your e-mail : your password`) this plugin will **only work** with your personal access token.  
+Please, visit [this site](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) to understand what a Personal Access Token is, and how to use it. You will also find this link as a button in the plugin.  
 
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
