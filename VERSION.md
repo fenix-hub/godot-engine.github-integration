@@ -138,7 +138,7 @@
 
 --------------------
 
-**version 1.0.0**  
+**version 0.8.0**  
 *fixed*  
 - autoload errors with 3.2 beta versions (and so on) 
 - some interface bugs  
