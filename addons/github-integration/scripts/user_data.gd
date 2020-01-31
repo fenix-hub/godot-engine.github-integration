@@ -37,6 +37,7 @@ var header : Array = [""]
 var gitlfs_header : Array = [""]
 var gitlfs_request : String = ".git/info/lfs/objects/batch"
 
+var plugin_version : String = "0.8.2"
 
 func _ready():
 	directory = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
@@ -62,6 +63,7 @@ func save(user : Dictionary, avatar : PoolByteArray, auth : String, token : Stri
 		formatting.append(mail)                     #1
 		formatting.append(token)                    #2
 		formatting.append(JSON.print(user))         #3
+		formatting.append(plugin_version)           #4
 		file.store_csv_line(formatting)
 		file.close()
 		print("[GitHub Integration] >> ","saved user datas in user folder")
@@ -90,6 +92,15 @@ func load_user() -> PoolStringArray :
 		print("[GitHub Integration] >> ","logfile found, fetching datas..")
 		file.open_encrypted_with_pass(directory+file_name,File.READ,OS.get_unique_id())
 		content = file.get_csv_line()
+		
+		if content.size() < 5:
+			printerr("[GitHub Integration] >> ","this log file belongs to an older version of this plugin and will not support the mail/password login deprecation, so it will be deleted. Please, insert your credentials again.")
+			file.close()
+			var dir = Directory.new()
+			dir.remove(directory+file_name)
+			content = []
+			return content
+		
 		AUTH = content[0]
 		MAIL = content[1]
 		TOKEN = content[2]

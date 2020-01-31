@@ -13,7 +13,7 @@
 
 tool
 extends EditorPlugin
-var doc = preload("../scenes/GitHub.tscn")
+var doc
 var IconLoaderGithub = preload("res://addons/github-integration/scripts/IconLoaderGithub.gd").new()
 var UserData = preload("res://addons/github-integration/scripts/user_data.gd").new()
 var GitHubDoc
@@ -21,6 +21,7 @@ var GitHubDoc
 func _enter_tree():
 	self.add_autoload_singleton("UserData","res://addons/github-integration/scripts/user_data.gd")
 	self.add_autoload_singleton("IconLoaderGithub","res://addons/github-integration/scripts/IconLoaderGithub.gd")
+	doc = load("res://addons/github-integration/scenes/GitHub.tscn")
 	GitHubDoc = doc.instance()
 	get_editor_interface().get_editor_viewport().add_child(GitHubDoc)
 	GitHubDoc.hide()
@@ -30,6 +31,7 @@ func _exit_tree():
 	self.remove_autoload_singleton("UserData")
 	self.remove_autoload_singleton("IconLoaderGithub")
 	get_editor_interface().get_editor_viewport().remove_child(GitHubDoc)
+	GitHubDoc.queue_free()
 
 func has_main_screen():
 	return true

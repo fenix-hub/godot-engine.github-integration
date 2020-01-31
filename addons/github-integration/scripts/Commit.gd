@@ -36,7 +36,7 @@ onready var Progress = $VBoxContainer2/ProgressBar
 
 onready var Uncommitted = $VBoxContainer2/HBoxContainer3/VBoxContainer/uncommitted
 
-enum REQUESTS { UPLOAD = 0, UPDATE = 1, BLOB = 2 , LATEST_COMMIT = 4, BASE_TREE = 5, NEW_TREE = 8, NEW_COMMIT = 6, PUSH = 7, COMMIT = 9, LFS = 10, END = -1 }
+enum REQUESTS { UPLOAD = 0, UPDATE = 1, BLOB = 2 , LATEST_COMMIT = 4, BASE_TREE = 5, NEW_TREE = 8, NEW_COMMIT = 6, PUSH = 7, COMMIT = 9, LFS = 10, POST_LFS = 11, END = -1 }
 var requesting
 var new_repo = HTTPRequest.new()
 
@@ -78,6 +78,7 @@ signal file_committed()
 signal pushed()
 signal files_filtered()
 signal lfs()
+signal lfs_push()
 
 func _ready():
 	new_repo.use_threads = true
@@ -165,11 +166,19 @@ func request_completed(result, response_code, headers, body ):
 					emit_signal("pushed")
 			REQUESTS.LFS:
 				if response_code == 200:
-					print(response_code," ",JSON.parse(body.get_string_from_utf8()).result)
-					get_parent().print_debug_message("pushed all git lfs files!")
-					get_parent().loading(false)
-					Loading.hide()
+					var object = JSON.parse(body.get_string_from_utf8()).result
+#					print(response_code," ",JSON.parse(body.get_string_from_utf8()).result)
+					lfs.clear()
+					lfs = object.objects as Array
+					get_parent().print_debug_message("posted all git lfs files, now uploading...")
 					emit_signal("lfs")
+			REQUESTS.POST_LFS:
+#				if response_code == 200:
+				print(response_code," ",JSON.parse(body.get_string_from_utf8()).result)
+				emit_signal("lfs_push")
+				get_parent().loading(false)
+				Loading.hide()
+
 
 func load_branches(br : Array, s_r : Dictionary, ct : Array, gitignore : Dictionary) :
 	_branch.clear()
@@ -180,7 +189,6 @@ func load_branches(br : Array, s_r : Dictionary, ct : Array, gitignore : Diction
 		_branch.add_item(branch.name)
 	
 	gitignore_file = gitignore
-	
 	if gitignore:
 		Gitignore.set_text(Marshalls.base64_to_utf8(gitignore.content))
 	
@@ -189,6 +197,7 @@ func load_branches(br : Array, s_r : Dictionary, ct : Array, gitignore : Diction
 func selected_branch(id : int):
 	branch_idx = id
 	repository.set_text(repo_selected.name+"/"+_branch.get_item_text(branch_idx))
+	#update_gitignore()
 
 # |---------------------------------------------------------|
 
@@ -201,6 +210,14 @@ func _on_Button_pressed():
 	
 	
 	request_sha_latest_commit()
+
+func update_gitignore():
+	var gitignore_filepath = UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/"
+	var ignorefile = File.new()
+	var error = ignorefile.open(gitignore_filepath+".gitignore",File.WRITE)
+	if error:
+		Gitignore.set_text(ignorefile.get_as_text())
+		ignorefile.close()
 
 # ------- gitignore ----
 func load_gitignore():
@@ -393,6 +410,13 @@ func request_push_commit():
 		var body = {"operation": "upload","ref": {"name":"refs/heads/"+_branch.get_item_text(branch_idx)},"transfers": [ "basic" ],"objects": lfs}
 		new_repo.request("https://github.com/"+UserData.USER.login+"/"+repo_selected.name+UserData.gitlfs_request,UserData.gitlfs_header,false,HTTPClient.METHOD_POST,JSON.print(body))
 		yield(self,"lfs")
+	
+	if lfs.size() > 0:
+		requesting = REQUESTS.POST_LFS
+		print(lfs)
+		var body = { "transfer":"basic" , "objects":lfs}
+		new_repo.request("https://github.com/"+UserData.USER.login+"/"+repo_selected.name+UserData.gitlfs_request,UserData.gitlfs_header,false,HTTPClient.METHOD_PUT,JSON.print(body))
+		yield(self,"lfs_push")
 	
 	empty_fileds()
 	Progress.set_value(0)

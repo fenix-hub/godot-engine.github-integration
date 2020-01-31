@@ -448,7 +448,7 @@ func _on_reload_pressed():
 	open_repo(item_repo)
 
 func gdscript_extraction():
-	var archive = unzipper.load(zip_filepath)
+	var archive = unzipper._load(zip_filepath)
 	
 	if archive:
 		var root : String = unzipper.files.values()[0].file_name
