@@ -148,6 +148,13 @@
 - **new authentication method** : it is now possible to log into your GitHub profile with an *Access Token*. Since GitHub will deprecate the basic authentication method (which consists of `your e-mail : your password`) this plugin will **only work** with your personal access token.  
 Please, visit [this site](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) to understand what a Personal Access Token is, and how to use it. You will also find this link as a button in the plugin.  
 
+-----------------------
+
+**version 0.8.2**  
+*fixed*  
+- general bugfixes
+- log files older than this version will be deleted and replaced with a new log file to support Github's current login method deprecation.
+
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
 
