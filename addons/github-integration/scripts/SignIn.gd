@@ -52,7 +52,7 @@ func sign_in():
 			requesting = REQUESTS.LOGIN
 			signin_request.request("https://api.github.com/user",["Authorization: token "+token],false,HTTPClient.METHOD_GET,"")
 		else:
-			get_parent().print_debug_message("Bad credentials - you need to insert your e-mail and password/token.",1)
+			get_parent().print_debug_message("Bad credentials - you need to insert your e-mail and token.",1)
 	else:
 		Mail.text = "<logfile.mail>"
 		Token.text = "<logfile.password>"
@@ -77,7 +77,7 @@ func signin_completed(result, response_code, headers, body ):
 					get_parent().loading(true)
 					Error.show()
 					Error.text = "Error: "+str((JSON.parse(body.get_string_from_utf8()).result).message)
-					get_parent().print_debug_message("Bad credentials - incorrect username or password.",1)
+					get_parent().print_debug_message("Bad credentials - incorrect username or token.",1)
 					get_parent().loading(false)
 			REQUESTS.AVATAR:
 				UserData.save(user_data,body,auth,token,mail) 

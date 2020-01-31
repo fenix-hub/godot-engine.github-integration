@@ -1,24 +1,24 @@
 [gd_scene load_steps=58 format=2]
 
 [ext_resource path="res://addons/github-integration/scripts/GitHub.gd" type="Script" id=1]
-[ext_resource path="res://addons/github-integration/fonts/Roboto-Black.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://addons/github-integration/scripts/SignIn.gd" type="Script" id=3]
-[ext_resource path="res://addons/github-integration/github-logo.png" type="Texture" id=4]
-[ext_resource path="res://addons/github-integration/resources/loading/throbber.png" type="Texture" id=5]
+[ext_resource path="res://addons/github-integration/scripts/SignIn.gd" type="Script" id=2]
+[ext_resource path="res://addons/github-integration/github-logo.png" type="Texture" id=3]
+[ext_resource path="res://addons/github-integration/fonts/Roboto-Black.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://addons/github-integration/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://addons/github-integration/scripts/UserPanel.gd" type="Script" id=6]
-[ext_resource path="res://addons/github-integration/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=8]
-[ext_resource path="res://addons/github-integration/scripts/Repo.gd" type="Script" id=9]
-[ext_resource path="res://addons/github-integration/scripts/Commit.gd" type="Script" id=10]
-[ext_resource path="res://addons/github-integration/scripts/WindowDialog.gd" type="Script" id=11]
-[ext_resource path="res://addons/github-integration/scripts/Gist.gd" type="Script" id=12]
-[ext_resource path="res://addons/github-integration/scripts/NewGist.gd" type="Script" id=13]
-[ext_resource path="res://addons/file-editor/fonts/Roboto-Black.ttf" type="DynamicFontData" id=14]
-[ext_resource path="res://addons/github-integration/scripts/loading.gd" type="Script" id=15]
+[ext_resource path="res://addons/github-integration/scripts/NewGist.gd" type="Script" id=7]
+[ext_resource path="res://addons/github-integration/scripts/Repo.gd" type="Script" id=8]
+[ext_resource path="res://addons/github-integration/scripts/Commit.gd" type="Script" id=9]
+[ext_resource path="res://addons/github-integration/scripts/Gist.gd" type="Script" id=10]
+[ext_resource path="res://addons/file-editor/fonts/Roboto-Black.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://addons/github-integration/scripts/WindowDialog.gd" type="Script" id=12]
+[ext_resource path="res://addons/github-integration/scripts/loading.gd" type="Script" id=13]
+[ext_resource path="res://addons/github-integration/resources/loading/throbber.png" type="Texture" id=14]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
 [sub_resource type="DynamicFont" id=2]
-font_data = ExtResource( 2 )
+font_data = ExtResource( 4 )
 
 [sub_resource type="StyleBoxEmpty" id=3]
 
@@ -31,15 +31,15 @@ draw_center = false
 size = 20
 outline_size = 2
 outline_color = Color( 0.0901961, 0.0823529, 0.0862745, 1 )
-font_data = ExtResource( 2 )
+font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=6]
 size = 12
-font_data = ExtResource( 8 )
+font_data = ExtResource( 5 )
 
 [sub_resource type="DynamicFont" id=7]
 size = 20
-font_data = ExtResource( 8 )
+font_data = ExtResource( 5 )
 
 [sub_resource type="Image" id=44]
 data = {
@@ -73,15 +73,15 @@ size = Vector2( 16, 16 )
 
 [sub_resource type="DynamicFont" id=14]
 size = 20
-font_data = ExtResource( 8 )
+font_data = ExtResource( 5 )
 
 [sub_resource type="DynamicFont" id=15]
 size = 20
-font_data = ExtResource( 2 )
+font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=16]
 size = 19
-font_data = ExtResource( 8 )
+font_data = ExtResource( 5 )
 
 [sub_resource type="StyleBoxEmpty" id=17]
 
@@ -157,7 +157,7 @@ size = Vector2( 16, 16 )
 [sub_resource type="StyleBoxEmpty" id=32]
 
 [sub_resource type="DynamicFont" id=33]
-font_data = ExtResource( 14 )
+font_data = ExtResource( 11 )
 
 [sub_resource type="StyleBoxFlat" id=34]
 bg_color = Color( 0, 0, 0, 0.156863 )
@@ -168,7 +168,7 @@ bg_color = Color( 0, 0, 0, 0.156863 )
 size = 11
 outline_color = Color( 1, 1, 1, 0 )
 use_mipmaps = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 4 )
 
 [sub_resource type="StyleBoxEmpty" id=37]
 
@@ -186,7 +186,7 @@ font_data = ExtResource( 2 )
 size = 12
 outline_color = Color( 1, 1, 1, 0 )
 use_mipmaps = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 4 )
 
 [node name="GitHub" type="Control"]
 material = SubResource( 1 )
@@ -205,7 +205,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 3 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -234,7 +234,7 @@ __meta__ = {
 margin_right = 478.0
 margin_bottom = 128.0
 rect_min_size = Vector2( 0, 60 )
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 stretch_mode = 4
 
 [node name="Label2" type="Label" parent="SingIn/signin_panel"]
@@ -576,7 +576,7 @@ margin_right = 289.0
 margin_bottom = -5.5
 popup_exclusive = true
 window_title = "[Create a new Gist]"
-script = ExtResource( 13 )
+script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -694,7 +694,7 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 9 )
+script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -982,45 +982,46 @@ text = "Branch:"
 
 [node name="branch2" type="OptionButton" parent="Repo/Panel2/List/branch"]
 margin_left = 52.0
-margin_right = 93.0
+margin_right = 81.0
 margin_bottom = 20.0
 size_flags_vertical = 0
 
 [node name="VSeparator2" type="VSeparator" parent="Repo/Panel2/List/branch"]
-margin_left = 97.0
-margin_right = 107.0
+margin_left = 85.0
+margin_right = 95.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 10, 0 )
 custom_styles/separator = SubResource( 17 )
 
 [node name="new_branchBtn" type="Button" parent="Repo/Panel2/List/branch"]
-margin_left = 111.0
-margin_right = 199.0
+margin_left = 99.0
+margin_right = 187.0
 margin_bottom = 20.0
 rect_clip_content = true
 text = "New Branch"
 
 [node name="VSeparator3" type="VSeparator" parent="Repo/Panel2/List/branch"]
-margin_left = 203.0
-margin_right = 213.0
+margin_left = 191.0
+margin_right = 201.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 10, 0 )
 custom_styles/separator = SubResource( 17 )
 
 [node name="pull_btn" type="Button" parent="Repo/Panel2/List/branch"]
-margin_left = 217.0
-margin_right = 363.0
+margin_left = 205.0
+margin_right = 351.0
 margin_bottom = 20.0
 rect_clip_content = true
 text = "Pull from this Branch"
 
 [node name="git_lfs" type="Button" parent="Repo/Panel2/List/branch"]
-margin_left = 371.0
-margin_right = 467.0
+margin_left = 355.0
+margin_right = 547.0
 margin_bottom = 20.0
 rect_clip_content = true
-text = "Setup Git LFS"
-
+hint_tooltip = "Will be enabled in the future"
+disabled = true
+text = "Setup Git LFS [Experimental]"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="Repo/Panel2/List/branch"]
 margin_left = 829.0
@@ -1202,22 +1203,22 @@ text = "From branch:"
 align = 1
 
 [node name="branch3" type="OptionButton" parent="Repo/NewBranch/VBoxContainer/HBoxContainer2"]
-margin_left = 177.0
-margin_right = 218.0
+margin_left = 183.0
+margin_right = 212.0
 margin_bottom = 20.0
 size_flags_horizontal = 6
 size_flags_vertical = 0
 
 [node name="extraction_request" type="WindowDialog" parent="Repo"]
 visible = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -218.0
-margin_top = -54.5
-margin_right = 220.0
-margin_bottom = 84.5
+anchor_left = 0.304
+anchor_top = 0.409
+anchor_right = 0.701
+anchor_bottom = 0.604
+margin_left = -17.296
+margin_top = 0.190994
+margin_right = 14.176
+margin_bottom = -0.00402832
 window_title = "Archive Extraction"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1227,10 +1228,11 @@ __meta__ = {
 anchor_left = 0.018
 anchor_top = 0.064
 anchor_right = 0.982
-anchor_bottom = 0.912
+anchor_bottom = 0.827
 margin_left = 0.116
-margin_right = -0.116028
-margin_bottom = -25.0
+margin_top = -0.448
+margin_right = -0.115997
+margin_bottom = 4.836
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1292,6 +1294,23 @@ margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Cancel"
 
+[node name="PythonPath" type="FileDialog" parent="Repo"]
+visible = true
+anchor_left = 0.266
+anchor_top = 0.248
+anchor_right = 0.735
+anchor_bottom = 0.754
+margin_left = -0.384003
+margin_top = 9.952
+margin_right = 0.359985
+margin_bottom = 9.84601
+window_title = "Open a Directory"
+mode = 2
+access = 2
+show_hidden_files = true
+current_dir = "c:/"
+current_path = "c:/"
+
 [node name="extraction_overwriting" type="ConfirmationDialog" parent="Repo"]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1342,7 +1361,6 @@ size_flags_vertical = 3
 max_columns = 2
 
 [node name="setup_git_lfs" type="ConfirmationDialog" parent="Repo"]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1484,7 +1502,7 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 10 )
+script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1968,7 +1986,7 @@ show_hidden_files = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 12 )
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -2237,7 +2255,7 @@ margin_bottom = 133.5
 popup_exclusive = true
 window_title = "[Create a new Repository]"
 dialog_hide_on_ok = false
-script = ExtResource( 11 )
+script = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -2404,7 +2422,7 @@ hint_tooltip = "Version of this plugin: always check this plugin's GitHub reposi
 mouse_filter = 1
 custom_fonts/font = SubResource( 36 )
 custom_colors/font_color = Color( 0.121569, 0.137255, 0.172549, 1 )
-text = "v 0.7.5"
+text = "v 0.8.2"
 
 [node name="debug" type="CheckBox" parent="datas"]
 margin_left = 48.0
@@ -2431,10 +2449,8 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 0.588235 )
-script = ExtResource( 15 )
+script = ExtResource( 13 )
 __meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -2452,7 +2468,7 @@ rect_min_size = Vector2( 50, 50 )
 rect_pivot_offset = Vector2( 45, 45 )
 size_flags_horizontal = 4
 size_flags_vertical = 0
-texture = ExtResource( 5 )
+texture = ExtResource( 14 )
 expand = true
 stretch_mode = 6
 __meta__ = {
@@ -2493,6 +2509,7 @@ align = 1
 [connection signal="pressed" from="Repo/extraction_request/VBoxContainer/buttons/python" to="Repo" method="_on_python_pressed"]
 [connection signal="pressed" from="Repo/extraction_request/VBoxContainer/buttons/gdscript" to="Repo" method="_on_gdscript_pressed"]
 [connection signal="pressed" from="Repo/extraction_request/VBoxContainer/buttons/cancel" to="Repo" method="_on_cancel_pressed"]
+[connection signal="dir_selected" from="Repo/PythonPath" to="Repo" method="_on_PythonPath_dir_selected"]
 [connection signal="confirmed" from="Repo/extraction_overwriting" to="Repo" method="_on_extraction_overwriting_confirmed"]
 [connection signal="confirmed" from="Repo/setup_git_lfs" to="Repo" method="_on_setup_git_lfs_confirmed"]
 [connection signal="pressed" from="Repo/setup_git_lfs/VBoxContainer/whatis" to="Repo" method="_on_whatis_pressed"]
