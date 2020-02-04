@@ -289,7 +289,7 @@ margin_top = 5.0
 margin_right = 83.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 83, 0 )
-text = "Password:"
+text = "Token:"
 align = 2
 __meta__ = {
 "_edit_use_anchors_": false
