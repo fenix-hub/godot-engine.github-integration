@@ -465,11 +465,6 @@ func gdscript_extraction():
 				uncompressed_file.store_string(uncompressed.get_string_from_utf8())
 				uncompressed_file.close()
 
-func python_extraction():
-	var output = []
-	var unzipper_path = ProjectSettings.globalize_path("res://addons/github-integration/resources/extraction/unzip.py")
-	var arguments : PoolStringArray = [unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
-	OS.execute("python",arguments,true)
 
 func _on_extraction_overwriting_confirmed():
 	pass # Replace with function body.
@@ -534,6 +529,24 @@ func _on_gdscript_pressed():
 func _on_python_pressed():
 	python_extraction()
 
+func _on_java_pressed():
+	java_extraction()
+
+func python_extraction():
+	var output = []
+	var unzipper_path = ProjectSettings.globalize_path("res://addons/github-integration/resources/extraction/unzip.py")
+	var arguments : PoolStringArray = [unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
+	var err = OS.execute("python",arguments,true)
+	get_parent().print_debug_message("archive unzipped in project folder with Python method.")
+	ExtractionRequest.hide()
+
+func java_extraction():
+	var output = []
+	var unzipper_path = ProjectSettings.globalize_path("res://addons/github-integration/resources/extraction/unzipper.jar")
+	var arguments : PoolStringArray = ["-jar",unzipper_path,ProjectSettings.globalize_path(zip_filepath),ProjectSettings.globalize_path("res://")]
+	var err = OS.execute("java",arguments,true)
+	get_parent().print_debug_message("archive unzipped in project folder with Java method.")
+	ExtractionRequest.hide()
 
 func _on_whatis_pressed():
 	WhatIsDialog.popup()
@@ -560,3 +573,5 @@ func setup_gitlfs(extensions : Array):
 		gitattributes.store_line(tracking)
 	gitattributes.close()
 	get_parent().print_debug_message("New .gitattributes created with the file extensions you want to track. It will be uploaded to you repository during the next push.")
+
+

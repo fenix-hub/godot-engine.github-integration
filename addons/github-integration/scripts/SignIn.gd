@@ -90,3 +90,7 @@ func signin_completed(result, response_code, headers, body ):
 
 func _on_singup_pressed():
 	OS.shell_open("https://github.com/join?source=header-home")
+
+
+func _on_wiki_pressed():
+	OS.shell_open("https://github.com/fenix-hub/godot-engine.github-integration/wiki")
