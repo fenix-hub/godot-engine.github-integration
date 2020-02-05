@@ -83,7 +83,7 @@ func _init():
 	self.tinf = Tinf.new()
 
 # Load a zip file with the given path. Returns a boolean denoting success.
-func load(path):
+func _load(path):
 	if path == null:
 		return false
 
