@@ -161,15 +161,23 @@ func request_completed(result, response_code, headers, body ):
 						get_parent().print_debug_message("could not blob this file due to server errors, skipping...",1)
 						emit_signal("file_blobbed")
 			REQUESTS.NEW_TREE:
-				if response_code == 201:
+				match response_code:
+					201:
 						sha_new_tree = JSON.parse(body.get_string_from_utf8()).result.sha
 						get_parent().print_debug_message("created new tree of files")
 						emit_signal("new_tree")
+					422:
+						get_parent().print_debug_message("could not process the new tree, the file may be corrupted or already present in the repository without any changes.")
+						emit_signal("new_tree")
 			REQUESTS.NEW_COMMIT:
-				if response_code == 201:
-					sha_new_commit = JSON.parse(body.get_string_from_utf8()).result.sha
-					get_parent().print_debug_message("created new commit")
-					emit_signal("new_commit")
+				match response_code:
+					201:
+						sha_new_commit = JSON.parse(body.get_string_from_utf8()).result.sha
+						get_parent().print_debug_message("created new commit")
+						emit_signal("new_commit")
+					422:
+						get_parent().print_debug_message("could not process the new commit, tree may be invalid.")
+						emit_signal("new_commit")
 			REQUESTS.PUSH:
 				if response_code == 200:
 					get_parent().print_debug_message("pushed and committed with success!")

@@ -128,7 +128,7 @@ custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=23]
 shader = SubResource( 22 )
-shader_param/speed = 5
+shader_param/speed = 0
 
 [sub_resource type="StyleBoxEmpty" id=24]
 
@@ -336,27 +336,26 @@ custom_styles/separator = SubResource( 3 )
 [node name="HBoxContainer3" type="HBoxContainer" parent="SingIn/signin_panel"]
 margin_top = 231.0
 margin_right = 478.0
-margin_bottom = 251.0
+margin_bottom = 255.0
 alignment = 1
 
 [node name="btnCreateToken" type="Button" parent="SingIn/signin_panel/HBoxContainer3"]
-margin_left = 117.0
-margin_right = 237.0
-margin_bottom = 20.0
+margin_left = 107.0
+margin_right = 227.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 4
 text = "Create Token (?)"
 
 [node name="btnSignIn" type="Button" parent="SingIn/signin_panel/HBoxContainer3"]
-margin_left = 241.0
-margin_right = 361.0
-margin_bottom = 20.0
+margin_left = 231.0
+margin_right = 351.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 4
 text = "Sign-in"
 
 [node name="logfile" type="Label" parent="SingIn/signin_panel/HBoxContainer3"]
-visible = false
 margin_left = 355.0
 margin_right = 371.0
 margin_bottom = 24.0
@@ -369,26 +368,26 @@ custom_colors/font_color = Color( 0.92549, 0.133333, 0.392157, 1 )
 text = "!"
 
 [node name="HSeparator6" type="HSeparator" parent="SingIn/signin_panel"]
-margin_top = 255.0
+margin_top = 259.0
 margin_right = 478.0
-margin_bottom = 270.0
+margin_bottom = 274.0
 rect_min_size = Vector2( 0, 15 )
 custom_styles/separator = SubResource( 3 )
 
 [node name="singup" type="LinkButton" parent="SingIn/signin_panel"]
 margin_left = 149.0
-margin_top = 274.0
+margin_top = 278.0
 margin_right = 329.0
-margin_bottom = 289.0
+margin_bottom = 293.0
 size_flags_horizontal = 4
 custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0.760784, 0.760784, 0.760784, 1 )
 text = "Don't have a GitHub account yet?"
 
 [node name="HSeparator4" type="HSeparator" parent="SingIn/signin_panel"]
-margin_top = 293.0
+margin_top = 297.0
 margin_right = 478.0
-margin_bottom = 297.0
+margin_bottom = 301.0
 rect_min_size = Vector2( 0, 3 )
 custom_styles/separator = SubResource( 3 )
 
