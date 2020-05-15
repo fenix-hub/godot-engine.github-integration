@@ -504,6 +504,8 @@ func _on_extension_choosing_confirmed():
 	get_parent().loading(false)
 	request.set_download_file("")
 	
+#	var extracted = ProjectSettings.load_resource_pack(current_repo.name+"-"+current_branch.name+archive_extension)
+#	print(extracted)
 	ExtractionRequest.popup()
 
 func setup_git_lfs():

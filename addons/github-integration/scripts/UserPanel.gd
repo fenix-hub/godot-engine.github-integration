@@ -8,7 +8,7 @@ onready var Gists = $Panel/List/HBoxContainer3/gists
 onready var RepoList = $Panel/List/Repos
 onready var GistList = $Panel/List/Gist
 onready var NewRepo = $Panel/List/repos_buttons/repo
-
+onready var ReloadBtn = $ReloadBtn
 
 
 onready var NewGist = $Panel/List/gist_buttons/gist
@@ -36,6 +36,8 @@ func _ready():
 	NewGist.connect("pressed",self,"new_gist")
 	RepoList.connect("item_activated",self,"repo_selected")
 	GistList.connect("item_activated",self,"gist_selected")
+	
+	ReloadBtn.connect("pressed",self,"_reload")
 
 func load_panel() -> void:
 	Avatar.texture = UserData.AVATAR
@@ -48,6 +50,7 @@ func load_panel() -> void:
 func load_icons():
 	$Panel/List/HBoxContainer3/gists_icon.texture = IconLoaderGithub.load_icon_from_name("gists")
 	$Panel/List/HBoxContainer2/repos_icon.texture = IconLoaderGithub.load_icon_from_name("repos")
+	ReloadBtn.icon = IconLoaderGithub.load_icon_from_name("reload")
 
 func request_completed(result, response_code, headers, body ):
 	if result == 0:
@@ -181,3 +184,6 @@ func gist_selected():
 func new_gist():
 	GistDialog.popup()
 
+func _reload():
+	get_parent().print_debug_message("Reloading, please wait...")
+	request_repositories(REQUESTS.REPOS)
