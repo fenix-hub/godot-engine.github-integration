@@ -143,10 +143,12 @@ func request_completed(result, response_code, headers, body ):
 					get_parent().print_debug_message("got base tree")
 					emit_signal("base_tree")
 			REQUESTS.BLOB:
-					list_file_sha.append(JSON.parse(body.get_string_from_utf8()).result.sha)
-					get_parent().print_debug_message("blobbed file")
-#					OS.delay_msec(1000)
-					emit_signal("file_blobbed")
+					print(response_code)
+					if response_code == 201:
+						list_file_sha.append(JSON.parse(body.get_string_from_utf8()).result.sha)
+						get_parent().print_debug_message("blobbed file")
+	#					OS.delay_msec(1000)
+						emit_signal("file_blobbed")
 			REQUESTS.NEW_TREE:
 				if response_code == 201:
 						sha_new_tree = JSON.parse(body.get_string_from_utf8()).result.sha
@@ -301,6 +303,7 @@ func request_blobs():
 		if list_file_size[files.find(file)] < 104857600:
 			var content = ""
 			var sha = "" # is set to update a file
+			var encoding = ""
 			
 			## this cases are not really necessary, will be used in future versions
 			
@@ -309,32 +312,36 @@ func request_blobs():
 				var img_src = File.new()
 				img_src.open(file,File.READ)
 				content = Marshalls.raw_to_base64(img_src.get_buffer(img_src.get_len()))
-				
+				img_src.close()
+				encoding = "base64"
 			elif file.get_extension()=="ttf":
 				## for fonts
 				var font = File.new()
 				font.open(file,File.READ)
 				content = Marshalls.raw_to_base64(font.get_buffer(font.get_len()))
+				encoding = "base64"
+				font.close()
 			else:
 				## for readable files
-				var f = File.new()
+				var f : File = File.new()
 				f.open(file,File.READ)
-				content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
+				content = f.get_as_text()
+				encoding = "utf-8"
+				f.close()
 			
-	#		for content in branches_contents:
-	#			if content.path == file[0].lstrip(DIRECTORY+START_FROM+"/"):
-	#				sha = content.sha
+			
 			
 			print(get_parent().plugin_name,"blobbing ~> "+file.get_file())
 			
 			var bod = {
 				"content":content,
-				"encoding":"base64",
+				"encoding":encoding,
 			}
 			
 			new_repo.request("https://api.github.com/repos/"+UserData.USER.login+"/"+repo_selected.name+"/git/blobs",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
 			yield(self,"file_blobbed")
 		else:
+			get_parent().print_debug_message("pointing large file, please wait...")
 			var output = []
 			OS.execute( 'git', [ "lfs", "pointer",'--file',ProjectSettings.globalize_path(file)], true, output )
 			var oid : String = output[0].split(":",false)[2]
