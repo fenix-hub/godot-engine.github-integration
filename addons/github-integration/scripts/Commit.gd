@@ -67,6 +67,8 @@ const GITIGNOREPATH : String = "user://gitignores/"
 var IGNORE_FILES : PoolStringArray = []
 var IGNORE_FOLDERS : PoolStringArray = []
 
+var current_handled_file : String
+
 signal blob_created()
 
 signal latest_commit()
@@ -106,6 +108,7 @@ func connect_signals():
 	about_gitignoreBtn.connect("pressed",self,"about_gitignore_pressed")
 
 func request_completed(result, response_code, headers, body ):
+	print("REQUEST TO API : Request exited with code %s" % response_code)
 	if result == 0:
 		match requesting:
 			REQUESTS.UPLOAD:
@@ -143,11 +146,19 @@ func request_completed(result, response_code, headers, body ):
 					get_parent().print_debug_message("got base tree")
 					emit_signal("base_tree")
 			REQUESTS.BLOB:
-					print(response_code)
-					if response_code == 201:
+				match response_code:
+					201:
 						list_file_sha.append(JSON.parse(body.get_string_from_utf8()).result.sha)
 						get_parent().print_debug_message("blobbed file")
 	#					OS.delay_msec(1000)
+						emit_signal("file_blobbed")
+					400:
+						list_file_sha.append("no-sha")
+						get_parent().print_debug_message("could not blob this file due to reading errors, skipping...",1)
+						emit_signal("file_blobbed")
+					502:
+						list_file_sha.append("no-sha")
+						get_parent().print_debug_message("could not blob this file due to server errors, skipping...",1)
 						emit_signal("file_blobbed")
 			REQUESTS.NEW_TREE:
 				if response_code == 201:
@@ -271,10 +282,10 @@ func load_gitignore():
 		
 		if not filter_file:
 			filtered_files.append(file)
-			var size = File.new()
-			size.open(file,File.READ)
-			list_file_size.append(size.get_len())
-			size.close()
+			var size_file = File.new()
+			size_file.open(file,File.READ)
+			list_file_size.append(size_file.get_len())
+			size_file.close()
 	
 	files.clear()
 	files = filtered_files
@@ -300,6 +311,7 @@ func request_blobs():
 	list_file_sha.clear()
 	
 	for file in files:
+		current_handled_file = file
 		if list_file_size[files.find(file)] < 104857600:
 			var content = ""
 			var sha = "" # is set to update a file
@@ -356,31 +368,35 @@ func request_blobs():
 func request_commit_tree():
 	requesting = REQUESTS.NEW_TREE
 	var tree = []
-	for i in range(0,files.size()):
-		if list_file_size[i] < 104857600:
-			if files[i].get_file() == ".gitignore":
+	for file in files:
+		if list_file_sha[files.find(file)] != "no-sha":
+			pass
+		else:
+			continue
+		if list_file_size[files.find(file)] < 104857600:
+			if file.get_file() == ".gitignore":
 				tree.append({
 						"path":".gitignore",
 						"mode":"100644",
 						"type":"blob",
-						"sha":list_file_sha[i],
+						"sha":list_file_sha[files.find(file)],
 						})
-			elif files[i].get_file() == ".gitattributes":
+			elif file.get_file() == ".gitattributes":
 				tree.append({
 						"path":".gitattributes",
 						"mode":"100644",
 						"type":"blob",
-						"sha":list_file_sha[i],
+						"sha":list_file_sha[files.find(file)],
 						})
 			else:
 				tree.append({
-					"path":files[i].right((DIRECTORY).length()),
+					"path":files[files.find(file)].right((DIRECTORY).length()),
 					"mode":"100644",
 					"type":"blob",
-					"sha":list_file_sha[i],
+					"sha":list_file_sha[files.find(file)],
 					})
 		else:
-			lfs.append({"oid": list_file_sha[i],"size": list_file_size[i]})
+			lfs.append({"oid": list_file_sha[files.find(file)],"size": list_file_size[files.find(file)]})
 	
 	var bod : Dictionary  = {
 		"base_tree": sha_base_tree,

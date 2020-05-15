@@ -185,5 +185,8 @@ func new_gist():
 	GistDialog.popup()
 
 func _reload():
+	get_parent().loading(true)
 	get_parent().print_debug_message("Reloading, please wait...")
 	request_repositories(REQUESTS.REPOS)
+	yield(self,"completed_loading")
+	get_parent().loading(false)
