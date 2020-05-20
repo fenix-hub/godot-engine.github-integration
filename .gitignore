@@ -1,9 +1,19 @@
-res://addons/file-editor/
-icons.pngs/
-screenshots/
+
+# Godot-specific ignores
+.import/
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+# System/tool-specific ignores
+.directory
+*~
 user/
-*.import
-fonts/
 
 
 
