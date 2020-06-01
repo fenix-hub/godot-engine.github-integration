@@ -345,8 +345,8 @@ func request_blobs():
 				## for readable files
 				var f : File = File.new()
 				f.open(file,File.READ)
-				content = f.get_as_text()
-				encoding = "utf-8"
+				content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
+				encoding = "base64"
 				f.close()
 			
 			
