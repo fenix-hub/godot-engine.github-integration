@@ -234,7 +234,9 @@ func on_commit():
 		requesting = REQUESTS.UP_GISTS
 		request.request("https://api.github.com/gists/"+gistid,UserData.header,false,HTTPClient.METHOD_PATCH,JSON.print(body))
 		get_parent().print_debug_message("updating this gist...")
+		get_parent().loading(true)
 		yield(self,"gist_updated")
+		get_parent().loading(false)
 		close_editor()
 
 func _on_Readonly_toggled(button_pressed):

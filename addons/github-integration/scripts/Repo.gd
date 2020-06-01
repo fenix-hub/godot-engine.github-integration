@@ -136,12 +136,11 @@ func open_repo(repo : TreeItem):
 		description_.text = ""
 	default_branch_.text = str(r.default_branch)
 	
-	watch_value.set_text(str(r.watchers_count))
+#	watch_value.set_text(str(r.subscribers_count))
 	star_value.set_text(str(r.stargazers_count))
 	fork_value.set_text(str(r.forks_count))
 	
 	load_icons(r)
-	
 	request_branches(r.name)
 
 
