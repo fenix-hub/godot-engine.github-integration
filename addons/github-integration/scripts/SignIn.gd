@@ -22,8 +22,11 @@ var user_data
 
 var logfile = false
 
+onready var Client : HTTPClient = HTTPClient.new()
 
 func _ready():
+	btnSignIn.set_disabled(true)
+	
 	logfile_icon.hide()
 	Error.hide()
 	btnSignIn.connect("pressed",self,"sign_in")

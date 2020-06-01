@@ -24,6 +24,13 @@ onready var Commit = $Commit
 onready var LoadNode = $loading
 onready var Version = $datas/version
 onready var Debug = $datas/debug
+onready var ConnectionIcon : TextureRect = $datas/connection
+
+var connection_status : Array = [
+	IconLoaderGithub.load_icon_from_name("searchconnection"),
+	IconLoaderGithub.load_icon_from_name("noconnection"),
+	IconLoaderGithub.load_icon_from_name("connection")
+]
 
 var plugin_version
 var plugin_name
@@ -31,6 +38,8 @@ var debug : bool
 
 
 func _ready():
+	ConnectionIcon.set_texture(connection_status[0])
+	
 	debug = true
 	LoadNode.hide()
 	Debug.set_pressed(debug)
@@ -48,6 +57,16 @@ func _ready():
 	SignIn.connect("signed",self,"signed")
 	UserPanel.hide()
 	Commit.hide()
+	
+	match RestHandler.check_connection():
+		true:
+			SignIn.btnSignIn.set_disabled(false)
+			ConnectionIcon.set_texture(connection_status[2])
+			ConnectionIcon.set_tooltip("Connected to GitHub API")
+		false:
+			SignIn.btnSignIn.set_disabled(true)
+			ConnectionIcon.set_texture(connection_status[1])
+			ConnectionIcon.set_tooltip("Can't connect to GitHub API, check your internet connection or API status")
 
 func loading(value : bool) -> void:
 	LoadNode.visible = value

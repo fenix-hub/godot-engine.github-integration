@@ -131,9 +131,9 @@ func load_repositories(rep : Array) -> void:
 		repo.set_text(0,str(r.name))
 		
 		repo.set_icon(1,IconLoaderGithub.load_icon_from_name("stars"))
-		repo.set_text(2,"Forked "+str(r.stargazers_count))
+		repo.set_text(2,"Forked "+str(r.forks_count))
 		repo.set_icon(2,IconLoaderGithub.load_icon_from_name("forks"))
-		repo.set_text(1,"Stars "+str(r.forks_count))
+		repo.set_text(1,"Stars "+str(r.stargazers_count))
 		
 		repo.set_metadata(0,r)
 		
