@@ -7,6 +7,8 @@ Check my **[Discord](https://discord.gg/KnJGY9S)** to stay updated on this repos
 
 This plugin is now supported in [Godot Extended Library Discord](https://discord.gg/JNrcucg), check out the [Godot Extended Library Project](https://github.com/godot-extended-libraries)!
 
+<img src="addons/github-integration/icon.png" width="64" height="64" align="left">
+
 # GitHub Integration
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
