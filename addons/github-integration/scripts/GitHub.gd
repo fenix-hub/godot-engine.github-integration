@@ -96,3 +96,4 @@ func print_debug_message(message : String = "",type : int = 0):
 
 func _on_debug_toggled(button_pressed):
 	debug = button_pressed
+

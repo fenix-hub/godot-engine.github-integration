@@ -117,15 +117,13 @@ func load_icons(r):
 	pull_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("download"))
 	git_lfs.set_button_icon(IconLoaderGithub.load_icon_from_name("git_lfs"))
 
-func open_repo(repo : TreeItem):
-	item_repo = repo
-	
+func open_repo(repo : Dictionary):
 	contents_.clear()
 	branches_.clear()
 	branches.clear()
 	contents.clear()
 	
-	var r = repo.get_metadata(0)
+	var r = repo
 	current_repo = r
 	html_url_.text = r.html_url
 	owner_.text = r.owner.login
@@ -148,13 +146,13 @@ func request_branches(rep : String):
 	branches_.clear()
 	branch3.clear()
 	requesting = REQUESTS.BRANCHES
-	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/branches",UserData.header,false,HTTPClient.METHOD_GET,"")
+	request.request("https://api.github.com/repos/"+owner_.text+"/"+rep+"/branches",UserData.header,false,HTTPClient.METHOD_GET,"")
 	yield(self,"get_branches")
 	
 	if branches.size() > 0:
 		requesting = REQUESTS.TREES
 		for b in branches:
-			request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/branches/"+b.name,UserData.header,false,HTTPClient.METHOD_GET,"")
+			request.request("https://api.github.com/repos/"+owner_.text+"/"+rep+"/branches/"+b.name,UserData.header,false,HTTPClient.METHOD_GET,"")
 			yield(self,"get_branches_contents")
 		
 		var i = 0
@@ -182,7 +180,7 @@ func request_contents(rep : String, branch):
 	contents_.clear()
 	
 	requesting = REQUESTS.CONTENTS
-	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+rep+"/git/trees/"+branch.commit.commit.tree.sha+"?recursive=1",UserData.header,false,HTTPClient.METHOD_GET,"")
+	request.request("https://api.github.com/repos/"+owner_.text+"/"+rep+"/git/trees/"+branch.commit.commit.tree.sha+"?recursive=1",UserData.header,false,HTTPClient.METHOD_GET,"")
 
 func open_html():
 	get_parent().loading(true)
@@ -218,7 +216,7 @@ func delete_repo():
 func request_delete(repo : String):
 	get_parent().loading(true)
 	requesting = REQUESTS.DELETE
-	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+repo,UserData.header,false,HTTPClient.METHOD_DELETE,"")
+	request.request("https://api.github.com/repos/"+owner_.text+"/"+repo,UserData.header,false,HTTPClient.METHOD_DELETE,"")
 
 func request_delete_resource(path : String, item : TreeItem = null):
 	get_parent().loading(true)
@@ -239,14 +237,14 @@ func request_delete_resource(path : String, item : TreeItem = null):
 			"branch":current_branch.name
 			}
 	
-	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+current_repo.name+"/contents/"+path,UserData.header,false,HTTPClient.METHOD_DELETE,JSON.print(body))
+	request.request("https://api.github.com/repos/"+owner_.text+"/"+current_repo.name+"/contents/"+path,UserData.header,false,HTTPClient.METHOD_DELETE,JSON.print(body))
 
 func commit():
 	hide()
 	get_parent().CommitRepo.show()
 	get_parent().CommitRepo.load_branches(branches,current_repo,contents,gitignore_file)
 
-func request_completed(result, response_code, headers, body ):
+func request_completed(result, response_code, headers, body):
 	if result == 0:
 		match requesting:
 			REQUESTS.DELETE:
@@ -294,6 +292,8 @@ func request_completed(result, response_code, headers, body ):
 			REQUESTS.PULLING:
 				if response_code == 200:
 					emit_signal("zip_pulled")
+	else:
+		print(result," ",response_code," ",JSON.parse(body.get_string_from_utf8()).result)
 
 func build_list():
 	get_parent().loading(true)
@@ -362,7 +362,7 @@ func build_list():
 
 func request_file_content(path : String):
 	requesting = REQUESTS.FILE_CONTENT
-	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+current_repo.name+"/contents/"+path,UserData.header,false,HTTPClient.METHOD_GET)
+	request.request("https://api.github.com/repos/"+owner_.text+"/"+current_repo.name+"/contents/"+path,UserData.header,false,HTTPClient.METHOD_GET)
 	yield(self,"get_contents")
 
 func _on_branch2_item_selected(ID):
@@ -416,7 +416,7 @@ func on_newbranch_confirmed():
 		"sha": branch3.get_item_metadata(branch3.get_selected_id()).commit.sha
 	}
 	
-	request.request("https://api.github.com/repos/"+UserData.USER.login+"/"+current_repo.name+"/git/refs",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(body))
+	request.request("https://api.github.com/repos/"+owner_.text+"/"+current_repo.name+"/git/refs",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(body))
 	get_parent().print_debug_message("creating new branch...")
 	yield(self,"new_branch_created")
 
@@ -436,7 +436,6 @@ func _on_reload_pressed():
 	contents_.clear()
 	branches_.clear()
 	branches.clear()
-	current_repo = ""
 	current_branch = ""
 	branches.clear()
 	branches_contents.clear()
@@ -444,7 +443,7 @@ func _on_reload_pressed():
 	dirs.clear()
 	commit_sha = ""
 	tree_sha = ""
-	open_repo(item_repo)
+	open_repo(current_repo)
 
 func gdscript_extraction():
 	var archive = unzipper._load(zip_filepath)

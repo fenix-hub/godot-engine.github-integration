@@ -158,7 +158,14 @@ Please, visit [this site](https://help.github.com/en/github/authenticating-to-gi
 *added*
 - introduced a java extraction method for zip files. 
 
+-------------------
+**version 0.9.0**
+*fixed*  
+- opening shared repositories 
 
+*added*  
+- new repositories explorer
+- search bar for repositories
 
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
