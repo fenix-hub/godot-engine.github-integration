@@ -1,15 +1,18 @@
 tool
 extends Control
 
+onready var RepositoryItem = preload("res://addons/github-integration/scenes/RepositoryItem.tscn")
+
 onready var User = $Panel/HBoxContainer/user
 onready var Avatar : TextureRect = $Panel/HBoxContainer/avatar
 onready var Repos = $Panel/List/HBoxContainer2/repos
 onready var Gists = $Panel/List/HBoxContainer3/gists
-onready var RepoList = $Panel/List/Repos
+onready var RepoList = $Panel/List/ScrollContainer/Repos
 onready var GistList = $Panel/List/Gist
 onready var NewRepo = $Panel/List/repos_buttons/repo
 onready var ReloadBtn = $ReloadBtn
 
+onready var SearchRepo = $Panel/List/HBoxContainer2/search_repo
 
 onready var NewGist = $Panel/List/gist_buttons/gist
 
@@ -34,10 +37,11 @@ func _ready():
 #	request_gists.connect("request_completed",self,"request_completed")
 	NewRepo.connect("pressed",self,"new_repo")
 	NewGist.connect("pressed",self,"new_gist")
-	RepoList.connect("item_activated",self,"repo_selected")
+#	RepoList.connect("item_activated",self,"repo_selected")
 	GistList.connect("item_activated",self,"gist_selected")
 	
 	ReloadBtn.connect("pressed",self,"_reload")
+	SearchRepo.connect("text_changed",self,"_on_search_repo")
 
 func load_panel() -> void:
 	Avatar.texture = UserData.AVATAR
@@ -111,36 +115,28 @@ func load_gists(gists : Array) -> void:
 		g.set_icon(1,IconLoaderGithub.load_icon_from_name("gists"))
 		g.set_text(1,"Files: "+str(gis.files.size()))
 
+var repository_list : Array = []
+
 func load_repositories(rep : Array) -> void:
-	RepoList.clear()
+	repository_list.clear()
 	
-	var root = RepoList.create_item()
-	root.set_text(0,UserData.USER.login+"/")
+	for repository in rep:
+		var repo_item = RepositoryItem.instance()
+		RepoList.add_child(repo_item)
+		repo_item.set_repository(repository)
+		repo_item.connect("repo_selected",self,"repo_selected")
+		repo_item.connect("repo_clicked",self,"repo_clicked")
+		repository_list.append(repo_item)
 	
-	
-	for r in rep:
-		
-		var repo = RepoList.create_item(root)
-		if r.private:
-			repo.set_icon(0,IconLoaderGithub.load_icon_from_name("lock"))
-		else:
-			if r.fork:
-				repo.set_icon(0,IconLoaderGithub.load_icon_from_name("forks"))
-			else:
-				repo.set_icon(0,IconLoaderGithub.load_icon_from_name("repos-back"))
-		repo.set_text(0,str(r.name))
-		
-		repo.set_icon(1,IconLoaderGithub.load_icon_from_name("stars"))
-		repo.set_text(2,"Forked "+str(r.forks_count))
-		repo.set_icon(2,IconLoaderGithub.load_icon_from_name("forks"))
-		repo.set_text(1,"Stars "+str(r.stargazers_count))
-		
-		repo.set_metadata(0,r)
-		
 	Repos.text = str(repositories.size())
 	
 	if requesting == REQUESTS.REPOS:
 		request_gists(REQUESTS.GISTS)
+
+func repo_clicked(clicked_repo : Dictionary):
+	for repository in repository_list:
+		if repository._repository!=clicked_repo:
+			repository.deselect()
 
 func request_branches(req : int, rep : Dictionary):
 	requesting = req
@@ -159,12 +155,12 @@ func new_repo():
 	
 	#request.request()
 
-func repo_selected():
+func repo_selected(repository : Dictionary):
 	get_parent().print_debug_message("opening selected repository...")
 	get_parent().loading(true)
 	
-	var repo = RepoList.get_selected()
-	get_parent().Repo.open_repo(repo)
+#	var repo = RepoList.get_selected()
+	get_parent().Repo.open_repo(repository)
 	yield(get_parent().Repo,"loaded_repo")
 	hide()
 	
@@ -190,3 +186,13 @@ func _reload():
 	request_repositories(REQUESTS.REPOS)
 	yield(self,"completed_loading")
 	get_parent().loading(false)
+
+func _on_search_repo(repo_name : String):
+	for repository in repository_list:
+		if repo_name!="":
+			if repo_name.to_lower() in repository._name.to_lower():
+				repository.show()
+			else:
+				repository.hide() 
+		else:
+			repository.show()
