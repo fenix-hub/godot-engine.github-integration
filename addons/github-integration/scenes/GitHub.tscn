@@ -425,9 +425,9 @@ align = 1
 
 [node name="DeleteDataBtn" type="Button" parent="SingIn/signin_panel"]
 margin_left = 114.0
-margin_top = 444.0
+margin_top = 443.0
 margin_right = 236.0
-margin_bottom = 464.0
+margin_bottom = 463.0
 size_flags_horizontal = 6
 size_flags_vertical = 10
 custom_colors/font_color = Color( 1, 0, 0.235294, 1 )
@@ -2571,7 +2571,7 @@ hint_tooltip = "Version of this plugin: always check this plugin's GitHub reposi
 mouse_filter = 1
 custom_fonts/font = SubResource( 42 )
 custom_colors/font_color = Color( 0.121569, 0.137255, 0.172549, 1 )
-text = "v 0.9.0"
+text = "v 0.9.1"
 
 [node name="debug" type="CheckBox" parent="datas"]
 margin_left = 86.0

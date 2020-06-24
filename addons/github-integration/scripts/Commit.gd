@@ -109,6 +109,8 @@ func connect_signals():
 
 func request_completed(result, response_code, headers, body ):
     print("REQUEST TO API : Request exited with code %s" % response_code)
+    if response_code == 422:
+        print(JSON.parse(body.get_string_from_utf8()).result)
     if result == 0:
         match requesting:
             REQUESTS.UPLOAD:
@@ -325,29 +327,11 @@ func request_blobs():
             var sha = "" # is set to update a file
             var encoding = ""
             
-            ## this cases are not really necessary, will be used in future versions
-            
-            if file.get_extension()=="png" or file[0].get_extension()=="jpg":
-                ## for images
-                var img_src = File.new()
-                img_src.open(file,File.READ)
-                content = Marshalls.raw_to_base64(img_src.get_buffer(img_src.get_len()))
-                img_src.close()
-                encoding = "base64"
-            elif file.get_extension()=="ttf":
-                ## for fonts
-                var font = File.new()
-                font.open(file,File.READ)
-                content = Marshalls.raw_to_base64(font.get_buffer(font.get_len()))
-                encoding = "base64"
-                font.close()
-            else:
-                ## for readable files
-                var f : File = File.new()
-                f.open(file,File.READ)
-                content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
-                encoding = "base64"
-                f.close()
+            var f : File = File.new()
+            f.open(file,File.READ)
+            content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
+            encoding = "base64"
+            f.close()
             
             
             
@@ -358,7 +342,8 @@ func request_blobs():
                 "encoding":encoding,
             }
             
-            new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/blobs",UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
+            new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/blobs",
+            UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
             yield(self,"file_blobbed")
         else:
             get_parent().print_debug_message("pointing large file, please wait...")
