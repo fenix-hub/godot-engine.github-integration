@@ -1628,7 +1628,6 @@ __meta__ = {
 }
 
 [node name="Commit" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 9 )
@@ -1937,6 +1936,7 @@ margin_right = 500.0
 margin_bottom = 329.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+select_mode = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Commit/VBoxContainer2/HBoxContainer3/VBoxContainer"]
 margin_top = 333.0

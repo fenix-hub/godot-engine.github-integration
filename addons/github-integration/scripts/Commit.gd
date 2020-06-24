@@ -101,6 +101,7 @@ func connect_signals():
 #	SelectFiles.connect("confirmed",self,"on_confirm")
     SelectFiles.connect("files_selected",self,"on_files_selected")
     Uncommitted.connect("item_selected",self,"on_item_selected")
+    Uncommitted.connect("multi_selected",self,"on_multiple_item_selected")
     removefileBtn.connect("pressed",self,"on_removefile_pressed")
     Uncommitted.connect("nothing_selected",self,"on_nothing_selected")
     SelectFiles.connect("dir_selected",self,"on_dir_selected")
@@ -521,10 +522,12 @@ func show_files(paths : PoolStringArray, isfile : bool = false , isdir : bool = 
 
 func on_removefile_pressed():
     var filestoremove = Uncommitted.get_selected_items()
-    for file in filestoremove:
-        var file_name = Uncommitted.get_item_text(file)
-        files.erase(file_name)
-        Uncommitted.remove_item(file)
+    var first_file = filestoremove[0]
+    var file_name = Uncommitted.get_item_text(first_file)
+    files.erase(file_name)
+    Uncommitted.remove_item(first_file)
+    if Uncommitted.get_selected_items().size() > 0:
+        on_removefile_pressed()
 
 func on_selectfiles_pressed():
     SelectFiles.set_mode(FileDialog.MODE_OPEN_FILES)
@@ -539,8 +542,12 @@ func on_selectdirectory_pressed():
 func on_item_selected(idx : int):
     removefileBtn.set_disabled(false)
 
+func on_multiple_item_selected(idx : int, selected : bool):
+    removefileBtn.set_disabled(false)
+
 func on_nothing_selected():
     removefileBtn.set_disabled(true)
 
 func about_gitignore_pressed():
     OS.shell_open("https://git-scm.com/docs/gitignore")
+
