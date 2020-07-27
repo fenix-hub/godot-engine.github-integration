@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/badge/plugin%20version-0.9.0-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
+[![version](https://img.shields.io/badge/plugin%20version-1.0.0-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
 [![updates](https://img.shields.io/badge/plugin%20updates-on%20discord-purple)](https://discord.gg/JNrcucg)
 [![paypal](https://img.shields.io/badge/donations-PayPal-cyan)](https://paypal.me/NSantilio?locale.x=it_IT)
 
@@ -13,9 +13,11 @@ This plugin is now supported in [Godot Extended Library Discord](https://discord
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *0.9.0*  
+Version: *1.0.0*  
 Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
-Godot Version: *3.2stable*  
+Godot Version: *3.2.3beta1*  
+
+<img align="center" src="addons/github-integration/screenshots/banner.png">
 
 ## What is this?
 *GitHub Integration* is a addon for Godot Engine that I've created mainly for a personal purpose.  
@@ -30,13 +32,7 @@ If you want to see some screenshots you can find them here `addons/github-integr
 For my first donation I decided to add a SUPPORTERS.md file where there is a list of people who decided to financially support this plugin. I will never ask for anything in return for the free service I want to offer to  Godot's community, but it will always be an act of kindness that will encourage me to keep my plugins and projects updated.
 Here's the [Supporters List](./SUPPORTERS.md)
 
-### About Updates
-**Since v0.7.5 I've decided to not update this plugin anymore.**  
-It doesn't mean this plugin won't be supported anymore, or I will abandon it: I'm planning to fully migrate this project from a simple GDScript addon to a C++ module for Godot.  
-Eventual bugfixes and additional little features will still be implemented if they are needed to support all platforms and to stay updated to Godot Engine's new version, but due to GDScript and Godot limits, I'll migrate the whole code to a C++, fully implemented and optimized GitHub module.  
-Please, watch this project or join Discord groups I've mentioned in this page to get all updates.
-
-# Disclaimer  
+## :warning: Disclaimer  
 This addon was built for a **personal use** intention. It was released as an open source plugin in the hope that it could be useful to the Godot Engine Community.  
 As a "work in progress" project, there is *no warranty* for any eventual issue and bug that may broke your project.  
 I don't assume any responsibility for possible corruptions of your project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
