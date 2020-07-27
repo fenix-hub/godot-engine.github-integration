@@ -14,37 +14,35 @@
 tool
 extends Control
 
-onready var repo_icon = $Panel2/List/repo_infos/repo_icon
-onready var private_icon = $Panel2/List/repo_infos/private_icon
-onready var watch_icon = $Panel2/List/repo_infos/watch_values/watch_icon
-onready var star_icon = $Panel2/List/repo_infos/star_values/star_icon
-onready var fork_icon = $Panel2/List/repo_infos/fork_values/fork_icon
-onready var forked_icon = $Panel2/List/repo_infos/forked_icon
+onready var repo_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/repo_icon
+onready var private_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/private_icon
+onready var watch_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/watch_values/watch_icon
+onready var star_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/star_values/star_icon
+onready var fork_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/fork_values/fork_icon
+onready var forked_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/forked_icon
 
 onready var extension_option = $extension_choosing/VBoxContainer/extension_option
 onready var extension_choosing = $extension_choosing
-onready var watch_value = $Panel2/List/repo_infos/watch_values/watch
-onready var star_value = $Panel2/List/repo_infos/star_values/star
-onready var fork_value = $Panel2/List/repo_infos/fork_values/fork
+onready var watch_value = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/watch_values/watch
+onready var star_value = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/star_values/star
+onready var fork_value = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/fork_values/fork
 
-#onready var name_ = $Panel2/List/name
-onready var html_url_ = $Panel2/List/repo_infos/html_url
-onready var owner_ = $Panel2/List/repo_infos/repo_owner
-onready var description_ = $Panel2/List/description
-onready var default_branch_ = $Panel2/List/branch/HBoxContainer6/default_branch
-onready var repo_name_ = $Panel2/List/repo_infos/repo_name
-onready var contents_ = $Panel2/contents
-onready var closeButton = $Panel2/close
-onready var branches_ = $Panel2/List/branch/branch2
-onready var DeleteRepo = $Panel2/repos_buttons/HBoxContainer2/delete
-onready var Commit = $Panel2/repos_buttons/HBoxContainer3/commit
-onready var DeleteRes = $Panel2/repos_buttons/HBoxContainer2/delete2
+onready var owner_ = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/repo_owner
+onready var description_ = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/description
+onready var default_branch_ = $Repository/BranchInfo/branch/HBoxContainer6/default_branch
+onready var repo_name_ = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/repo_name
+onready var contents_ = $Repository/contents
+onready var closeButton = $Repository/RepoInfos/RepoInfosContainer/close
+onready var branches_ = $Repository/BranchInfo/branch/branch2
+onready var DeleteRepo = $Repository/repos_buttons/HBoxContainer2/delete
+onready var Commit = $Repository/repos_buttons/HBoxContainer3/commit
+onready var DeleteRes = $Repository/repos_buttons/HBoxContainer2/delete2
 
-onready var reload = $Panel2/repos_buttons/HBoxContainer/reload
-onready var new_branchBtn = $Panel2/List/branch/new_branchBtn
+onready var reload = $Repository/repos_buttons/HBoxContainer/reload
+onready var new_branchBtn = $Repository/BranchInfo/branch/new_branchBtn
 onready var newBranch = $NewBranch
-onready var pull_btn = $Panel2/List/branch/pull_btn
-onready var git_lfs = $Panel2/List/branch/git_lfs
+onready var pull_btn = $Repository/BranchInfo/branch/pull_btn
+onready var git_lfs = $Repository/BranchInfo/branch/git_lfs
 
 onready var branch3 = $NewBranch/VBoxContainer/HBoxContainer2/branch3
 
@@ -78,8 +76,6 @@ var gitignore_file : Dictionary
 var zip_filepath : String = ""
 var archive_extension : String = ""
 
-var unzipper = load("res://addons/github-integration/resources/extraction/gdunzip.gd").new()
-
 signal get_branches()
 signal get_contents()
 signal get_branches_contents()
@@ -92,7 +88,7 @@ func _ready():
     branch3.clear()
     DeleteRes.disabled = true
     DeleteRes.connect("pressed",self,"delete_resource")
-    html_url_.connect("pressed",self,"open_html")
+    repo_name_.connect("pressed",self,"open_html")
     closeButton.connect("pressed",self,"close_tab")
     DeleteRepo.connect("pressed",self,"delete_repo")
     Commit.connect("pressed",self,"commit")
@@ -103,6 +99,20 @@ func _ready():
     pull_btn.connect("pressed",self,"on_pull_pressed")
     git_lfs.connect("pressed",self,"setup_git_lfs")
 
+func set_darkmode(darkmode : bool):
+    if darkmode:
+        $BG.color = "#24292e"
+        set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres"))
+        $Repository/RepoInfos.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Repohead-black.tres"))
+        $Repository/BranchInfo.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Branch-black.tres"))
+        $Repository/contents.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/ContentesBG-dark.tres"))   
+    else:
+        $BG.color = "#f6f8fa"
+        set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
+        $Repository/RepoInfos.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Repohead-white.tres"))
+        $Repository/BranchInfo.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Branch-white.tres"))
+        $Repository/contents.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/ContentesBG-white.tres"))
+
 func load_icons(r):
     repo_icon.set_texture(IconLoaderGithub.load_icon_from_name("repos"))
     if r.private:
@@ -112,10 +122,10 @@ func load_icons(r):
     watch_icon.set_texture(IconLoaderGithub.load_icon_from_name("watch"))
     star_icon.set_texture(IconLoaderGithub.load_icon_from_name("stars"))
     fork_icon.set_texture(IconLoaderGithub.load_icon_from_name("forks"))
-    reload.set_button_icon(IconLoaderGithub.load_icon_from_name("reload"))
-    new_branchBtn.set_button_icon(IconLoaderGithub.load_icon_from_name("add"))
-    pull_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("download"))
-    git_lfs.set_button_icon(IconLoaderGithub.load_icon_from_name("git_lfs"))
+    reload.set_button_icon(IconLoaderGithub.load_icon_from_name("reload-gray"))
+    new_branchBtn.set_button_icon(IconLoaderGithub.load_icon_from_name("add-gray"))
+    pull_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("download-gray"))
+    git_lfs.set_button_icon(IconLoaderGithub.load_icon_from_name("git_lfs-gray"))
 
 func open_repo(repo : Dictionary):
     contents_.clear()
@@ -125,7 +135,7 @@ func open_repo(repo : Dictionary):
 
     var r = repo
     current_repo = r
-    html_url_.text = r.html_url
+    html = r.html_url
     owner_.text = r.owner.login
     repo_name_.text = r.name
     if r.description !=null:
@@ -327,15 +337,15 @@ func build_list():
             var icon
             var extension = content_name.get_extension()
             if extension == "gd":
-                icon = IconLoaderGithub.load_icon_from_name("script")
+                icon = IconLoaderGithub.load_icon_from_name("script-gray")
             elif extension == "tscn":
-                icon = IconLoaderGithub.load_icon_from_name("scene")
+                icon = IconLoaderGithub.load_icon_from_name("scene-gray")
             elif extension == "png":
-                icon = IconLoaderGithub.load_icon_from_name("image")
+                icon = IconLoaderGithub.load_icon_from_name("image-gray")
             elif extension == "tres":
-                icon = IconLoaderGithub.load_icon_from_name("resource")
+                icon = IconLoaderGithub.load_icon_from_name("resource-gray")
             else:
-                icon = IconLoaderGithub.load_icon_from_name("file")
+                icon = IconLoaderGithub.load_icon_from_name("file-gray")
 
             item.set_icon(0,icon)
             item.set_metadata(0,content)
@@ -349,7 +359,7 @@ func build_list():
 
             var new_dir = contents_.create_item(dir_dir)
             new_dir.set_text(0,content_name)
-            new_dir.set_icon(0,IconLoaderGithub.load_icon_from_name("dir"))
+            new_dir.set_icon(0,IconLoaderGithub.load_icon_from_name("dir-gray"))
             new_dir.set_metadata(0,content)
             directories.append(new_dir)
 
@@ -445,23 +455,23 @@ func _on_reload_pressed():
     tree_sha = ""
     open_repo(current_repo)
 
-func gdscript_extraction():
-    var archive = unzipper._load(zip_filepath)
-
-    if archive:
-        var root : String = unzipper.files.values()[0].file_name
-        for file in unzipper.files.values():
-            var uncompressed = unzipper.uncompress(file.file_name)
-            if uncompressed:
-                #print("File:" +file.file_name.lstrip(root))
-                if file.file_name.lstrip(root).get_base_dir()!='':
-                    var dir : Directory = Directory.new()
-                    dir.make_dir("res://uncompressed/"+file.file_name.lstrip(root).get_base_dir())
-                    #print("Directory:" +file.file_name.lstrip(root).get_base_dir())
-                var uncompressed_file : File = File.new()
-                uncompressed_file.open("res://uncompressed/"+file.file_name.lstrip(root),File.WRITE)
-                uncompressed_file.store_string(uncompressed.get_string_from_utf8())
-                uncompressed_file.close()
+#func gdscript_extraction():
+#    var archive = unzipper._load(zip_filepath)
+#
+#    if archive:
+#        var root : String = unzipper.files.values()[0].file_name
+#        for file in unzipper.files.values():
+#            var uncompressed = unzipper.uncompress(file.file_name)
+#            if uncompressed:
+#                #print("File:" +file.file_name.lstrip(root))
+#                if file.file_name.lstrip(root).get_base_dir()!='':
+#                    var dir : Directory = Directory.new()
+#                    dir.make_dir("res://uncompressed/"+file.file_name.lstrip(root).get_base_dir())
+#                    #print("Directory:" +file.file_name.lstrip(root).get_base_dir())
+#                var uncompressed_file : File = File.new()
+#                uncompressed_file.open("res://uncompressed/"+file.file_name.lstrip(root),File.WRITE)
+#                uncompressed_file.store_string(uncompressed.get_string_from_utf8())
+#                uncompressed_file.close()
 
 
 func _on_extraction_overwriting_confirmed():
@@ -524,8 +534,9 @@ func _on_cancel_pressed():
     ExtractionRequest.hide()
 
 func _on_gdscript_pressed():
-    gdscript_extraction()
-
+#    gdscript_extraction()
+    pass
+    
 func _on_python_pressed():
     python_extraction()
 
