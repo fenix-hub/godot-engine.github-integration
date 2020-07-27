@@ -150,6 +150,10 @@ func open_repo(repo : Dictionary):
 
     load_icons(r)
     request_branches(r.name)
+    
+    yield(self,"loaded_repo")
+    request.cancel_request()
+    request_file_content(".gitignore")
 
 
 func request_branches(rep : String):
@@ -372,7 +376,7 @@ func build_list():
 
 func request_file_content(path : String):
     requesting = REQUESTS.FILE_CONTENT
-    request.request("https://api.github.com/repos/"+owner_.text+"/"+current_repo.name+"/contents/"+path,UserData.header,false,HTTPClient.METHOD_GET)
+    request.request("https://api.github.com/repos/"+owner_.text+"/"+current_repo.name+"/contents/"+path+"?ref="+current_branch.name,UserData.header,false,HTTPClient.METHOD_GET)
     yield(self,"get_contents")
 
 func _on_branch2_item_selected(ID):
