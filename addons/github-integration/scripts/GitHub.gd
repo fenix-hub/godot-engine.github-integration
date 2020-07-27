@@ -75,6 +75,7 @@ func _ready():
         SignIn.sign_in()
 
 func check_connection():
+    ConnectionIcon.use_parent_material = false
     ConnectionIcon.material.set("shader_param/speed", 3)
     RestHandler.check_connection()
     var connection = yield(RestHandler, "_check_connection")
@@ -89,6 +90,7 @@ func check_connection():
             ConnectionIcon.set_texture(connection_status[1])
             ConnectionIcon.set_tooltip("Can't connect to GitHub API, check your internet connection or API status")
             RestartConnection.show()
+    ConnectionIcon.use_parent_material = true
     ConnectionIcon.material.set("shader_param/speed", 0)
 
 func loading(value : bool) -> void:
