@@ -168,7 +168,7 @@ Please, visit [this site](https://help.github.com/en/github/authenticating-to-gi
 - search bar for repositories
 
 -----------------
-**version x.x.x**  
+**version 1.0.0**  
 *fixed*
 - overall fixes
 - *infinite loading after commit/push:* fixed an issue that blocked commiting and pushing an entire project or some specific files. Now everything should be committed fine. A whole project can be committed just selecting "Select current directory"
