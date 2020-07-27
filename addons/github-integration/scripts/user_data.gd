@@ -17,7 +17,6 @@ extends Node
 # saves and loads user datas from custom folder in user://github_integration/user_data.ud
 
 var directory : String = ""
-var directory_name = "github_integration"
 var file_name = "user_data.ud"
 var avatar_name = "avatar.png"
 
@@ -37,20 +36,20 @@ var header : Array = [""]
 var gitlfs_header : Array = [""]
 var gitlfs_request : String = ".git/info/lfs/objects/batch"
 
-var plugin_version : String = "0.9.0"
+var plugin_version : String = "0.9.4"
 
 func _ready():
-    directory = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
+    directory = PluginSettings.plugin_path
 
 func save(user : Dictionary, avatar : PoolByteArray, auth : String, token : String, mail : String) -> void:
     
     var dir = Directory.new()
     var file = File.new()
-    var img = Image.new()
     
     if not dir.dir_exists(directory):
         dir.make_dir(directory)
-        print("[GitHub Integration] >> ","made custom directory in user folder, it is placed at ", directory)
+        if PluginSettings.debug:
+            print("[GitHub Integration] >> ","made custom directory in user folder, it is placed at ", directory)
         
     if user!=null:
         var err = file.open_encrypted_with_pass(directory+file_name,File.WRITE,OS.get_unique_id())
@@ -66,35 +65,43 @@ func save(user : Dictionary, avatar : PoolByteArray, auth : String, token : Stri
         formatting.append(plugin_version)           #4
         file.store_csv_line(formatting)
         file.close()
-        print("[GitHub Integration] >> ","saved user datas in user folder")
+        if PluginSettings.debug:
+            print("[GitHub Integration] >> ","saved user datas in user folder")
         
     
+    save_avatar(avatar)
+    
+    header = ["Authorization: token "+token]
+
+func save_avatar(avatar : PoolByteArray):
     if avatar!=null:
+        var img = Image.new()
         img.load_png_from_buffer(avatar)
         img.save_png(directory+avatar_name)
-        print("[GitHub Integration] >> ","saved avatar in user folder")
+        if PluginSettings.debug:
+            print("[GitHub Integration] >> ","saved avatar in user folder")
         var av : Image = Image.new()
         av.load(directory+avatar_name)
         var img_text : ImageTexture = ImageTexture.new()
         img_text.create_from_image(av)
-        AVATAR = img_text
-    
-    header = ["Authorization: token "+token]
+        AVATAR = img_text    
 
 func load_user() -> PoolStringArray :
-    directory = ProjectSettings.globalize_path("user://").replace("app_userdata/"+ProjectSettings.get_setting('application/config/name')+"/",directory_name)+"/"
+    directory = PluginSettings.plugin_path
     var file = File.new()
     var content : PoolStringArray
     
-    print("[GitHub Integration] >> loading user profile, checking for existing logfile...")
+    if PluginSettings.debug:
+        print("[GitHub Integration] >> loading user profile, checking for existing logfile...")
     
     if file.file_exists(directory+file_name) :
-        print("[GitHub Integration] >> ","logfile found, fetching datas..")
+        if PluginSettings.debug:
+            print("[GitHub Integration] >> ","logfile found, fetching datas..")
         file.open_encrypted_with_pass(directory+file_name,File.READ,OS.get_unique_id())
         content = file.get_csv_line()
-        
         if content.size() < 5:
-            printerr("[GitHub Integration] >> ","this log file belongs to an older version of this plugin and will not support the mail/password login deprecation, so it will be deleted. Please, insert your credentials again.")
+            if PluginSettings.debug:
+                printerr("[GitHub Integration] >> ","this log file belongs to an older version of this plugin and will not support the mail/password login deprecation, so it will be deleted. Please, insert your credentials again.")
             file.close()
             var dir = Directory.new()
             dir.remove(directory+file_name)
@@ -105,24 +112,33 @@ func load_user() -> PoolStringArray :
         MAIL = content[1]
         TOKEN = content[2]
         USER = JSON.parse(content[3]).result
+        load_avatar()
         
-        var av : Image = Image.new()
-        av.load(directory+avatar_name)
-        var img_text : ImageTexture = ImageTexture.new()
-        img_text.create_from_image(av)
-        
-        
-        AVATAR = img_text
         header = ["Authorization: token "+TOKEN]
         gitlfs_header = [
             "Accept: application/vnd.git-lfs+json",
             "Content-Type: application/vnd.git-lfs+json"]
         gitlfs_header.append(header[0])
     else:
-        printerr("[GitHub Integration] >> ","no logfile found, log in for the first time to create a logfile.")
+        if PluginSettings.debug:
+            printerr("[GitHub Integration] >> ","no logfile found, log in for the first time to create a logfile.")
     
     return content
 
+func load_avatar():
+    var file : File = File.new()
+    var av : Image = Image.new()
+    var img_text : ImageTexture = ImageTexture.new()
+    if file.file_exists(directory+avatar_name):    
+        av.load(directory+avatar_name)
+        img_text.create_from_image(av)
+        AVATAR = img_text
+    else:
+        AVATAR = null
+
 func delete_user():
     var dir : Directory = Directory.new()
+    dir.open(directory)
     dir.remove(directory+file_name)
+    dir.remove(directory+avatar_name)
+    

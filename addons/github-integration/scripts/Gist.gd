@@ -45,6 +45,14 @@ func _ready():
     Readonly.set_pressed(true)
     hide()
 
+func set_darkmode(darkmode : bool):
+    if darkmode:
+        $BG.color = "#24292e"
+        set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres"))
+    else:
+        $BG.color = "#f6f8fa"
+        set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
+
 func connect_signals():
     request.connect("request_completed",self,"request_completed")
     CloseBTN.connect("pressed",self,"close_editor")
@@ -63,7 +71,7 @@ func connect_signals():
     
     Readonly.connect("toggled",self,"_on_Readonly_toggled")
     
-    addfile_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("file"))
+    addfile_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("file-gray"))
     deletefile_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("file_broken"))
 
 func request_completed(result, response_code, headers, body ):
@@ -116,7 +124,7 @@ func load_gist(gist : Dictionary):
     
     for file in gist.files:
         
-        var file_item = List.add_item(file,IconLoaderGithub.load_icon_from_name("gists"))
+        var file_item = List.add_item(file,IconLoaderGithub.load_icon_from_name("gists-back"))
         var this_index = List.get_item_count()-1
         List.set_item_metadata(this_index,gist.files[file])
         List.select(this_index)
@@ -149,7 +157,7 @@ func on_wrap_selected(index : int):
 func initialize_new_gist(privacy : bool , description : String = "" , files : PoolStringArray = []):
     delete_btn.hide()
     gist_mode = GIST_MODE.CREATING
-    commit_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("add"))
+    commit_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("add-gray"))
     self.privacy = privacy
     self.description = description
     if description == "" or description ==  " ":
@@ -175,7 +183,7 @@ func on_addfile():
     NewFileDialog.popup()
 
 func load_file(file_name : String, filecontent : String):
-    var file_item = List.add_item(file_name,IconLoaderGithub.load_icon_from_name("gists"))
+    var file_item = List.add_item(file_name,IconLoaderGithub.load_icon_from_name("gists-back"))
     var this_index = List.get_item_count()-1
     
     var metadata = { "content":filecontent, "filename":file_name }
@@ -187,7 +195,7 @@ func load_file(file_name : String, filecontent : String):
 func add_new_file():
     var item_filename = NewFileDialog.get_node("HBoxContainer2/filename").get_text()
     NewFileDialog.get_node("HBoxContainer2/filename").set_text("")
-    var file_item = List.add_item(item_filename,IconLoaderGithub.load_icon_from_name("gists"))
+    var file_item = List.add_item(item_filename,IconLoaderGithub.load_icon_from_name("gists-back"))
     var this_index = List.get_item_count()-1
     
     var metadata = { "content":"", "filename":item_filename }

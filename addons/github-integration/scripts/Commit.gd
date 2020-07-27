@@ -19,7 +19,6 @@ extends Control
 onready var _message = $VBoxContainer2/HBoxContainer7/message
 #onready var _file = $VBoxContainer/HBoxContainer/file
 onready var _branch = $VBoxContainer2/HBoxContainer2/branch
-onready var file_chooser = $FileDialog
 onready var repository = $VBoxContainer2/HBoxContainer/repository
 onready var Loading = $VBoxContainer2/loading2
 
@@ -62,7 +61,6 @@ var lfs = []
 var gitignore_file : Dictionary
 
 const DIRECTORY : String = "res://"
-const GITIGNOREPATH : String = "user://gitignores/"
 
 var IGNORE_FILES : PoolStringArray = []
 var IGNORE_FOLDERS : PoolStringArray = []
@@ -92,6 +90,13 @@ func _ready():
     
     removefileBtn.set_disabled(true)
 
+func set_darkmode(darkmode : bool):
+    if darkmode:
+        $BG.color = "#24292e"
+        set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres"))
+    else:
+        $BG.color = "#f6f8fa"
+        set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
 
 func connect_signals():
     new_repo.connect("request_completed",self,"request_completed")
@@ -109,9 +114,9 @@ func connect_signals():
     about_gitignoreBtn.connect("pressed",self,"about_gitignore_pressed")
 
 func request_completed(result, response_code, headers, body ):
-    print("REQUEST TO API : Request exited with code %s" % response_code)
+    get_parent().print_debug_message("REQUEST TO API : Request exited with code %s" % response_code)
     if response_code == 422:
-        print(JSON.parse(body.get_string_from_utf8()).result)
+        get_parent().print_debug_message(JSON.parse(body.get_string_from_utf8()).result)
     if result == 0:
         match requesting:
             REQUESTS.UPLOAD:
@@ -198,7 +203,7 @@ func request_completed(result, response_code, headers, body ):
                     emit_signal("lfs")
             REQUESTS.POST_LFS:
 #				if response_code == 200:
-                print(response_code," ",JSON.parse(body.get_string_from_utf8()).result)
+                get_parent().print_debug_message(response_code+" "+JSON.parse(body.get_string_from_utf8()).result)
                 emit_signal("lfs_push")
                 get_parent().loading(false)
                 Loading.hide()
@@ -215,6 +220,10 @@ func load_branches(br : Array, s_r : Dictionary, ct : Array, gitignore : Diction
     gitignore_file = gitignore
     if gitignore:
         Gitignore.set_text(Marshalls.base64_to_utf8(gitignore.content))
+    else:
+        Gitignore.set_text("")
+        
+        
     
     repository.set_text(repo_selected.name+"/"+_branch.get_item_text(branch_idx))
 
@@ -230,18 +239,18 @@ func _on_Button_pressed():
     get_parent().loading(true)
     
     load_gitignore()
-    print(get_parent().plugin_name,"fetching all files in project...")
+    get_parent().print_debug_message("fetching all files in project...")
     
     
     request_sha_latest_commit()
 
-func update_gitignore():
-    var gitignore_filepath = UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/"
-    var ignorefile = File.new()
-    var error = ignorefile.open(gitignore_filepath+".gitignore",File.WRITE)
-    if error:
-        Gitignore.set_text(ignorefile.get_as_text())
-        ignorefile.close()
+#func update_gitignore():
+#    var gitignore_filepath = UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/"
+#    var ignorefile = File.new()
+#    var error = ignorefile.open(gitignore_filepath+".gitignore",File.WRITE)
+#    if error:
+#        Gitignore.set_text(ignorefile.get_as_text())
+#        ignorefile.close()
 
 # ------- gitignore ----
 func load_gitignore():
@@ -251,6 +260,7 @@ func load_gitignore():
     
     var dir = Directory.new()
     if not dir.dir_exists(gitignore_filepath):
+        dir.open(UserData.directory)
         dir.make_dir_recursive(gitignore_filepath)
         get_parent().print_debug_message("made directory in user folder for this .gitignore file, at %s"%gitignore_filepath)
     
@@ -269,13 +279,10 @@ func load_gitignore():
     
     # load the gitignore
     files.push_front(gitignore_filepath+".gitignore")
-#	list_file_size.append(0)
     
     # load the gitattributes
     if File.new().file_exists(UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/.gitattributes"):
         files.push_front(UserData.directory+repo_selected.name+"/"+_branch.get_item_text(branch_idx)+"/.gitattributes")
-#		list_file_size.append(0)
-    
     
     lfs.clear()
     
@@ -300,7 +307,7 @@ func load_gitignore():
     
     files.clear()
     files = filtered_files
-#	files.push_front(gitignore_filepath+".gitignore")
+#    files.push_front(gitignore_filepath+".gitignore")
     emit_signal("files_filtered")
 
 # |---------------------------------------------------------|
@@ -320,7 +327,6 @@ func request_base_tree():
 func request_blobs():
     requesting = REQUESTS.BLOB
     list_file_sha.clear()
-    
     for file in files:
         current_handled_file = file
         if list_file_size[files.find(file)] < 104857600:
@@ -334,9 +340,7 @@ func request_blobs():
             encoding = "base64"
             f.close()
             
-            
-            
-            print(get_parent().plugin_name,"blobbing ~> "+file.get_file())
+            get_parent().print_debug_message("blobbing ~> "+file.get_file())
             
             var bod = {
                 "content":content,
@@ -355,7 +359,7 @@ func request_blobs():
             list_file_sha.append(onlyoid)
         Progress.set_value(range_lerp(files.find(file),0,files.size(),0,100))
     
-    print(get_parent().plugin_name,"blobbed each file with success, start committing...")
+    get_parent().print_debug_message("blobbed each file with success, start committing...")
     Progress.set_value(100)
     request_commit_tree()
 
@@ -367,6 +371,9 @@ func request_commit_tree():
             pass
         else:
             continue
+        var file_name : String = files[files.find(file)].right((DIRECTORY).length())
+        if file_name.begins_with("/"):
+            file_name = file_name.lstrip("/")
         if list_file_size[files.find(file)] < 104857600:
             if file.get_file() == ".gitignore":
                 tree.append({
@@ -384,11 +391,12 @@ func request_commit_tree():
                         })
             else:
                 tree.append({
-                    "path":files[files.find(file)].right((DIRECTORY).length()),
+                    "path":file_name,
                     "mode":"100644",
                     "type":"blob",
                     "sha":list_file_sha[files.find(file)],
                     })
+                    
         else:
             lfs.append({"oid": list_file_sha[files.find(file)],"size": list_file_size[files.find(file)]})
     
@@ -430,7 +438,7 @@ func request_push_commit():
     
     if lfs.size() > 0:
         requesting = REQUESTS.POST_LFS
-        print(lfs)
+        get_parent().print_debug_message(lfs)
         var body = { "transfer":"basic" , "objects":lfs}
         new_repo.request("https://github.com/"+repo_selected.owner.login+"/"+repo_selected.name+UserData.gitlfs_request,UserData.gitlfs_header,false,HTTPClient.METHOD_PUT,JSON.print(body))
         yield(self,"lfs_push")
@@ -512,9 +520,10 @@ func on_dir_selected(path : String):
 func show_files(paths : PoolStringArray, isfile : bool = false , isdir : bool = false):
     Uncommitted.clear()
     
-    for file in files:
+    for file in paths:
+        file = file.replace("///","//")
         if isfile:
-            Uncommitted.add_item(file,IconLoaderGithub.load_icon_from_name("file"))
+            Uncommitted.add_item(file,IconLoaderGithub.load_icon_from_name("file-gray"))
     
 #	if isdir:
 #		for dir in paths:
@@ -522,12 +531,17 @@ func show_files(paths : PoolStringArray, isfile : bool = false , isdir : bool = 
 
 func on_removefile_pressed():
     var filestoremove = Uncommitted.get_selected_items()
+    if filestoremove.size() == 0:
+        on_nothing_selected()
+        return
     var first_file = filestoremove[0]
     var file_name = Uncommitted.get_item_text(first_file)
     files.erase(file_name)
     Uncommitted.remove_item(first_file)
     if Uncommitted.get_selected_items().size() > 0:
         on_removefile_pressed()
+    else:
+        on_nothing_selected()
 
 func on_selectfiles_pressed():
     SelectFiles.set_mode(FileDialog.MODE_OPEN_FILES)

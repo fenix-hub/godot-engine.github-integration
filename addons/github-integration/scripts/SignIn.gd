@@ -3,15 +3,15 @@ extends Control
 
 signal signed()
 
-onready var Mail : LineEdit = $signin_panel/Mail
-onready var Token : LineEdit = $signin_panel/Password
-onready var Error = $signin_panel/error
-onready var logfile_icon = $signin_panel/HBoxContainer3/logfile
+onready var Mail : LineEdit = $FieldContainer/signin_panel/Mail
+onready var Token : LineEdit = $FieldContainer/signin_panel/Password
+onready var Error = $FieldContainer/signin_panel/error
+onready var logfile_icon = $FieldContainer/signin_panel/HBoxContainer3/logfile
 
-onready var btnSignIn = $signin_panel/HBoxContainer3/btnSignIn
-onready var btnCreateToken = $signin_panel/HBoxContainer3/btnCreateToken
+onready var btnSignIn = $FieldContainer/signin_panel/HBoxContainer3/btnSignIn
+onready var btnCreateToken = $FieldContainer/signin_panel/Token/btnCreateToken
 
-onready var DeleteDataBtn = $signin_panel/DeleteDataBtn
+onready var DeleteDataBtn = $FieldContainer/signin_panel/DeleteDataBtn
 onready var DeletePopup : ConfirmationDialog = $DeletePopup
 onready var DeleteHover : ColorRect = $DeleteHover
 
@@ -20,7 +20,7 @@ var token : String
 var signin_request = HTTPRequest.new()
 var download_image = HTTPRequest.new()
 var auth
-enum REQUESTS { LOGIN = 0, AVATAR = 1, END = -1 }
+enum REQUESTS { LOGIN = 0, AVATAR = 1, END = -1 , USER = 2 }
 var requesting
 var user_data
 
@@ -50,6 +50,14 @@ func _ready():
         logfile = true
         logfile_icon.show()
         DeleteDataBtn.disabled = false
+
+func set_darkmode(darkmode : bool):
+    if darkmode:
+        $BG.color = "#24292e"
+        set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres"))
+    else:
+        $BG.color = "#f6f8fa"
+        set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
 
 func create_token():
     OS.shell_open("https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line")

@@ -35,7 +35,7 @@ func set_repository(repository : Dictionary):
         if repository.fork:
             repo_icon = IconLoaderGithub.load_icon_from_name("forks")
         else:
-            repo_icon = IconLoaderGithub.load_icon_from_name("repos-back")
+            repo_icon = IconLoaderGithub.load_icon_from_name("repos")
     Name.get_node("Icon").set_texture(repo_icon)
 
 func deselect():
