@@ -29,6 +29,9 @@ I'm currently working on a [Wiki](https://github.com/fenix-hub/godot-engine.gith
 If you want to see some screenshots you can find them here `addons/github-integration/screenshots`
 
 ## Supporters page
+<a href="https://github.com/masterworm2"><img src='https://avatars0.githubusercontent.com/u/9788627?s=64&v=4' alt='@masterworm2' width="64"/></a>
+<a href="https://github.com/auctru"><img src='https://avatars0.githubusercontent.com/u/48778172?s=64&v=4' alt='@auctru' width="64"/></a>
+
 For my first donation I decided to add a SUPPORTERS.md file where there is a list of people who decided to financially support this plugin. I will never ask for anything in return for the free service I want to offer to  Godot's community, but it will always be an act of kindness that will encourage me to keep my plugins and projects updated.
 Here's the [Supporters List](./SUPPORTERS.md)
 
