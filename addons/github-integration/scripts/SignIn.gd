@@ -14,11 +14,11 @@ onready var btnCreateToken = $FieldContainer/signin_panel/Token/btnCreateToken
 onready var DeleteDataBtn = $FieldContainer/signin_panel/DeleteDataBtn
 onready var DeletePopup : ConfirmationDialog = $DeletePopup
 onready var DeleteHover : ColorRect = $DeleteHover
+onready var signin_request = $SignInRequest
+onready var download_image = $DownloadRequest
 
 var mail : String 
 var token : String
-var signin_request = HTTPRequest.new()
-var download_image = HTTPRequest.new()
 var auth
 enum REQUESTS { LOGIN = 0, AVATAR = 1, END = -1 , USER = 2 }
 var requesting
@@ -35,8 +35,6 @@ func _ready():
     Error.hide()
     btnSignIn.connect("pressed",self,"sign_in")
     btnCreateToken.connect("pressed",self,"create_token")
-    call_deferred("add_child",signin_request)
-    call_deferred("add_child",download_image)
     signin_request.connect("request_completed",self,"signin_completed")
     download_image.connect("request_completed",self,"signin_completed")
     
