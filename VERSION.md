@@ -179,6 +179,15 @@ Please, visit [this site](https://help.github.com/en/github/authenticating-to-gi
 - *gist searchbar:* it is now possible to use the searchbar for gist
 - *autolog:* now an auto login option is available. When activated, the plugin will automatically log inside user's github profile
 - **darkmode:** it is now available a darkmode. Both light and dark modes respect github color palette. The dark mode can be activated anytime during the plugin usage
+  
+-----------------
+**version 1.1.0**  
+*fixed*
+- *faster login and auto-login*
+- *minor errors with nodes*
+
+*added*
+- *fast social button to header:* you can now join the social I share in the README with some buttons in the header.
 
 
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
