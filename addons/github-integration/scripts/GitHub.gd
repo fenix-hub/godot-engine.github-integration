@@ -14,6 +14,8 @@
 tool
 extends Control
 
+onready var VersionCheck : HTTPRequest = $VersionCheck
+
 onready var SignIn = $SingIn
 onready var UserPanel = $UserPanel
 onready var CommitRepo = $Commit
@@ -25,6 +27,7 @@ onready var Version = $Header/datas/version
 onready var ConnectionIcon : TextureRect = $Header/datas/connection
 onready var Header = $Header
 onready var RestartConnection = Header.get_node("datas/restart_connection")
+
 
 onready var Menu = $Header/datas/Menu.get_popup()
 
@@ -55,6 +58,7 @@ func _ready():
     LoadNode.hide()
     Menu.connect("id_pressed", self, "menu_item_pressed")
     RestartConnection.connect("pressed",self,"check_connection")
+    VersionCheck.connect("request_completed",self,"_on_version_check")
 #    Debug.connect("toggled",self,"_on_debug_toggled")
     
     Repo.hide()
@@ -67,14 +71,7 @@ func _ready():
 #    Debug.set_pressed(PluginSettings.debug)
     ConnectionIcon.set_texture(connection_status[0])
     
-    check_connection()
-    
-    Menu.set_item_checked(0, PluginSettings.debug)
-    Menu.set_item_checked(1, PluginSettings.auto_log)
-    if PluginSettings.auto_log:
-        SignIn.sign_in()
-
-func check_connection():
+#    check_connection()
     ConnectionIcon.use_parent_material = false
     ConnectionIcon.material.set("shader_param/speed", 3)
     RestHandler.check_connection()
@@ -92,6 +89,16 @@ func check_connection():
             RestartConnection.show()
     ConnectionIcon.use_parent_material = true
     ConnectionIcon.material.set("shader_param/speed", 0)
+    
+    Menu.set_item_checked(0, PluginSettings.debug)
+    Menu.set_item_checked(1, PluginSettings.auto_log)
+    VersionCheck.request("https://api.github.com/repos/fenix-hub/godot-engine.github-integration/tags",[],false,HTTPClient.METHOD_GET,"")
+    
+    if PluginSettings.auto_log:
+        SignIn.sign_in()
+
+func check_connection():
+    pass
 
 func loading(value : bool) -> void:
     LoadNode.visible = value
@@ -120,6 +127,8 @@ func print_debug_message(message : String = "",type : int = 0):
                 print(plugin_name,message)
             1:
                 printerr(plugin_name,message)
+            2:
+                push_warning(plugin_name+message)
 
 func _on_debug_toggled(button_pressed):
     PluginSettings.set_debug(button_pressed)
@@ -145,7 +154,7 @@ func menu_item_pressed(id : int):
         1:
             _on_autologin_toggled(!Menu.is_item_checked(id))
         3:
-             OS.shell_open("https://github.com/fenix-hub/godot-engine.github-integration/wiki")
+            OS.shell_open("https://github.com/fenix-hub/godot-engine.github-integration/wiki")
         5:
             logout()
         7:
@@ -178,3 +187,11 @@ func set_avatar(avatar : ImageTexture):
 
 func set_username(username : String):
     $Header/datas/user.text = username
+
+func _on_version_check(result, response_code, headers, body ):
+    if result == 0:
+        if response_code == 200:
+            var tags : Array = JSON.parse(body.get_string_from_utf8()).result
+            var first_tag : Dictionary = tags[0] as Dictionary
+            if first_tag.name != ("v"+plugin_version):
+                print_debug_message("a new plugin version has been found, current version is %s and new version is %s" % [("v"+plugin_version), first_tag.name],1)
