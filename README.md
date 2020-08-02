@@ -36,7 +36,7 @@ If you want to see some screenshots you can find them here `addons/github-integr
   </tr>
   <tr>
     <th><a href="https://github.com/masterworm2">masterworm2</a></th>
-    <th><a href="https://github.com/auctru">auctru</a></th>
+    <th><a href="https://github.com/autcru">autcru</a></th>
   </tr>
 </table>
 
