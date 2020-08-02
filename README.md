@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/badge/plugin%20version-1.0.0-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
+[![version](https://img.shields.io/badge/plugin%20version-1.1.0-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
 [![updates](https://img.shields.io/badge/plugin%20updates-on%20discord-purple)](https://discord.gg/JNrcucg)
 [![paypal](https://img.shields.io/badge/donations-PayPal-cyan)](https://paypal.me/NSantilio?locale.x=it_IT)
 
