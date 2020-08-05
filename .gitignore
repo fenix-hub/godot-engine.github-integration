@@ -16,5 +16,9 @@ mono_crash.*.json
 
 # Plugin specific ignores
 screenshots/
+resources/
+icons/
+user/
+
 
 

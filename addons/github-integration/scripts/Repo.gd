@@ -16,14 +16,14 @@ extends Control
 
 onready var repo_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/repo_icon
 onready var private_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/private_icon
-onready var watch_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/watch_values/watch_icon
+#onready var watch_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/watch_values/watch_icon
 onready var star_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/star_values/star_icon
 onready var fork_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/fork_values/fork_icon
 onready var forked_icon = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/forked_icon
 
 onready var extension_option = $extension_choosing/VBoxContainer/extension_option
 onready var extension_choosing = $extension_choosing
-onready var watch_value = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/watch_values/watch
+#onready var watch_value = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/watch_values/watch
 onready var star_value = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/star_values/star
 onready var fork_value = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/fork_values/fork
 
@@ -53,12 +53,19 @@ onready var SetupDialog = $setup_git_lfs
 onready var WhatIsDialog = $whatis_dialog
 
 onready var ExtensionsList = $setup_git_lfs/VBoxContainer/extensions_list
+onready var request = $HTTPRequest2
 
-enum REQUESTS { REPOS = 0, GISTS = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 , FILE_CONTENT = 10 ,NEW_BRANCH = 11 , PULLING = 12}
+# Collaborators
+onready var AddCollaboratorBtn : Button = $Repository/RepoInfos/RepoInfosContainer/RepoInfos/repo_infos/AddCollaboratorBtn
+onready var AddCollaborator : AcceptDialog = $AddCollaborator
+onready var CollaboratorName : LineEdit = $AddCollaborator/VBoxContainer/HBoxContainer/name
+onready var CollaboratorPermission : OptionButton = $AddCollaborator/VBoxContainer/HBoxContainer2/permission
+
+
+enum REQUESTS { REPOS = 0, GISTS = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 , FILE_CONTENT = 10 ,NEW_BRANCH = 11 , PULLING = 12, COLLABORATOR = 13 }
 var requesting
 
 var html : String
-var request = HTTPRequest.new()
 var current_repo
 var current_branch
 var branches = []
@@ -83,6 +90,7 @@ signal loaded_repo()
 signal resource_deleted()
 signal new_branch_created()
 signal zip_pulled()
+signal collaborator_invited()
 
 func _ready():
     branch3.clear()
@@ -92,12 +100,13 @@ func _ready():
     closeButton.connect("pressed",self,"close_tab")
     DeleteRepo.connect("pressed",self,"delete_repo")
     Commit.connect("pressed",self,"commit")
-    add_child(request)
     request.connect("request_completed",self,"request_completed")
     new_branchBtn.connect("pressed",self,"on_newbranch_pressed")
     newBranch.connect("confirmed",self,"on_newbranch_confirmed")
     pull_btn.connect("pressed",self,"on_pull_pressed")
     git_lfs.connect("pressed",self,"setup_git_lfs")
+    AddCollaboratorBtn.connect("pressed", self, "add_collaborator")
+    AddCollaborator.connect("confirmed",self,"invite_collaborator")
 
 func set_darkmode(darkmode : bool):
     if darkmode:
@@ -106,12 +115,14 @@ func set_darkmode(darkmode : bool):
         $Repository/RepoInfos.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Repohead-black.tres"))
         $Repository/BranchInfo.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Branch-black.tres"))
         $Repository/contents.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/ContentesBG-dark.tres"))   
+        $Repository/contents.set("custom_styles/bg_focus", load("res://addons/github-integration/resources/styles/ContentesBG-dark.tres"))   
     else:
         $BG.color = "#f6f8fa"
         set_theme(load("res://addons/github-integration/resources/themes/GitHubTheme.tres"))
         $Repository/RepoInfos.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Repohead-white.tres"))
         $Repository/BranchInfo.set("custom_styles/panel",load("res://addons/github-integration/resources/styles/Branch-white.tres"))
         $Repository/contents.set("custom_styles/bg", load("res://addons/github-integration/resources/styles/ContentesBG-white.tres"))
+        $Repository/contents.set("custom_styles/bg_focus", load("res://addons/github-integration/resources/styles/ContentesBG-white.tres"))
 
 func load_icons(r):
     repo_icon.set_texture(IconLoaderGithub.load_icon_from_name("repos"))
@@ -119,13 +130,14 @@ func load_icons(r):
         private_icon.set_texture(IconLoaderGithub.load_icon_from_name("lock"))
     if r.fork:
         forked_icon.set_texture(IconLoaderGithub.load_icon_from_name("forks"))
-    watch_icon.set_texture(IconLoaderGithub.load_icon_from_name("watch"))
+#    watch_icon.set_texture(IconLoaderGithub.load_icon_from_name("watch"))
     star_icon.set_texture(IconLoaderGithub.load_icon_from_name("stars"))
     fork_icon.set_texture(IconLoaderGithub.load_icon_from_name("forks"))
     reload.set_button_icon(IconLoaderGithub.load_icon_from_name("reload-gray"))
     new_branchBtn.set_button_icon(IconLoaderGithub.load_icon_from_name("add-gray"))
     pull_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("download-gray"))
     git_lfs.set_button_icon(IconLoaderGithub.load_icon_from_name("git_lfs-gray"))
+    AddCollaboratorBtn.set_button_icon(IconLoaderGithub.load_icon_from_name("add-gray"))
 
 func open_repo(repo : Dictionary):
     contents_.clear()
@@ -306,6 +318,12 @@ func request_completed(result, response_code, headers, body):
             REQUESTS.PULLING:
                 if response_code == 200:
                     emit_signal("zip_pulled")
+            REQUESTS.COLLABORATOR:
+                if response_code == 201:
+                    get_parent().print_debug_message("invitation has been created correctly, the collaborator will receive an accept/decline mail")
+                elif response_code == 204:
+                    get_parent().print_debug_message("the selected user is a collaborator already",2)
+                emit_signal("collaborator_invited")
     else:
         print(result," ",response_code," ",JSON.parse(body.get_string_from_utf8()).result)
 
@@ -589,4 +607,22 @@ func setup_gitlfs(extensions : Array):
     gitattributes.close()
     get_parent().print_debug_message("New .gitattributes created with the file extensions you want to track. It will be uploaded to you repository during the next push.")
 
+# Collaborators
+func add_collaborator():
+    AddCollaborator.popup()
 
+func invite_collaborator():
+    var header : Array = UserData.header
+    header.append("Content-Length: 0")
+    var collaborator_name : String = CollaboratorName.text
+    var body : Dictionary = {
+        "permission" : CollaboratorPermission.get_item_text(CollaboratorPermission.get_selected_id()),
+       }
+    if collaborator_name!="" and collaborator_name!=" ":
+        requesting = REQUESTS.COLLABORATOR
+        request.request("https://api.github.com/repos/"+owner_.text+"/"+current_repo.name+"/collaborators/"+collaborator_name, header, false, HTTPClient.METHOD_PUT, JSON.print(body))
+        get_parent().print_debug_message("inviting a user as collaborator...")
+        yield(self,"collaborator_invited")
+    else:
+        get_parent().print_debug_message("you must use a valid username", 1)
+        

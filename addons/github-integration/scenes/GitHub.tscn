@@ -27,11 +27,11 @@ __meta__ = {
 [node name="VersionCheck" type="HTTPRequest" parent="."]
 
 [node name="SingIn" parent="." instance=ExtResource( 6 )]
+visible = false
 margin_top = 48.0
 rect_clip_content = true
 
 [node name="UserPanel" parent="." instance=ExtResource( 7 )]
-visible = false
 margin_top = 48.0
 rect_clip_content = true
 
@@ -55,6 +55,5 @@ margin_bottom = 48.0
 rect_clip_content = true
 
 [node name="loading" parent="." instance=ExtResource( 3 )]
-visible = true
 margin_top = 48.0
 color = Color( 0, 0, 0, 0.627451 )

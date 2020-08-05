@@ -158,6 +158,9 @@ func request_gists(req : int):
 
 func request_repositories(req : int):
     requesting = req
+    var body : Dictionary = {
+        "affiliation":"owner,collaborator,organization_member"
+       }
     request.request("https://api.github.com/user/repos?per_page=100",UserData.header,false,HTTPClient.METHOD_GET,"")
 
 func new_repo():
@@ -191,6 +194,12 @@ func new_gist():
     GistDialog.popup()
 
 func _reload():
+    for repository in repository_list:
+        repository.queue_free()
+    for gist in gist_list:
+        gist.queue_free()
+    repository_list.clear()
+    gist_list.clear()
     get_parent().loading(true)
     get_parent().print_debug_message("Reloading, please wait...")
     request_repositories(REQUESTS.REPOS)
