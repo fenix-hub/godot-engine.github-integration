@@ -189,6 +189,14 @@ Please, visit [this site](https://help.github.com/en/github/authenticating-to-gi
 *added*
 - *fast social button to header:* you can now join the social I share in the README with some buttons in the header.
 
+-----------------
+**version 1.2.0**  
+*fixed*
+- dark theme fixed
+
+*added*
+- *collaborations:* you can now invite other users for a collaboration in your repositories. If the user has been invited successfully, they will receive an email with an invitation to accept/decline. Users that have repositories in collaboration will see these repositories marked with a new icon inside their repositories list. Collaborators can work with this repositories as they are their own repositories (based on the permissions granted), so teamworking will be much faster.
+
 
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
 

@@ -116,6 +116,7 @@ func load_user() -> PoolStringArray :
         
         header = ["Authorization: token "+TOKEN]
         gitlfs_header = [
+            "Accept: application/vnd.github.v3+json",
             "Accept: application/vnd.git-lfs+json",
             "Content-Type: application/vnd.git-lfs+json"]
         gitlfs_header.append(header[0])

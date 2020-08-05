@@ -7,6 +7,7 @@ signal repo_clicked(repo)
 onready var Name = $Repository/Name
 onready var Stars = $Repository/Stars
 onready var Forks = $Repository/Forks
+onready var Collaborator = $Repository/Name/Collaborator
 onready var BG = $BG
 
 var _name : String
@@ -24,6 +25,10 @@ func set_repository(repository : Dictionary):
     _name = str(repository.name)
     _stars = repository.stargazers_count
     _forks = repository.forks_count
+    
+    # Check collaboration
+    var is_collaborator : bool = repository.owner.login != UserData.USER.login
+    
     Name.get_node("Text").set_text(_name)
     Stars.get_node("Amount").set_text("Stars: "+str(_stars))
     Forks.get_node("Amount").set_text("Forks: "+str(_forks))
@@ -36,7 +41,14 @@ func set_repository(repository : Dictionary):
             repo_icon = IconLoaderGithub.load_icon_from_name("forks")
         else:
             repo_icon = IconLoaderGithub.load_icon_from_name("repos")
+    if is_collaborator:
+        Collaborator.show()
+        Collaborator.texture = IconLoaderGithub.load_icon_from_name("collaborator")
+        Name.get_node("Icon").hide()
+    
     Name.get_node("Icon").set_texture(repo_icon)
+    
+        
 
 func deselect():
     BG.hide()
