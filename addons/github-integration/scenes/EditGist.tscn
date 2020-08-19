@@ -33,4 +33,3 @@ custom_colors/font_color = Color( 0.145098, 0.172549, 0.231373, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Can Edit"
 flat = true
-

@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/badge/plugin%20version-1.2.0-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
+[![version](https://img.shields.io/badge/plugin%20version-1.2.1-blue)](https://github.com/fenix-hub/godot-engine.github-integration)
 [![updates](https://img.shields.io/badge/plugin%20updates-on%20discord-purple)](https://discord.gg/KnJGY9S)
 [![paypal](https://img.shields.io/badge/donations-PayPal-cyan)](https://paypal.me/NSantilio?locale.x=it_IT)
 
@@ -13,7 +13,7 @@ This plugin is now supported in [Godot Extended Library Discord](https://discord
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *1.2.0*  
+Version: *1.2.1*  
 Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
 Godot Version: *3.2.3beta1*  
 
