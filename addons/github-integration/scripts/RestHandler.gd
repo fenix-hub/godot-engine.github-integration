@@ -6,7 +6,7 @@ var Client : HTTPClient = HTTPClient.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    set_process(false)
+    pass
 
 func check_connection() -> void:
     var connection : int = Client.connect_to_host("www.githubstatus.com")
