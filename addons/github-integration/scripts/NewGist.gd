@@ -2,6 +2,7 @@ tool
 extends WindowDialog
 
 onready var description = $VBoxContainer/HBoxContainer/description
+onready var FileName : LineEdit = $VBoxContainer/HBoxContainer2/filename
 
 onready var FromProject = $VBoxContainer/HBoxContainer4/Button
 onready var NewGists = $VBoxContainer/HBoxContainer4/Button2
@@ -45,12 +46,14 @@ func on_newgists_pressed():
 	else:
 		priv = false
 	
-	var desc 
-	desc = description.get_text()
-	
-	get_parent().get_parent().Gist.initialize_new_gist(priv,desc)
-	hide()
-	get_parent().hide()
+	var desc = description.get_text()
+	var file_name : String = FileName.get_text()
+	if file_name != "" and file_name!=" ":
+		get_parent().get_parent().Gist.initialize_new_gist(priv, file_name, desc)
+		hide()
+		get_parent().hide()
+	else:
+		get_parent().get_parent().print_debug_message("you must give a name to the root file.",1)
 
 func on_fromproject_pressed():
 	GistFiles.popup()
@@ -62,9 +65,8 @@ func on_files_selected(files : PoolStringArray):
 	else:
 		priv = false
 	
-	var desc 
-	desc = description.get_text()
-	get_parent().get_parent().Gist.initialize_new_gist(priv,desc,files)
+	var desc = description.get_text()
+	get_parent().get_parent().Gist.initialize_new_gist(priv, files[0], desc, files)
 	hide()
 	get_parent().hide()
 

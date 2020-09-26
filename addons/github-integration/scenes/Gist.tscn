@@ -41,7 +41,6 @@ content_margin_right = 10.0
 [sub_resource type="StyleBoxEmpty" id=7]
 
 [node name="Gist" type="Control"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 3 )
@@ -227,8 +226,7 @@ margin_bottom = 468.0
 rect_clip_content = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "eeeeeee
-errrrrrraesasdaer"
+readonly = true
 highlight_current_line = true
 syntax_highlighting = true
 show_line_numbers = true
