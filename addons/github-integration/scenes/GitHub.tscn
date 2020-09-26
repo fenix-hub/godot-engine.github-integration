@@ -45,6 +45,7 @@ margin_top = 48.0
 rect_clip_content = true
 
 [node name="Gist" parent="." instance=ExtResource( 9 )]
+visible = false
 margin_top = 48.0
 rect_clip_content = true
 theme = ExtResource( 2 )
