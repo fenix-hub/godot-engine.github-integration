@@ -51,51 +51,51 @@ func load_config():
 				plugin_name = "[%s] >> " % config.get_value("plugin","name")
 
 func _ready():
-		load_config()
-		
-		set_darkmode(PluginSettings.darkmode)
-		
-		LoadNode.hide()
-		Menu.connect("id_pressed", self, "menu_item_pressed")
-		RestartConnection.connect("pressed",self,"check_connection")
-		VersionCheck.connect("request_completed",self,"_on_version_check")
+	load_config()
+	
+	LoadNode.hide()
+	Menu.connect("id_pressed", self, "menu_item_pressed")
+	RestartConnection.connect("pressed",self,"check_connection")
+	VersionCheck.connect("request_completed",self,"_on_version_check")
 #    Debug.connect("toggled",self,"_on_debug_toggled")
-		
-		Repo.hide()
-		SignIn.show()
-		SignIn.connect("signed",self,"signed")
-		UserPanel.hide()
-		Commit.hide()
-		
-		Version.text = "v "+plugin_version
+	
+	Repo.hide()
+	SignIn.show()
+	SignIn.connect("signed",self,"signed")
+	UserPanel.hide()
+	Commit.hide()
+	
+	Version.text = "v "+plugin_version
 #    Debug.set_pressed(PluginSettings.debug)
-		ConnectionIcon.set_texture(connection_status[0])
-		
+	ConnectionIcon.set_texture(connection_status[0])
+	
 #    check_connection()
-		ConnectionIcon.use_parent_material = false
-		ConnectionIcon.material.set("shader_param/speed", 3)
-		RestHandler.check_connection()
-		var connection = yield(RestHandler, "_check_connection")
-		match connection:
-				true:
-						SignIn.btnSignIn.set_disabled(false)
-						ConnectionIcon.set_texture(connection_status[2])
-						ConnectionIcon.set_tooltip("Connected to GitHub API")
-						RestartConnection.hide()
-				false:
-						SignIn.btnSignIn.set_disabled(true)
-						ConnectionIcon.set_texture(connection_status[1])
-						ConnectionIcon.set_tooltip("Can't connect to GitHub API, check your internet connection or API status")
-						RestartConnection.show()
-		ConnectionIcon.use_parent_material = true
-		ConnectionIcon.material.set("shader_param/speed", 0)
-		
-		Menu.set_item_checked(0, PluginSettings.debug)
-		Menu.set_item_checked(1, PluginSettings.auto_log)
-		VersionCheck.request("https://api.github.com/repos/fenix-hub/godot-engine.github-integration/tags",[],false,HTTPClient.METHOD_GET,"")
-		
-		if PluginSettings.auto_log:
-				SignIn.sign_in()
+	ConnectionIcon.use_parent_material = false
+	ConnectionIcon.material.set("shader_param/speed", 3)
+	RestHandler.check_connection()
+	var connection = yield(RestHandler, "_check_connection")
+	match connection:
+			true:
+					SignIn.btnSignIn.set_disabled(false)
+					ConnectionIcon.set_texture(connection_status[2])
+					ConnectionIcon.set_tooltip("Connected to GitHub API")
+					RestartConnection.hide()
+			false:
+					SignIn.btnSignIn.set_disabled(true)
+					ConnectionIcon.set_texture(connection_status[1])
+					ConnectionIcon.set_tooltip("Can't connect to GitHub API, check your internet connection or API status")
+					RestartConnection.show()
+	ConnectionIcon.use_parent_material = true
+	ConnectionIcon.material.set("shader_param/speed", 0)
+	
+	Menu.set_item_checked(0, PluginSettings.debug)
+	Menu.set_item_checked(1, PluginSettings.auto_log)
+	VersionCheck.request("https://api.github.com/repos/fenix-hub/godot-engine.github-integration/tags",[],false,HTTPClient.METHOD_GET,"")
+	
+	if PluginSettings.auto_log:
+			SignIn.sign_in()
+	
+	set_darkmode(PluginSettings.darkmode)
 
 func check_connection():
 		pass
