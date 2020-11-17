@@ -1,7 +1,7 @@
 [gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://addons/github-integration/scripts/NewGist.gd" type="Script" id=1]
-[ext_resource path="res://addons/github-integration/user/placeholder.png" type="Texture" id=2]
+[ext_resource path="res://addons/github-integration/resources/user/placeholder.png" type="Texture" id=2]
 [ext_resource path="res://addons/github-integration/icons/search.png" type="Texture" id=3]
 [ext_resource path="res://addons/github-integration/scripts/UserPanel.gd" type="Script" id=4]
 [ext_resource path="res://addons/github-integration/resources/themes/GitHubTheme-Dark.tres" type="Theme" id=5]

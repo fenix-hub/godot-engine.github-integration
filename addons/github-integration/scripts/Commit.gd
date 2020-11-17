@@ -209,23 +209,21 @@ func request_completed(result, response_code, headers, body ):
 								Loading.hide()
 
 
-func load_branches(br : Array, s_r : Dictionary, ct : Array, gitignore : Dictionary) :
-		_branch.clear()
-		repo_selected = s_r
-		branches_contents = ct
-		branches = br
-		for branch in branches:
-				_branch.add_item(branch.name)
-		
-		gitignore_file = gitignore
-		if gitignore:
-				Gitignore.set_text(Marshalls.base64_to_utf8(gitignore.content))
-		else:
-				Gitignore.set_text("")
-				
-				
-		
-		repository.set_text(repo_selected.name+"/"+_branch.get_item_text(branch_idx))
+func load_branches(br : Array, s_r : RepositoryItem, ct : Array, gitignore : Dictionary) :
+	_branch.clear()
+	repo_selected = s_r._repository
+	branches_contents = ct
+	branches = br
+	for branch in branches:
+			_branch.add_item(branch.name)
+	
+	gitignore_file = gitignore
+	if gitignore:
+			Gitignore.set_text(Marshalls.base64_to_utf8(gitignore.content))
+	else:
+			Gitignore.set_text("")
+	
+	repository.set_text(repo_selected.name+"/"+_branch.get_item_text(branch_idx))
 
 func selected_branch(id : int):
 		branch_idx = id
