@@ -4,3 +4,10 @@
 
 [node name="Node" type="Node"]
 script = ExtResource( 1 )
+
+[node name="Client" type="HTTPRequest" parent="."]
+download_chunk_size = 65536
+use_threads = true
+
+[node name="NotificationsClient" type="HTTPRequest" parent="."]
+use_threads = true

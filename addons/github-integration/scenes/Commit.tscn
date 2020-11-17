@@ -27,7 +27,6 @@ void vertex() {
 }
 
 "
-custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=3]
 shader = SubResource( 2 )
