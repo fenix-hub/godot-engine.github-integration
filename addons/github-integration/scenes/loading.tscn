@@ -27,12 +27,12 @@ void vertex() {
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/speed = 0
+shader_param/speed = 5
 
 [node name="loading" type="ColorRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.588235 )
+color = Color( 0, 0, 0, 0.745098 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -49,9 +49,9 @@ __meta__ = {
 [node name="loading2" type="TextureRect" parent="VBoxContainer"]
 material = SubResource( 2 )
 margin_left = 467.0
-margin_top = 228.0
+margin_top = 246.0
 margin_right = 557.0
-margin_bottom = 318.0
+margin_bottom = 336.0
 rect_min_size = Vector2( 90, 90 )
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -63,6 +63,7 @@ __meta__ = {
 }
 
 [node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
+visible = false
 margin_left = 362.0
 margin_top = 322.0
 margin_right = 662.0
@@ -71,6 +72,7 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 4
 
 [node name="Number" type="Label" parent="VBoxContainer"]
+visible = false
 margin_left = 506.0
 margin_top = 340.0
 margin_right = 518.0
@@ -83,9 +85,9 @@ align = 1
 
 [node name="Message" type="Label" parent="VBoxContainer"]
 margin_left = 483.0
-margin_top = 358.0
+margin_top = 340.0
 margin_right = 540.0
-margin_bottom = 372.0
+margin_bottom = 354.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
