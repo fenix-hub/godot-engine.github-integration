@@ -152,9 +152,9 @@ func _on_request_completed(result: int, response_code: int, headers: PoolStringA
 				match requesting:
 					REQUESTS.USER: emit_signal("user_requested", parse_body(body))
 					REQUESTS.USER_AVATAR:
-						set_process(false)
-						client.set_download_file("")
 						emit_signal("user_avatar_requested", body)
+#						set_process(false)
+#						client.set_download_file("")
 					REQUESTS.CONTRIBUTOR_AVATAR: 
 						emit_signal("contributor_avatar_requested", body)
 						temp_contributor.contributor_avatar_requested(body)
@@ -197,11 +197,11 @@ func request_user(token : String) -> void:
 	client.request(api_endpoints.user, temp_header, false, HTTPClient.METHOD_GET)
 
 func request_user_avatar(avatar_url : String) -> void:
-	client.set_download_file(UserData.directory+UserData.avatar_name)
+#	client.set_download_file(UserData.directory+UserData.avatar_name)
 	requesting = REQUESTS.USER_AVATAR
-	downloading_file = true
+#	downloading_file = true
 	client.request(avatar_url)
-	set_process(true)
+#	set_process(true)
 
 var temp_contributor : ContributorClass
 

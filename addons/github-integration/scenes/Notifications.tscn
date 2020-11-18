@@ -70,23 +70,24 @@ custom_styles/separator = SubResource( 1 )
 custom_constants/separation = 10
 
 [node name="Invitations" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs"]
-visible = false
 margin_top = 14.0
 margin_right = 820.0
-margin_bottom = 430.0
+margin_bottom = 522.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Invitations"]
 margin_right = 820.0
 margin_bottom = 22.0
-text = "There are %s invitations received"
+text = "There are 0 invitations received"
 
 [node name="Settings" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs"]
+visible = false
 margin_top = 14.0
 margin_right = 820.0
-margin_bottom = 246.0
+margin_bottom = 266.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Notifications" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings"]
@@ -146,6 +147,7 @@ text = "minutes"
 margin_top = 108.0
 margin_right = 820.0
 margin_bottom = 232.0
+size_flags_vertical = 3
 custom_constants/separation = 0
 
 [node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
@@ -183,12 +185,36 @@ margin_bottom = 124.0
 rect_min_size = Vector2( 300, 0 )
 text = "Darkmode"
 
+[node name="ResetPluginBtn" type="Button" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
+margin_top = 370.0
+margin_right = 127.0
+margin_bottom = 400.0
+size_flags_horizontal = 0
+size_flags_vertical = 10
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+text = "Reset this plugin"
+
 [node name="HSeparator2" type="HSeparator" parent="NotificationsContainer/NotificationsTabs/Tabs"]
-margin_top = 250.0
+margin_top = 526.0
 margin_right = 820.0
-margin_bottom = 260.0
+margin_bottom = 536.0
 custom_styles/separator = SubResource( 1 )
 custom_constants/separation = 10
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 300.0
+
+[node name="ResetPluginDialog" type="ConfirmationDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -327.5
+margin_top = -46.5
+margin_right = 327.5
+margin_bottom = 46.5
+window_title = "Reset this plugin"
+dialog_text = "Resetting this plugin will delete everything that was stored from the first time. 
+Continue only if you don't want to use this plugin anymore, or if it was suggested by the developer."

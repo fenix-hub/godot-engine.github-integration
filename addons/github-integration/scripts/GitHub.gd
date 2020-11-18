@@ -167,8 +167,11 @@ func logout():
 	Repo.hide()
 	Commit.hide()
 	Gist.hide()
+	Notifications._clear()
+	Notifications.hide()
 	SignIn.Mail.text = ""
 	SignIn.Token.text = ""
+	UserData.logout_user()
 
 # Set to darkmode each single Control
 func set_darkmode(darkmode : bool) -> void:

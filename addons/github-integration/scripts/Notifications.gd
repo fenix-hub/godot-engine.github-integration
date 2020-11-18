@@ -36,6 +36,8 @@ func _connect_signals() -> void:
 	debug_messages_chk.connect("toggled", self, "_on_debug_toggled")
 	auto_login_chk.connect("toggled", self, "_on_autologin_toggled")
 	darkmode_chck.connect("toggled", self, "_on_darkmode_toggled")
+	$NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin/ResetPluginBtn.connect("pressed", self, "_on_reset_plugin_pressed")
+	$ResetPluginDialog.connect("confirmed", self, "_on_reset_confirmed")
 
 func load_settings():
 	var auto_update_notifications : bool = PluginSettings.auto_update_notifications
@@ -54,11 +56,20 @@ func _on_notification_request_failed(requesting : int, error_body : Dictionary):
 		RestHandler.REQUESTS.INVITATIONS_LIST:
 			get_parent().print_debug_message("ERROR: "+error_body.message, 1)
 
+func hide_notification_tab(tab : TreeItem) -> TreeItem:
+	if tab.get_text(0) != "Settings": tab.hide()
+	return tab.get_next()
+
 func load_notification_tabs() -> void:
 	var root : TreeItem = notification_tree.create_item()
 	for tab in notifications_tabs:
 		var invitations_item : TreeItem = notification_tree.create_item(root)
 		invitations_item.set_text(0, tab)
+
+func hide_notification_tabs():
+	var next_item : TreeItem = hide_notification_tab(notification_tree.get_root().get_children())
+	while next_item!=null:
+		next_item = hide_notification_tab(next_item)
 
 func set_darkmode(darkmode : bool) -> void:
 	if darkmode:
@@ -155,4 +166,16 @@ func _on_invitation_declined():
 	invitations-=1
 	set_invitations_amount(invitations)
 
+func _on_reset_plugin_pressed():
+	$ResetPluginDialog.popup()
 
+func _clear():
+	emit_signal("add_notifications",-get_parent().Header.notifications)
+	clear_invitations_list()
+
+func _on_reset_confirmed():
+	_clear()
+	hide()
+	get_parent().logout()
+	get_parent().SignIn.delete_user()
+	PluginSettings.reset_plugin()
