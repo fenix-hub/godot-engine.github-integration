@@ -45,7 +45,7 @@ func _ready() -> void:
 	btnSignIn.set_disabled(true)
 	DeleteDataBtn.set_disabled(true)
 	
-	if UserData.load_user().size() > 0:
+	if UserData.user_exists():
 		logfile = true
 		LogfileIcon.show()
 		DeleteDataBtn.disabled = false
@@ -79,6 +79,7 @@ func sign_in() -> void:
 	else:
 		# If there is a logfile
 		get_parent().loading(true)
+		UserData.load_user()
 		emit_signal("signed")
 
 func _on_completed_loading():
@@ -105,10 +106,7 @@ func _on_user_avatar_requested(user_avatar : PoolByteArray) -> void:
 	get_parent().loading(true)
 	UserData.save(user_data, user_avatar, auth, token, mail) 
 	emit_signal("signed")
-	yield(get_parent().UserPanel, "completed_loading")
-	requesting = REQUESTS.END
-	hide()
-	get_parent().loading(false)
+	DeleteDataBtn.set_disabled(false)
 
 func _on_singup_pressed():
 	OS.shell_open("https://github.com/join?source=header-home")
@@ -121,6 +119,9 @@ func _on_delete_pressed():
 	DeleteHover.show()
 
 func _on_delete_confirm():
+	delete_user()
+
+func delete_user():
 	UserData.delete_user()
 	logfile = false
 	LogfileIcon.hide()

@@ -63,5 +63,6 @@ margin_bottom = 48.0
 rect_clip_content = true
 
 [node name="loading" parent="." instance=ExtResource( 3 )]
+visible = false
 margin_top = 48.0
 color = Color( 0, 0, 0, 0.627451 )

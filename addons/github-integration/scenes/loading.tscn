@@ -27,7 +27,7 @@ void vertex() {
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/speed = 5
+shader_param/speed = 0
 
 [node name="loading" type="ColorRect"]
 anchor_right = 1.0

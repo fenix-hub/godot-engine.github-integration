@@ -50,7 +50,7 @@ func _on_add_notifications(amount : int):
 func set_notifications():
 	notifications_lbl.set_text(str(notifications))
 	notifications_btn.set_tooltip("You have "+str(notifications)+" unread notifications")
-	notifications_lbl.show()
+	notifications_lbl.show() if notifications > 0 else hide_notifications()
 
 func hide_notifications():
 	notifications_lbl.hide()
