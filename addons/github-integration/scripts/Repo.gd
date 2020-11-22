@@ -166,8 +166,9 @@ func open_repository(repository_item : RepositoryItem) -> void:
 	
 	load_icons(repository)
 	
-	load_collaborators(repository.collaborators.nodes as Array)
-	load_contributors(collaborators_login, repository.mentionableUsers.nodes as Array)
+	if repository.collaborators != null : 
+		load_collaborators(repository.collaborators.nodes as Array)
+		load_contributors(collaborators_login, repository.mentionableUsers.nodes as Array)
 	
 	if branches.size():
 		default_branch_lbl.text = str(repository.defaultBranchRef.name)
