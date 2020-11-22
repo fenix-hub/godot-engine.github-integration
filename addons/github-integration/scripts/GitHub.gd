@@ -81,12 +81,10 @@ func _ready():
 	var connection = yield(RestHandler, "_check_connection")
 	match connection:
 		true:
-			SignIn.btnSignIn.set_disabled(false)
 			ConnectionIcon.set_texture(connection_status[2])
 			ConnectionIcon.set_tooltip("Connected to GitHub API")
 			RestartConnection.hide()
 		false:
-			SignIn.btnSignIn.set_disabled(true)
 			ConnectionIcon.set_texture(connection_status[1])
 			ConnectionIcon.set_tooltip("Can't connect to GitHub API, check your internet connection or API status")
 			RestartConnection.show()
