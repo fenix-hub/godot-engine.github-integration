@@ -24,7 +24,12 @@ var logfile : bool = false
 
 onready var Client : HTTPClient = HTTPClient.new()
 
+var userdata : bool = false
+
 func connect_signals() -> void:
+	Mail.connect("text_changed", self, "_on_mail_changed")
+	Token.connect("text_changed", self, "_on_token_changed")
+	
 	btnSignIn.connect("pressed",self,"sign_in")
 	btnCreateToken.connect("pressed",self,"create_token")
 	
@@ -41,16 +46,26 @@ func _ready() -> void:
 	connect_signals()
 	LogfileIcon.hide()
 	Error.hide()
-
-	btnSignIn.set_disabled(true)
+	
 	DeleteDataBtn.set_disabled(true)
 	
+	yield(get_tree(),"idle_frame")
+	check_user()
+
+func _on_userdata_ready():
+	userdata = true
+
+func check_user():
 	if UserData.user_exists():
 		logfile = true
 		LogfileIcon.show()
 		DeleteDataBtn.disabled = false
 		Mail.text = "<logfile.mail>"
+		_on_mail_changed(Mail.text)
 		Token.text = "<logfile.password>"
+		_on_token_changed(Token.text)
+		get_parent().print_debug_message("user data found, just sign in without using your credentials.")
+		btnSignIn.set_disabled(false)
 
 func set_darkmode(darkmode : bool) -> void:
 	if darkmode:
@@ -131,3 +146,11 @@ func delete_user():
 
 func close_popup() :
 	DeleteHover.hide()
+
+func _on_mail_changed(text : String):
+	if not text in [""," "] and not Token.text in [""," "]: btnSignIn.set_disabled(false)
+	else: if not logfile: btnSignIn.set_disabled(true)
+
+func _on_token_changed(text : String):
+	if not text in [""," "] and not Mail.text in [""," "]: btnSignIn.set_disabled(false)
+	else: if not logfile: btnSignIn.set_disabled(true)

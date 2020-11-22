@@ -39,6 +39,7 @@ var gitlfs_request : String = ".git/info/lfs/objects/batch"
 var plugin_version : String = "0.9.4"
 
 func _ready():
+	PluginSettings._check_plugin_path()
 	directory = PluginSettings.plugin_path
 
 func user_exists():
