@@ -23,6 +23,13 @@ Godot Version: *3.2.3stable*
 Pushing and Pulling personal repositories while I'm working on Godot (especially if I'm under a GameJam) could take some time and force me to save the project, open the brwoser/git bash/git gui, and do all the stuff.  
 With this little addon which works directly in the editor, managing all your repositories will be very easy.  
 
+## What can it do?
+*Github Integration* offers the main functionalities provided by GitHub (and git itself), in a more accessible way.  
+Currenlty, you can:
+- Manage all of your public and private **repositories**, *including* the ones you share with organizations and the ones in which you are a collaborator (with proper permissions): create, delete, push and clone repositories within your Godot project
+- Manage all of your public and private **gists**: delete, edit and create gists with a functional text editor
+- Manage collaboration invitations, inviting user to your repositories or accept/decline invitations you have received
+
 ## How does it work?
 I'm currently working on a [Wiki](https://github.com/fenix-hub/godot-engine.github-integration/wiki) for this plugin. It is a process that will take some time to complete since I want to provide a well-organized wiki with some basic explanations about GitHub itself. Anyway, I'm working on a user-friendly plugin, so everything should be the very ease to use for GitHub experienced users, and a little intuitive for people who never used GitHub or are not so experienced.
 If you want to see some screenshots you can find them here `addons/github-integration/screenshots`
@@ -39,11 +46,7 @@ If you want to see some screenshots you can find them here `addons/github-integr
   </tr>
 </table>
 
-For my first donation I decided to add a SUPPORTERS.md file where there is a list of people who decided to financially support this plugin. I will never ask for anything in return for the free service I want to offer to  Godot's community, but it will always be an act of kindness that will encourage me to keep my plugins and projects updated.
-Here's the [Supporters List](./SUPPORTERS.md)
-
 ## :warning: Disclaimer  
-This addon was built for a **personal use** intention. It was released as an open source plugin in the hope that it could be useful to the Godot Engine Community.  
 As a "work in progress" project, there is *no warranty* for any eventual issue and bug that may broke your project.  
 I don't assume any responsibility for possible corruptions of your project. It is always advisable to keep a copy of your project and check any changes you make in your Github repository.  
 
