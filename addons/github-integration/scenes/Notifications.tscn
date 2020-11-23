@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/github-integration/scripts/Notifications.gd" type="Script" id=1]
 [ext_resource path="res://addons/github-integration/resources/themes/GitHubTheme.tres" type="Theme" id=2]
@@ -11,9 +11,7 @@ content_margin_bottom = 4.0
 draw_center = false
 border_width_bottom = 1
 
-[sub_resource type="StyleBoxFlat" id=3]
-
-[sub_resource type="StyleBoxEmpty" id=4]
+[sub_resource type="StyleBoxEmpty" id=3]
 content_margin_left = 7.0
 
 [node name="Notifications" type="Control"]
@@ -70,9 +68,10 @@ custom_styles/separator = SubResource( 1 )
 custom_constants/separation = 10
 
 [node name="Invitations" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs"]
+visible = false
 margin_top = 14.0
 margin_right = 820.0
-margin_bottom = 522.0
+margin_bottom = 256.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -82,17 +81,16 @@ margin_bottom = 22.0
 text = "There are 0 invitations received"
 
 [node name="Settings" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs"]
-visible = false
 margin_top = 14.0
 margin_right = 820.0
-margin_bottom = 266.0
+margin_bottom = 536.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Notifications" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings"]
 margin_right = 820.0
-margin_bottom = 88.0
+margin_bottom = 84.0
 custom_constants/separation = 0
 
 [node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications"]
@@ -102,31 +100,25 @@ custom_styles/normal = SubResource( 2 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.392157 )
 text = "Notifications Settings"
 
-[node name="HSeparator" type="HSeparator" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications"]
+[node name="AutoUpdateNotificationsChk" type="CheckButton" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications"]
 margin_top = 18.0
 margin_right = 820.0
-margin_bottom = 22.0
-custom_styles/separator = SubResource( 3 )
-
-[node name="AutoUpdateNotificationsChk" type="CheckButton" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications"]
-margin_top = 22.0
-margin_right = 820.0
-margin_bottom = 56.0
+margin_bottom = 52.0
 rect_min_size = Vector2( 300, 0 )
 pressed = true
 text = "Auto update notifications"
 
 [node name="AutoUpdateTimer" type="HBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications"]
-margin_top = 56.0
+margin_top = 52.0
 margin_right = 820.0
-margin_bottom = 88.0
+margin_bottom = 84.0
 
 [node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications/AutoUpdateTimer"]
 margin_top = 9.0
 margin_right = 687.0
 margin_bottom = 23.0
 size_flags_horizontal = 3
-custom_styles/normal = SubResource( 4 )
+custom_styles/normal = SubResource( 3 )
 text = "Auto update notifications timer"
 
 [node name="Amount" type="LineEdit" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Notifications/AutoUpdateTimer"]
@@ -144,9 +136,9 @@ margin_bottom = 27.0
 text = "minutes"
 
 [node name="Plugin" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings"]
-margin_top = 108.0
+margin_top = 104.0
 margin_right = 820.0
-margin_bottom = 232.0
+margin_bottom = 230.0
 size_flags_vertical = 3
 custom_constants/separation = 0
 
@@ -157,56 +149,87 @@ custom_styles/normal = SubResource( 2 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.392157 )
 text = "Plugin Settings"
 
-[node name="HSeparator" type="HSeparator" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
+[node name="DebugMessagesChk" type="CheckButton" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
 margin_top = 18.0
 margin_right = 820.0
-margin_bottom = 22.0
-custom_styles/separator = SubResource( 3 )
-
-[node name="DebugMessagesChk" type="CheckButton" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
-margin_top = 22.0
-margin_right = 820.0
-margin_bottom = 56.0
+margin_bottom = 52.0
 rect_min_size = Vector2( 300, 0 )
 pressed = true
 text = "Debug messages in output console"
 
 [node name="AutoLoginChk" type="CheckButton" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
-margin_top = 56.0
+margin_top = 52.0
 margin_right = 820.0
-margin_bottom = 90.0
+margin_bottom = 86.0
 rect_min_size = Vector2( 300, 0 )
 text = "Auto login at plugin startup"
 
 [node name="DarkmodeChk" type="CheckButton" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
-margin_top = 90.0
+margin_top = 86.0
 margin_right = 820.0
-margin_bottom = 124.0
+margin_bottom = 120.0
 rect_min_size = Vector2( 300, 0 )
+pressed = true
 text = "Darkmode"
 
-[node name="ResetPluginBtn" type="Button" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin"]
-margin_top = 370.0
+[node name="Repositories" type="VBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings"]
+margin_top = 250.0
+margin_right = 820.0
+margin_bottom = 376.0
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories"]
+margin_right = 820.0
+margin_bottom = 18.0
+custom_styles/normal = SubResource( 2 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.392157 )
+text = "Repositories"
+
+[node name="OwnerAffiliations" type="HBoxContainer" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories"]
+margin_top = 18.0
+margin_right = 820.0
+margin_bottom = 40.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations"]
+margin_right = 158.0
+margin_bottom = 22.0
+text = "Filter owner affiliations:"
+
+[node name="Owner" type="CheckBox" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations"]
+margin_left = 470.0
+margin_right = 535.0
+margin_bottom = 22.0
+size_flags_horizontal = 10
+text = "owner"
+
+[node name="Collaborator" type="CheckBox" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations"]
+margin_left = 545.0
+margin_right = 647.0
+margin_bottom = 22.0
+text = "collaborator"
+
+[node name="OrganizationMember" type="CheckBox" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations"]
+margin_left = 657.0
+margin_right = 820.0
+margin_bottom = 22.0
+text = "organization member"
+
+[node name="ResetPluginBtn" type="Button" parent="NotificationsContainer/NotificationsTabs/Tabs/Settings"]
+margin_top = 492.0
 margin_right = 127.0
-margin_bottom = 400.0
+margin_bottom = 522.0
 size_flags_horizontal = 0
 size_flags_vertical = 10
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 text = "Reset this plugin"
 
-[node name="HSeparator2" type="HSeparator" parent="NotificationsContainer/NotificationsTabs/Tabs"]
-margin_top = 526.0
-margin_right = 820.0
-margin_bottom = 536.0
-custom_styles/separator = SubResource( 1 )
-custom_constants/separation = 10
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 300.0
 
 [node name="ResetPluginDialog" type="ConfirmationDialog" parent="."]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
