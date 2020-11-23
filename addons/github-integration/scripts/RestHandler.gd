@@ -24,13 +24,23 @@ signal invitations_list_requested(list)
 signal invitation_accepted()
 signal invitation_declined()
 
+var requesting : int = -1
+var notifications_requesting : int = -1
+
+var repositories_limit : int = 100
+var gists_limit : int = 100
+var owner_affiliations : String
+
+var checking_connection : bool = false
+var downloading_file : bool = false
+
 onready var client : HTTPRequest = $Client
 onready var notifications_client : HTTPRequest = $NotificationsClient
 var loading : Control
 var session : HTTPClient = HTTPClient.new()
 var graphql_endpoint : String = "https://api.github.com/graphql"
 var graphql_queries : Dictionary = {
-	'repositories':'{user(login: "%s"){repositories(ownerAffiliations:[OWNER,COLLABORATOR,ORGANIZATION_MEMBER], first:%s, orderBy: {field: NAME, direction: ASC}){ nodes { diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl } } } } } } } }',
+	'repositories':'{user(login: "%s"){repositories(ownerAffiliations:%s, first:%s, orderBy: {field: NAME, direction: ASC}){ nodes { diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl } } } } } } } }',
 	'repository':'{user(login: "%s"){repository(name:"%s"){diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl }}}}}}}',
 	'gists':'{ user(login: "%s") { gists(first: %s, orderBy: {field: PUSHED_AT, direction: DESC}, privacy: ALL) { nodes { owner { login } id description resourcePath name stargazerCount isPublic isFork files { encodedName encoding extension name size text } } } } }',
 }
@@ -63,19 +73,14 @@ enum REQUESTS {
 	ACCEPT_INVITATION,
 	DECLINE_INVITATION
 }
-var requesting : int = -1
-var notifications_requesting : int = -1
-
-var repositories_limit : int = 100
-var gists_limit : int = 100
-
-var checking_connection : bool = false
-var downloading_file : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	client.connect("request_completed",self,"_on_request_completed")
 	notifications_client.connect("request_completed",self,"_on_notification_request_completed")
+
+func load_default_variables():
+	pass
 
 func check_connection() -> void:
 	checking_connection = true
@@ -212,7 +217,7 @@ func request_contributor_avatar(avatar_url : String, contributor_class : Contrib
 
 func request_user_repositories() -> void:
 	requesting = REQUESTS.USER_REPOSITORIES
-	var query : String = graphql_queries.repositories % [UserData.USER.login, repositories_limit]
+	var query : String = graphql_queries.repositories % [UserData.USER.login,PluginSettings.owner_affiliations, repositories_limit]
 	client.request(graphql_endpoint, UserData.header, true, HTTPClient.METHOD_POST, print_query(query))
 
 func request_user_repository(repository_owner : String, repository_name : String) -> void:

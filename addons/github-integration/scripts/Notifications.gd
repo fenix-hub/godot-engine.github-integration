@@ -13,6 +13,10 @@ onready var auto_update_notifications_amount : LineEdit = $NotificationsContaine
 onready var debug_messages_chk : CheckButton = $NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin/DebugMessagesChk
 onready var auto_login_chk : CheckButton = $NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin/AutoLoginChk
 onready var darkmode_chck : CheckButton = $NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin/DarkmodeChk
+onready var owner_check : CheckBox = $NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations/Owner
+onready var collaborator_check : CheckBox = $NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations/Collaborator
+onready var organization_member_check : CheckBox = $NotificationsContainer/NotificationsTabs/Tabs/Settings/Repositories/OwnerAffiliations/OrganizationMember
+
 
 signal add_notifications(amount)
 
@@ -36,8 +40,11 @@ func _connect_signals() -> void:
 	debug_messages_chk.connect("toggled", self, "_on_debug_toggled")
 	auto_login_chk.connect("toggled", self, "_on_autologin_toggled")
 	darkmode_chck.connect("toggled", self, "_on_darkmode_toggled")
-	$NotificationsContainer/NotificationsTabs/Tabs/Settings/Plugin/ResetPluginBtn.connect("pressed", self, "_on_reset_plugin_pressed")
+	$NotificationsContainer/NotificationsTabs/Tabs/Settings/ResetPluginBtn.connect("pressed", self, "_on_reset_plugin_pressed")
 	$ResetPluginDialog.connect("confirmed", self, "_on_reset_confirmed")
+	owner_check.connect("toggled", self, "_on_owner_check_pressed")
+	collaborator_check.connect("toggled", self, "_on_collaborator_check_pressed")
+	organization_member_check.connect("toggled", self, "_on_organization_member_check_pressed")
 
 func load_settings():
 	var auto_update_notifications : bool = PluginSettings.auto_update_notifications
@@ -50,6 +57,13 @@ func load_settings():
 	debug_messages_chk.set_pressed(PluginSettings.debug)
 	auto_login_chk.set_pressed(PluginSettings.auto_log)
 	darkmode_chck.set_pressed(darkmode)
+	var owner_affiliations : Array = PluginSettings.owner_affiliations
+	load_owner_affiliations(owner_affiliations)
+
+func load_owner_affiliations(affiliations : Array):
+	owner_check.set_pressed("OWNER" in affiliations)
+	collaborator_check.set_pressed("COLLABORATOR" in affiliations)
+	organization_member_check.set_pressed("ORGANIZATION_MEMBER" in affiliations)
 
 func _on_notification_request_failed(requesting : int, error_body : Dictionary):
 	match requesting:
@@ -181,3 +195,33 @@ func _on_reset_confirmed():
 	get_parent().logout()
 	get_parent().SignIn.delete_user()
 	PluginSettings.reset_plugin()
+
+func _on_owner_check_pressed(toggled : bool):
+	if toggled: 
+		if not "OWNER" in PluginSettings.owner_affiliations: 
+			PluginSettings.owner_affiliations.append("OWNER")
+	else: 
+		if "OWNER" in PluginSettings.owner_affiliations: 
+			PluginSettings.owner_affiliations.erase("OWNER")
+	PluginSettings.set_owner_affiliations(PluginSettings.owner_affiliations)
+	get_parent().print_debug_message("repositories setting '%s': %s"%["OWNER",toggled])
+
+func _on_collaborator_check_pressed(toggled : bool):
+	if toggled: 
+		if not ("COLLABORATOR" in PluginSettings.owner_affiliations): 
+			PluginSettings.owner_affiliations.append("COLLABORATOR")
+	else: 
+		if "COLLABORATOR" in PluginSettings.owner_affiliations: 
+			PluginSettings.owner_affiliations.erase("COLLABORATOR")
+	PluginSettings.set_owner_affiliations(PluginSettings.owner_affiliations)
+	get_parent().print_debug_message("repositories setting '%s': %s"%["COLLABORATOR",toggled])
+
+func _on_organization_member_check_pressed(toggled : bool):
+	if toggled: 
+		if not "ORGANIZATION_MEMBER" in PluginSettings.owner_affiliations: 
+			PluginSettings.owner_affiliations.append("ORGANIZATION_MEMBER")
+	else: 
+		if "ORGANIZATION_MEMBER" in PluginSettings.owner_affiliations: 
+			PluginSettings.owner_affiliations.erase("ORGANIZATION_MEMBER")
+	PluginSettings.set_owner_affiliations(PluginSettings.owner_affiliations)
+	get_parent().print_debug_message("repositories setting '%s': %s"%["ORGANIZATION_MEMBER",toggled])
