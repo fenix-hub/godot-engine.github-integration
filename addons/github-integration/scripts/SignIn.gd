@@ -98,7 +98,6 @@ func sign_in() -> void:
 		emit_signal("signed")
 
 func _on_completed_loading():
-	requesting = REQUESTS.END
 	get_parent().loading(false)
 	hide()
 

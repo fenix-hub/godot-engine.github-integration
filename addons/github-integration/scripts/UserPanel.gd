@@ -52,6 +52,8 @@ func _connect_signals() -> void:
 	RestHandler.connect("request_failed", self, "_on_request_failed")
 	RestHandler.connect("user_repositories_requested",self,"_on_user_repositories_requested")
 	RestHandler.connect("user_gists_requested", self, "_on_user_gists_requested")
+	$Panel/List/gist_buttons/reload.connect("pressed", self, "request_gists")
+	$Panel/List/repos_buttons/reload.connect("pressed", self, "request_repositories")
 
 func set_darkmode(darkmode : bool):
 	if darkmode:
@@ -90,15 +92,22 @@ func _on_user_gists_requested(body : Dictionary) -> void:
 func load_panel() -> void:
 #	Repos.text = str(UserData.USER.public_repos)
 #	Gists.text = str(UserData.USER.public_gists)
-	get_parent().loading(true)
-	get_parent().print_debug_message("loading repositories, please wait...")
-	RestHandler.request_user_repositories()
+	request_repositories()
 	yield(RestHandler, "user_repositories_requested")
-	get_parent().print_debug_message("loading gists, please wait...")
-	RestHandler.request_user_gists()
+	request_gists()
 	yield(RestHandler, "user_gists_requested")
 	emit_signal("completed_loading")
 	show()
+
+func request_gists():
+	get_parent().loading(true)
+	get_parent().print_debug_message("loading gists, please wait...")
+	RestHandler.request_user_gists()
+
+func request_repositories():
+	get_parent().loading(true)
+	get_parent().print_debug_message("loading repositories, please wait...")
+	RestHandler.request_user_repositories()
 
 func load_repositories(repositories : Array) -> void:
 	clear_repo_list()
@@ -114,6 +123,7 @@ func load_repositories(repositories : Array) -> void:
 	Repos.text = str(repositories.size())
 	get_parent().print_debug_message("loaded all repositories...")
 	emit_signal("loaded_repositories")
+	get_parent().loading(false)
 
 func load_gists(gists : Array) -> void:
 	clear_gist_list()
@@ -129,6 +139,7 @@ func load_gists(gists : Array) -> void:
 	Gists.text = str(gists.size())
 	get_parent().print_debug_message("loaded all gists...")
 	emit_signal("loaded_gists")
+	get_parent().loading(false)
 
 func request_completed(result : int, response_code : int, headers : PoolStringArray, body : PoolByteArray ):
 	if result == 0:

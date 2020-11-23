@@ -11,6 +11,7 @@ var auto_log : bool = false
 var darkmode : bool = false
 var auto_update_notifications : bool = true
 var auto_update_timer : float = 300
+var owner_affiliations : Array = ["OWNER","COLLABORATOR","ORGANIZATION_MEMBER"]
 
 func _check_plugin_path():
 	var dir = Directory.new()
@@ -29,6 +30,7 @@ func _ready():
 		darkmode = config_file.get_value("settings","darkmode", darkmode)
 		auto_update_notifications = config_file.get_value("settings","auto_update_notifications", auto_update_notifications)
 		auto_update_timer = config_file.get_value("settings","auto_update_timer",auto_update_timer)
+		owner_affiliations = config_file.get_value("settings", "owner_affiliations", owner_affiliations)
 	else:
 		config_file.save(plugin_path+setting_file)
 		config_file.set_value("settings","debug",debug)
@@ -36,6 +38,7 @@ func _ready():
 		config_file.set_value("settings","darkmode",darkmode)
 		config_file.set_value("settings","auto_update_notifications", auto_update_notifications)
 		config_file.set_value("settings","auto_update_timer",auto_update_timer)
+		config_file.set_value("settings","owner_affiliations",owner_affiliations)
 		config_file.save(plugin_path+setting_file)
 
 func set_debug(d : bool):
@@ -57,6 +60,10 @@ func set_auto_update_notifications(enabled : bool):
 func set_auto_update_timer(timer : float):
 	auto_update_timer = timer
 	save_setting("auto_update_timer", timer)
+
+func set_owner_affiliations(affiliations : Array):
+	owner_affiliations = affiliations
+	save_setting("owner_affiliations", owner_affiliations)
 
 func save_setting(key : String, value):
 	_check_plugin_path()

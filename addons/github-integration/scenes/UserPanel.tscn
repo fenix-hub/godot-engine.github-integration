@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://addons/github-integration/scripts/NewGist.gd" type="Script" id=1]
 [ext_resource path="res://addons/github-integration/resources/user/placeholder.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://addons/github-integration/scenes/NormalBtn.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/github-integration/scenes/NewRepo.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/github-integration/resources/styles/List-black.tres" type="StyleBox" id=8]
+[ext_resource path="res://addons/github-integration/icons/reload.png" type="Texture" id=9]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -305,8 +306,7 @@ custom_constants/separation = 10
 alignment = 1
 
 [node name="repo" type="Button" parent="Panel/List/repos_buttons"]
-margin_left = 426.0
-margin_right = 564.0
+margin_right = 138.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 5
@@ -324,6 +324,13 @@ icon = SubResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="reload" type="Button" parent="Panel/List/repos_buttons"]
+margin_left = 954.0
+margin_right = 990.0
+margin_bottom = 32.0
+size_flags_horizontal = 10
+icon = ExtResource( 9 )
 
 [node name="SEPARATOR" type="HSeparator" parent="Panel/List"]
 margin_top = 281.0
@@ -416,8 +423,7 @@ custom_constants/separation = 10
 alignment = 1
 
 [node name="gist" type="Button" parent="Panel/List/gist_buttons"]
-margin_left = 435.0
-margin_right = 555.0
+margin_right = 120.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_horizontal = 5
@@ -435,6 +441,13 @@ icon = SubResource( 14 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="reload" type="Button" parent="Panel/List/gist_buttons"]
+margin_left = 954.0
+margin_right = 990.0
+margin_bottom = 32.0
+size_flags_horizontal = 10
+icon = ExtResource( 9 )
 
 [node name="HSeparator7" type="HSeparator" parent="Panel"]
 margin_top = 592.0
@@ -457,7 +470,6 @@ text = "Reload"
 icon = SubResource( 16 )
 
 [node name="NewGist" type="WindowDialog" parent="."]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
