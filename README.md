@@ -12,7 +12,7 @@ This plugin is now supported in [Godot Extended Library Discord](https://discord
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *1.3.5*  
+Version: *1.3.6*  
 Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
 Godot Version: *3.2.3stable*  
 
@@ -20,7 +20,7 @@ Godot Version: *3.2.3stable*
 
 ## What is this?
 *GitHub Integration* is a addon for Godot Engine that I've created mainly for a personal purpose.  
-Pushing and Pulling personal repositories while I'm working on Godot (especially if I'm under a GameJam) could take some time and force me to save the project, open the brwoser/git bash/git gui, and do all the stuff.  
+Pushing and Pulling repositories while I'm working on Godot (especially if I'm under a GameJam) could take some time and force me to save the project, open the brwoser/git bash/git gui, and do all the stuff.  
 With this little addon which works directly in the editor, managing all your repositories will be very easy.  
 
 ## What can it do?
