@@ -20,7 +20,7 @@ var directory : String = ""
 var file_name : String = "user_data.ud"
 var avatar_name : String = "avatar"
 
-var USER : Dictionary
+var USER : Dictionary = {}
 
 # --- on the USER usage
 # login = username
