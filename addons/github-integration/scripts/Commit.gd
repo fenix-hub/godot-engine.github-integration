@@ -116,7 +116,7 @@ func connect_signals():
 func request_completed(result, response_code, headers, body ):
 		get_parent().print_debug_message("REQUEST TO API : Request exited with code %s" % response_code)
 		if response_code == 422:
-				get_parent().print_debug_message(str(JSON.parse(body.get_string_from_utf8()).result))
+				get_parent().print_debug_message(JSON.parse(body.get_string_from_utf8()).result)
 		if result == 0:
 				match requesting:
 						REQUESTS.UPLOAD:
@@ -209,7 +209,7 @@ func request_completed(result, response_code, headers, body ):
 								Loading.hide()
 
 
-func load_branches(br : Array, s_r : RepositoryItem, ct : Array, gitignore : Dictionary) :
+func load_branches(br : Array, s_r : PanelContainer, ct : Array, gitignore : Dictionary) :
 	_branch.clear()
 	repo_selected = s_r._repository
 	branches_contents = ct

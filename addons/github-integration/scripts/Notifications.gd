@@ -106,8 +106,8 @@ func _on_timeout():
 	request_notifications()
 
 func request_notifications() -> void:
-	if not PluginSettings.auto_update_notifications:
-		return
+	if not PluginSettings.auto_update_notifications: return
+	if UserData.USER == {} : return
 	get_parent().print_debug_message("loading notifications, please wait...")
 	emit_signal("add_notifications",-get_parent().Header.notifications)
 	RestHandler.request_invitations_list()

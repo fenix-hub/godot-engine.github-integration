@@ -161,7 +161,7 @@ func new_repo():
 	RepoDialog.popup()
 
 # Items clicked ...............................
-func repo_clicked(clicked_repo : RepositoryItem):
+func repo_clicked(clicked_repo : PanelContainer):
 	for repository in repository_list:
 		if repository!=clicked_repo:
 			repository.deselect()
@@ -172,7 +172,7 @@ func gist_clicked(clicked_gist : GistItem):
 			gist.deselect()
 
 # Items selected ...............................
-func repo_selected(repository : RepositoryItem):
+func repo_selected(repository : PanelContainer):
 	get_parent().print_debug_message("opening selected repository...")
 	get_parent().loading(true)
 	get_parent().Repo.open_repository(repository)

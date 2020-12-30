@@ -68,7 +68,7 @@ var contributor_class : PackedScene = load("res://addons/github-integration/scen
 enum REQUESTS { REPOS = 0, GISTS = 1, UP_REPOS = 2, UP_GISTS = 3, DELETE = 4, COMMIT = 5, BRANCHES = 6, CONTENTS = 7, TREES = 8, DELETE_RESOURCE = 9, END = -1 , FILE_CONTENT = 10 ,NEW_BRANCH = 11 , PULLING = 12, COLLABORATOR = 13 }
 var requesting
 
-var current_repo : RepositoryItem
+var current_repo : PanelContainer
 var html : String
 var current_branch
 var branches = []
@@ -146,7 +146,7 @@ func load_icons(r : Dictionary):
 	git_lfs.set_button_icon(IconLoaderGithub.load_icon_from_name("git_lfs-gray"))
 	add_collaborator_btn.set_button_icon(IconLoaderGithub.load_icon_from_name("add-gray"))
 
-func open_repository(repository_item : RepositoryItem) -> void:
+func open_repository(repository_item : PanelContainer) -> void:
 	_clear()
 	
 	# Load repository's info ....
