@@ -37,12 +37,8 @@ If you want to see some screenshots you can find them here `addons/github-integr
 ## Supporters page
 <table>
   <tr>
-    <th><img src='https://avatars0.githubusercontent.com/u/9788627?s=64&v=4' alt='@masterworm2' width="64"/</th>
-    <th><img src='https://avatars0.githubusercontent.com/u/48778172?s=64&v=4' alt='@auctru' width="64"/></th> 
-  </tr>
-  <tr>
-    <th><a href="https://github.com/masterworm2">masterworm2</a></th>
-    <th><a href="https://github.com/autcru">autcru</a></th>
+    <th><img src='https://avatars0.githubusercontent.com/u/9788627?s=64&v=4' alt='@masterworm2' width="64"/><br/><a href="https://github.com/masterworm2">masterworm2</a></th>
+    <th><img src='https://avatars0.githubusercontent.com/u/48778172?s=64&v=4' alt='@auctru' width="64"/><br/><a href="https://github.com/autcru">autcru</a></th> 
   </tr>
 </table>
 
