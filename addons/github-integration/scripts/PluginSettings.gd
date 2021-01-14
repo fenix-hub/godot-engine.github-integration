@@ -13,11 +13,13 @@ var auto_update_notifications : bool = true
 var auto_update_timer : float = 300
 var owner_affiliations : Array = ["OWNER","COLLABORATOR","ORGANIZATION_MEMBER"]
 
+var _loaded : bool = false
+
 func _check_plugin_path():
 	var dir = Directory.new()
 	if not dir.dir_exists(plugin_path):
 		dir.make_dir(plugin_path)
-		if debug:
+		if PluginSettings.debug:
 			printerr("[GitHub Integration] >> ","made custom directory in user folder, it is placed at ", plugin_path)
 
 func _ready():
@@ -40,6 +42,7 @@ func _ready():
 		config_file.set_value("settings","auto_update_timer",auto_update_timer)
 		config_file.set_value("settings","owner_affiliations",owner_affiliations)
 		config_file.save(plugin_path+setting_file)
+	_loaded = true
 
 func set_debug(d : bool):
 	debug = d
