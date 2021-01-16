@@ -19,7 +19,7 @@ func _check_plugin_path():
 	var dir = Directory.new()
 	if not dir.dir_exists(plugin_path):
 		dir.make_dir(plugin_path)
-		if PluginSettings.debug:
+		if debug:
 			printerr("[GitHub Integration] >> ","made custom directory in user folder, it is placed at ", plugin_path)
 
 func _ready():

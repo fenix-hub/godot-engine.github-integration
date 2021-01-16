@@ -39,16 +39,13 @@ var gitlfs_request : String = ".git/info/lfs/objects/batch"
 var plugin_version : String = "0.9.4"
 
 func _ready():
-	PluginSettings._check_plugin_path()
 	directory = PluginSettings.plugin_path
 
 func user_exists():
-	PluginSettings._check_plugin_path()
 	var file : File = File.new()
 	return (true if file.file_exists(directory+file_name) else false)
 
 func save(user : Dictionary, avatar : PoolByteArray, auth : String, token : String, mail : String) -> void:
-	PluginSettings._check_plugin_path()
 	var file = File.new()
 	
 	if user!=null:

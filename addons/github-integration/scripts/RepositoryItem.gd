@@ -1,6 +1,7 @@
 tool
-extends PanelContainer
 class_name RepositoryItem
+extends PanelContainer
+
 
 signal repo_selected(repo)
 signal repo_clicked(repo)
