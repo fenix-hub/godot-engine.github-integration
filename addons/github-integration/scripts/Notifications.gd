@@ -21,9 +21,11 @@ onready var organization_member_check : CheckBox = $NotificationsContainer/Notif
 signal add_notifications(amount)
 
 var to_load_next : bool = false
-var notifications_tabs : Array = ["Invitations","Settings"]
+var notifications_tabs : Array = ["Invitations", "Settings"]
 
 func _ready():
+	if PluginSettings._loaded : pass
+	else: yield(PluginSettings,"ready")
 	load_settings()
 	_connect_signals()
 	load_notification_tabs()

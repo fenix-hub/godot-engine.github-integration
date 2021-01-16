@@ -1,8 +1,8 @@
 tool
 extends Control
 
-onready var RepositoryItem = preload("res://addons/github-integration/scenes/RepositoryItem.tscn")
-onready var GistItem = preload("res://addons/github-integration/scenes/GistItem.tscn")
+onready var _repository_item = preload("res://addons/github-integration/scenes/RepositoryItem.tscn")
+onready var _gist_item = preload("res://addons/github-integration/scenes/GistItem.tscn")
 
 onready var Avatar : TextureRect = $Panel/HBoxContainer/avatar
 onready var GistIcon : TextureRect = $Panel/List/GistHeader/gists_icon
@@ -113,7 +113,7 @@ func load_repositories(repositories : Array) -> void:
 	clear_repo_list()
 	
 	for repository in repositories:
-		var repo_item = RepositoryItem.instance()
+		var repo_item = _repository_item.instance()
 		RepoList.add_child(repo_item)
 		repo_item.set_repository(repository)
 		repo_item.connect("repo_selected",self,"repo_selected")
@@ -129,7 +129,7 @@ func load_gists(gists : Array) -> void:
 	clear_gist_list()
 	
 	for gist in gists:
-		var gist_item = GistItem.instance()
+		var gist_item = _gist_item.instance()
 		GistList.add_child(gist_item)
 		gist_item.set_gist(gist)
 		gist_item.connect("gist_selected",self,"gist_selected")
@@ -161,7 +161,7 @@ func new_repo():
 	RepoDialog.popup()
 
 # Items clicked ...............................
-func repo_clicked(clicked_repo : PanelContainer):
+func repo_clicked(clicked_repo : RepositoryItem):
 	for repository in repository_list:
 		if repository!=clicked_repo:
 			repository.deselect()
@@ -172,7 +172,7 @@ func gist_clicked(clicked_gist : GistItem):
 			gist.deselect()
 
 # Items selected ...............................
-func repo_selected(repository : PanelContainer):
+func repo_selected(repository : RepositoryItem):
 	get_parent().print_debug_message("opening selected repository...")
 	get_parent().loading(true)
 	get_parent().Repo.open_repository(repository)
