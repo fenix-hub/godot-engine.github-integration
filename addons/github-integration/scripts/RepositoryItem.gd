@@ -25,6 +25,7 @@ func _ready():
 func set_repository(repository : Dictionary):
 	_repository = repository
 	_name = str(repository.name)
+	name = _name
 	_stars = repository.stargazerCount
 	_forks = repository.forkCount
 	

@@ -40,9 +40,10 @@ var loading : Control
 var session : HTTPClient = HTTPClient.new()
 var graphql_endpoint : String = "https://api.github.com/graphql"
 var graphql_queries : Dictionary = {
-	'repositories':'{user(login: "%s"){repositories(ownerAffiliations:%s, first:%d, orderBy: {field: NAME, direction: ASC}){ nodes { diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl } } } } } } } }',
+	'repositories':'{user(login: "%s"){repositories(ownerAffiliations:%s, first:%d, orderBy: {field: NAME, direction: ASC}){ nodes { diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl } } } } } } %s } }',
 	'repository':'{user(login: "%s"){repository(name:"%s"){diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl }}}}}}}',
 	'gists':'{ user(login: "%s") { gists(first: %s, orderBy: {field: PUSHED_AT, direction: DESC}, privacy: ALL) { nodes { owner { login } id description resourcePath name stargazerCount isPublic isFork files { encodedName encoding extension name size text } } } } }',
+	'organizations_repositories':'organizations(first:10){nodes{repositories(first:100){nodes{diskUsage name owner { login } description url isFork isPrivate forkCount stargazerCount isInOrganization collaborators(affiliation: DIRECT, first: 100) { nodes {login name avatarUrl} } mentionableUsers(first: 100){ nodes{ login name avatarUrl } } defaultBranchRef { name } refs(refPrefix: "refs/heads/", first: 100){ nodes{ name target { ... on Commit { oid tree { oid } zipballUrl tarballUrl } } } } }}}}'
 }
 var header : PoolStringArray = ["Authorization: token "]
 var api_endpoints : Dictionary = {
@@ -217,7 +218,12 @@ func request_contributor_avatar(avatar_url : String, contributor_class : Contrib
 
 func request_user_repositories() -> void:
 	requesting = REQUESTS.USER_REPOSITORIES
-	var query : String = graphql_queries.repositories % [UserData.USER.login,PluginSettings.owner_affiliations, repositories_limit]
+	var owner_affiliations : Array = PluginSettings.owner_affiliations.duplicate(true)
+	var is_org_member : bool = false
+	if owner_affiliations.has("ORGANIZATION_MEMBER"): 
+		owner_affiliations.erase("ORGANIZATION_MEMBER")
+		is_org_member = true
+	var query : String = graphql_queries.repositories % [UserData.USER.login, owner_affiliations, repositories_limit, graphql_queries.organizations_repositories if is_org_member else ""]
 	client.request(graphql_endpoint, UserData.header, true, HTTPClient.METHOD_POST, print_query(query))
 
 func request_user_repository(repository_owner : String, repository_name : String) -> void:

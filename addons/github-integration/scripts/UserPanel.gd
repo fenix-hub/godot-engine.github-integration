@@ -81,7 +81,10 @@ func _on_request_failed(request_code : int, error_body : Dictionary) -> void:
 			get_parent().print_debug_message("ERROR "+str(request_code)+" : "+error_body.message)
 
 func _on_user_repositories_requested(body : Dictionary) -> void:
-	var repositories : Array = body.user.repositories.nodes
+	var repositories : Array = body.user.repositories.nodes 
+	if PluginSettings.owner_affiliations.has("ORGANIZATION_MEMBER"):
+		for organization in body.user.organizations.nodes:
+			repositories += organization.repositories.nodes
 	load_repositories(repositories)
 
 func _on_user_gists_requested(body : Dictionary) -> void:
@@ -113,6 +116,13 @@ func load_repositories(repositories : Array) -> void:
 	clear_repo_list()
 	
 	for repository in repositories:
+		var is_listed : bool = false
+		for repository_item in repository_list:
+			if repository_item.name == repository.name:
+				is_listed = true
+				continue
+		if is_listed:
+			continue
 		var repo_item = _repository_item.instance()
 		RepoList.add_child(repo_item)
 		repo_item.set_repository(repository)
