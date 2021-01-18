@@ -37,7 +37,7 @@ func set_contributor_avatar(a : String) -> void:
 	is_downloading = true
 
 func _process(delta):
-	if is_downloading: print(client.get_downloaded_bytes()/client.get_body_size()*100, " %")
+	if is_downloading: pass#print(client.get_downloaded_bytes()/client.get_body_size()*100, " %")
 
 func _on_request_completed(result: int, response_code: int, headers: PoolStringArray, avatar: PoolByteArray) -> void:
 	if result == 0:
