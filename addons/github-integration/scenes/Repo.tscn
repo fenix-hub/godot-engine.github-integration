@@ -969,6 +969,7 @@ __meta__ = {
 }
 [connection signal="item_selected" from="Repository/RepositoryInfo/RepositoryContent/BranchInfo/branch/branch2" to="." method="_on_branch2_item_selected"]
 [connection signal="item_activated" from="Repository/RepositoryInfo/RepositoryContent/contents" to="." method="_on_contents_item_activated"]
+[connection signal="item_selected" from="Repository/RepositoryInfo/RepositoryContent/contents" to="." method="_on_contents_item_selected"]
 [connection signal="multi_selected" from="Repository/RepositoryInfo/RepositoryContent/contents" to="." method="_on_contents_multi_selected"]
 [connection signal="pressed" from="Repository/repos_buttons/HBoxContainer/reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="extraction_request/VBoxContainer/buttons/python" to="." method="_on_python_pressed"]

@@ -332,7 +332,6 @@ margin_bottom = 238.0
 window_title = "Open File(s)"
 resizable = true
 mode = 1
-show_hidden_files = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
