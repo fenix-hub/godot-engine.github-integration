@@ -67,6 +67,8 @@ var IGNORE_FOLDERS : PoolStringArray = []
 
 var current_handled_file : String
 
+var commit_progress : float = 0
+
 signal blob_created()
 
 signal latest_commit()
@@ -155,7 +157,7 @@ func request_completed(result, response_code, headers, body ):
                                 match response_code:
                                         201:
                                                 list_file_sha.append(JSON.parse(body.get_string_from_utf8()).result.sha)
-                                                get_parent().print_debug_message("blobbed file")
+                                                get_parent().print_debug_message("blobbed file (progress: {progress}%)".format({progress = commit_progress as int}))
         #					OS.delay_msec(1000)
                                                 emit_signal("file_blobbed")
                                         400:
@@ -321,43 +323,45 @@ func request_base_tree():
         request_blobs()
 
 func request_blobs():
-        requesting = REQUESTS.BLOB
-        list_file_sha.clear()
-        for file in files:
-                current_handled_file = file
-                if list_file_size[files.find(file)] < 104857600:
-                        var content = ""
-                        var sha = "" # is set to update a file
-                        var encoding = ""
-                        
-                        var f : File = File.new()
-                        f.open(file,File.READ)
-                        content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
-                        encoding = "base64"
-                        f.close()
-                        
-                        get_parent().print_debug_message("blobbing ~> "+file.get_file())
-                        
-                        var bod = {
-                                "content":content,
-                                "encoding":encoding,
-                        }
-                        
-                        new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/blobs",
-                        UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
-                        yield(self,"file_blobbed")
-                else:
-                        get_parent().print_debug_message("pointing large file, please wait...")
-                        var output = []
-                        OS.execute( 'git', [ "lfs", "pointer",'--file',ProjectSettings.globalize_path(file)], true, output )
-                        var oid : String = output[0].split(":",false)[2]
-                        var onlyoid : String = oid.rstrip("size").split(" ")[0].replace("\nsize","")
-                        list_file_sha.append(onlyoid)
-                Progress.set_value(range_lerp(files.find(file),0,files.size(),0,100))
-        
-        get_parent().print_debug_message("blobbed each file with success, start committing...")
-        Progress.set_value(100)
-        request_commit_tree()
+    requesting = REQUESTS.BLOB
+    list_file_sha.clear()
+    for file in files:
+        current_handled_file = file
+        if list_file_size[files.find(file)] < 104857600:
+            var content = ""
+            var sha = "" # is set to update a file
+            var encoding = ""
+            
+            var f : File = File.new()
+            f.open(file,File.READ)
+            content = Marshalls.raw_to_base64(f.get_buffer(f.get_len()))
+            encoding = "base64"
+            f.close()
+            
+            get_parent().print_debug_message("blobbing ~> "+file.get_file())
+            
+            var bod = {
+                "content":content,
+                "encoding":encoding,
+            }
+            
+            new_repo.request("https://api.github.com/repos/"+repo_selected.owner.login+"/"+repo_selected.name+"/git/blobs",
+            UserData.header,false,HTTPClient.METHOD_POST,JSON.print(bod))
+            yield(self,"file_blobbed")
+        else:
+            get_parent().print_debug_message("pointing large file, please wait...")
+            var output = []
+            OS.execute( 'git', [ "lfs", "pointer",'--file',ProjectSettings.globalize_path(file)], true, output )
+            var oid : String = output[0].split(":",false)[2]
+            var onlyoid : String = oid.rstrip("size").split(" ")[0].replace("\nsize","")
+            list_file_sha.append(onlyoid)
+        commit_progress = range_lerp(files.find(file),0,files.size(),0,100)
+        Progress.set_value(commit_progress)
+
+    get_parent().print_debug_message("blobbed each file with success, start committing...")
+    Progress.set_value(100)
+    commit_progress = 0
+    request_commit_tree()
 
 func request_commit_tree():
         requesting = REQUESTS.NEW_TREE
@@ -481,83 +485,80 @@ func on_confirm():
         pass
 
 func on_files_selected(paths : PoolStringArray):
-        for path in paths:
-                if not files.has(path):
-                        files.append(path)
-                else:
-                        files.erase(path)
-        
-        show_files(paths,true,false)
+    for path in paths:
+        if not files.has(path):
+            files.append(path)
+    
+    show_files(files,true,false)
 
 func on_dir_selected(path : String):
-        var directories = []
-        var dir = Directory.new()
-        dir.open(path)
-        dir.list_dir_begin(true,false)
-        var file = dir.get_next()
-        while (file != ""):
-                if dir.current_is_dir():
-                        var directorypath = dir.get_current_dir()+"/"+file
-                        directories.append(directorypath)
-                else:
-                        var filepath = dir.get_current_dir()+"/"+file
-                        if not files.has(filepath):
-                                files.append(filepath)
-                
-                file = dir.get_next()
-        
-        dir.list_dir_end()
-        
-        show_files(files,true,false)
-        
-        for directory in directories:
-                on_dir_selected(directory)
+    if ".git" in path:
+        printerr("Cannot commit '.git' folders.")
+        return
+    var directories = []
+    var dir = Directory.new()
+    dir.open(path)
+    dir.list_dir_begin(true,false)
+    var file = dir.get_next()
+    while (file != ""):
+        if dir.current_is_dir():
+            var directorypath = dir.get_current_dir()+"/"+file
+            directories.append(directorypath)
+        else:
+            var filepath = dir.get_current_dir()+"/"+file
+            if not files.has(filepath):
+                files.append(filepath)
+            
+        file = dir.get_next()
+    
+    dir.list_dir_end()
+    
+    for directory in directories:
+        on_dir_selected(directory)
+    
+    show_files(files,true,false)
 
 func show_files(paths : PoolStringArray, isfile : bool = false , isdir : bool = false):
-        Uncommitted.clear()
-        
-        for file in paths:
-                file = file.replace("///","//")
-                if isfile:
-                        Uncommitted.add_item(file,IconLoaderGithub.load_icon_from_name("file-gray"))
-        
-#	if isdir:
-#		for dir in paths:
-#			Uncommitted.add_item(dir,IconLoaderGithub.load_icon_from_name("dir"))
+    Uncommitted.clear()
+    
+    for file in paths:
+        file = file.replace("///","//")
+        if isfile:
+            Uncommitted.add_item(file,IconLoaderGithub.load_icon_from_name("file-gray"))
 
 func on_removefile_pressed():
-        var filestoremove = Uncommitted.get_selected_items()
-        if filestoremove.size() == 0:
-                on_nothing_selected()
-                return
-        var first_file = filestoremove[0]
-        var file_name = Uncommitted.get_item_text(first_file)
-        files.erase(file_name)
-        Uncommitted.remove_item(first_file)
-        if Uncommitted.get_selected_items().size() > 0:
-                on_removefile_pressed()
-        else:
-                on_nothing_selected()
+    var filestoremove = Uncommitted.get_selected_items()
+    if filestoremove.size() == 0:
+        on_nothing_selected()
+        return
+    var first_file = filestoremove[0]
+    var file_name = Uncommitted.get_item_text(first_file)
+    files.erase(file_name)
+    Uncommitted.remove_item(first_file)
+    if Uncommitted.get_selected_items().size() > 0:
+        on_removefile_pressed()
+    else:
+        on_nothing_selected()
 
 func on_selectfiles_pressed():
-        SelectFiles.set_mode(FileDialog.MODE_OPEN_FILES)
-        SelectFiles.invalidate()
-        SelectFiles.popup()
+    SelectFiles.set_mode(FileDialog.MODE_OPEN_FILES)
+    SelectFiles.invalidate()
+    SelectFiles.popup()
 
 func on_selectdirectory_pressed():
-        SelectFiles.set_mode(FileDialog.MODE_OPEN_DIR)
-        SelectFiles.invalidate()
-        SelectFiles.popup()
+    SelectFiles.set_mode(FileDialog.MODE_OPEN_DIR)
+    SelectFiles.invalidate()
+    SelectFiles.popup()
 
 func on_item_selected(idx : int):
-        removefileBtn.set_disabled(false)
+    removefileBtn.set_disabled(false)
 
 func on_multiple_item_selected(idx : int, selected : bool):
-        removefileBtn.set_disabled(false)
+    removefileBtn.set_disabled(false)
 
 func on_nothing_selected():
-        removefileBtn.set_disabled(true)
+    removefileBtn.set_disabled(true)
 
 func about_gitignore_pressed():
-        OS.shell_open("https://git-scm.com/docs/gitignore")
+    OS.shell_open("https://git-scm.com/docs/gitignore")
 
