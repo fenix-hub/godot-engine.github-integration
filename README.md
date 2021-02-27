@@ -12,8 +12,8 @@ This plugin is now supported in [Godot Extended Library Discord](https://discord
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *1.4.1*  
-Godot Version: *3.2.3stable*  
+Version: *1.4.3*  
+Godot Version: *3.2.4-rc3*  
 Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
 
 <img align="center" src="addons/github-integration/screenshots/banner.png">

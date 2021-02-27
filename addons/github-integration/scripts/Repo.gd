@@ -250,9 +250,8 @@ func delete_repository():
 func _on_repository_deleted():
     get_parent().print_debug_message("deleted repository...")
     OS.delay_msec(1500)
-    get_parent().UserPanel.request_repositories(REQUESTS.UP_REPOS)
+    get_parent().UserPanel.request_repositories()
     close_tab()
-    get_parent().loading(false)
 
 func delete_resource():
     if multi_selected.size()>0:
