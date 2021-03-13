@@ -12,7 +12,7 @@ This plugin is now supported in [Godot Extended Library Discord](https://discord
 A complete GitHub integration for your Godot Editor! Manage your project without even opening your browser.
 
 Author: *"Nicolo (fenix) Santilio"*  
-Version: *1.4.3*  
+Version: *1.4.4*  
 Godot Version: *3.2.4-rc3*  
 Wiki: *[supported](https://github.com/fenix-hub/godot-engine.github-integration/wiki)*  
 
@@ -48,7 +48,3 @@ I don't assume any responsibility for possible corruptions of your project. It i
 
 -----------------
 > This text file was created via [TextEditor Integration](https://github.com/fenix-hub/godot-engine.text-editor) inside Godot Engine's Editor.
-
-
-
-

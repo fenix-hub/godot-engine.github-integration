@@ -105,7 +105,7 @@ func _connect_signals() -> void:
     add_collaborator_btn.connect("pressed", self, "add_collaborator")
     AddCollaborator.connect("confirmed",self,"invite_collaborator")
     
-    RestHandler.connect("user_repository_requested",self, "_on_user_repository_requested")
+#    RestHandler.connect("user_repository_requested",self, "_on_user_repository_requested")
     RestHandler.connect("request_failed", self, "_on_request_failed")
     RestHandler.connect("branch_contents_requested", self, "_on_branch_contents_requested")
     RestHandler.connect("gitignore_requested", self, "_on_gitignore_requested")
@@ -182,6 +182,8 @@ func open_repository(repository_item : PanelContainer) -> void:
         show()
 
 func _on_user_repository_requested(repository : Dictionary):
+    if current_repo == null:
+        return
     current_repo.set_repository(repository.user.repository if repository.has("user") else repository.organization.repository)
     open_repository(current_repo)
 
@@ -405,6 +407,7 @@ func _on_reload_pressed():
     get_parent().print_debug_message("reloading all branches, please wait...")
     RestHandler.request_user_repository("organization" if current_repo._repository.isInOrganization else "user",
     current_repo._repository.owner.login, current_repo._name)
+    _on_user_repository_requested(yield(RestHandler, "user_repository_requested"))
 
 
 func _clear() -> void:

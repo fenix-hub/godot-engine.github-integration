@@ -23,6 +23,8 @@ onready var SearchGist : LineEdit = $Panel/List/GistHeader/search_gist
 onready var GistDialog : WindowDialog = $NewGist
 onready var RepoDialog : ConfirmationDialog = $NewRepo
 
+onready var ProjectRepository : PanelContainer = $Panel/List/ProjectRepository
+
 signal new_branch()
 signal completed_loading()
 signal loaded_repositories()
@@ -87,6 +89,9 @@ func _on_user_repositories_requested(body : Dictionary) -> void:
             repositories += organization.repositories.nodes
     load_repositories(repositories)
 
+func _on_user_repository_requested(body : Dictionary) -> void:
+    append_repository(body.user.repository if body.has("user") else body.organization.repository, true)
+
 func _on_user_gists_requested(body : Dictionary) -> void:
     var gists : Array = body.user.gists.nodes
     load_gists(gists)
@@ -95,12 +100,37 @@ func _on_user_gists_requested(body : Dictionary) -> void:
 func load_panel() -> void:
 #	Repos.text = str(UserData.USER.public_repos)
 #	Gists.text = str(UserData.USER.public_gists)
+    
+    var project_repository : Array = check_project_repository()
+    if not project_repository.empty():
+        print(project_repository)
+        RestHandler.request_user_repository("organization" if UserData.USER.login != project_repository[0] else "user", project_repository[0], project_repository[1])
+        get_parent().print_debug_message("A repository linked to this project has been identified.")
+        _on_user_repository_requested(yield(RestHandler, "user_repository_requested"))
+        
     request_repositories()
     yield(RestHandler, "user_repositories_requested")
     request_gists()
     yield(RestHandler, "user_gists_requested")
     emit_signal("completed_loading")
     show()
+
+# Snippet code provided by @konsumer on GitHub and adapted. Thanks!!!
+func check_project_repository() -> Array:
+    var f = File.new()
+    var err = f.open("res://.git/config", File.READ)
+    if err != OK:
+        return []
+    else:
+        var text = f.get_as_text()
+        f.close()
+        var regex = RegEx.new()
+        regex.compile("github\\.com\\/(?<user>.+)\\/(?<repo>.+)")
+        var result = regex.search(text)
+        if result:
+            return [result.get_string("user"), result.get_string("repo").rstrip(".git")]
+        else:
+            return []
 
 func request_gists():
     get_parent().loading(true)
@@ -120,20 +150,27 @@ func load_repositories(repositories : Array) -> void:
         for repository_item in repository_list:
             if repository_item.name == repository.name:
                 is_listed = true
-                continue
+                break
         if is_listed:
             continue
-        var repo_item = _repository_item.instance()
-        RepoList.add_child(repo_item)
-        repo_item.set_repository(repository)
-        repo_item.connect("repo_selected",self,"repo_selected")
-        repo_item.connect("repo_clicked",self,"repo_clicked")
-        repository_list.append(repo_item)
+        append_repository(repository)
     
     Repos.text = str(repositories.size())
     get_parent().print_debug_message("loaded all repositories...")
     emit_signal("loaded_repositories")
     get_parent().loading(false)
+
+func append_repository(repository : Dictionary, current_project : bool = false):
+    var repo_item = _repository_item.instance()
+    if current_project:
+        ProjectRepository.show()
+        ProjectRepository.add_child(repo_item)
+    else:
+        RepoList.add_child(repo_item)
+    repo_item.set_repository(repository, current_project)
+    repo_item.connect("repo_selected",self,"repo_selected")
+    repo_item.connect("repo_clicked",self,"repo_clicked")
+    repository_list.append(repo_item)
 
 func load_gists(gists : Array) -> void:
     clear_gist_list()
