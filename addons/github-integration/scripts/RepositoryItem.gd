@@ -22,7 +22,7 @@ func _ready():
     Stars.get_node("Icon").set_texture(IconLoaderGithub.load_icon_from_name("stars"))
     Forks.get_node("Icon").set_texture(IconLoaderGithub.load_icon_from_name("forks"))
 
-func set_repository(repository : Dictionary):
+func set_repository(repository : Dictionary, current_project : bool = false):
     _repository = repository
     _name = str(repository.name)
     name = _name
@@ -53,6 +53,9 @@ func set_repository(repository : Dictionary):
         Collaborator.texture = IconLoaderGithub.load_icon_from_name("organization")
         Collaborator.set_tooltip("Organization")
     Name.get_node("Icon").set_texture(repo_icon)
+    
+    if current_project:
+        pass
 
 func deselect():
     BG.hide()
