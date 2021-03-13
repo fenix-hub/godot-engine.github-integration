@@ -3,6 +3,7 @@
 [ext_resource path="res://addons/github-integration/resources/user/circle.png" type="Texture" id=1]
 
 [sub_resource type="VisualShaderNodeTexture" id=1]
+output_port_for_preview = 1
 texture = ExtResource( 1 )
 
 [sub_resource type="VisualShaderNodeTexture" id=2]
@@ -45,7 +46,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -350, 121 )
+graph_offset = Vector2( -371.254, 150 )
 mode = 1
 flags/light_only = false
 nodes/fragment/3/node = SubResource( 1 )
